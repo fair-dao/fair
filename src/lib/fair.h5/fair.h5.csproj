@@ -12,6 +12,9 @@
 		<Product>fair h5</Product>
 		<Description>fair html5</Description>
 		<Copyright></Copyright>
+		<PackageProjectUrl>https://fair-dao.com/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/fair-dao/fair</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
