@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task RunFairHost( this WebAssemblyHostBuilder builder, params fair.extensions.shared.Extender[]? extenders)
         {
 
-            builder.RootComponents.Add<fair.extensions.shared.Routes>("app");
+            builder.RootComponents.Add<fair.extensions.shared.Routes>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
             SysHelper.AppStartTime = DateTime.Now;
             builder.Services.AddSingleton<gensysDatabase>();

@@ -170,6 +170,7 @@
     WalletAccount curAccount;
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("index page init...");
         IAccountService service = provider.GetService(typeof(IAccountService)) as IAccountService;
         if (service != null)
         {

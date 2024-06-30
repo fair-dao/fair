@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.maui", "fair.maui\fair
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fair.maui.demo", "..\demo\fair.maui.demo\fair.maui.demo.csproj", "{C60EE903-EB26-4B8F-8DFE-EB75923F366D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fair.h5.demo", "..\demo\fair.h5.demo\fair.h5.demo.csproj", "{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
