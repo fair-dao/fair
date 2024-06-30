@@ -5,13 +5,13 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 	<PropertyGroup>
-		<Authors>fair-coder</Authors>
+		<Authors>fairdao</Authors>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
 		<Title>fair ui</Title>
 		<Product>fair ui</Product>
 		<Description>fair ui</Description>
-		<Copyright>@2024 freecoder2024. All rights reserved.</Copyright>
+		<Copyright>@2024 fairdao. All rights reserved.</Copyright>
 		<Version>8.0.0</Version>
 	</PropertyGroup>
 	<ItemGroup>

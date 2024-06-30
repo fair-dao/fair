@@ -5,12 +5,12 @@
 		<WasmEnableSIMD>false</WasmEnableSIMD>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<CompressionEnabled>false</CompressionEnabled>
-		<Authors>fair-coder</Authors>
+		<Authors>fairdao</Authors>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
 		<Title>fair wallet html5</Title>
-		<Product>fair wallet</Product>
-		<Description>fair wallet html5 client</Description>
+		<Product>fair h5</Product>
+		<Description>fair html5</Description>
 		<Copyright></Copyright>
 	</PropertyGroup>
 
