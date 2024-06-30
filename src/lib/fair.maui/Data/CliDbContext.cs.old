@@ -1,0 +1,35 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace clientApp.Data
+{
+    public class CliDbContext : DbContext
+    {
+
+        public CliDbContext(DbContextOptions<CliDbContext> options) : base(options)
+        {
+            try
+            {
+              //  SQLitePCL.Batteries_V2.Init();
+
+                this.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        public DbSet<Data.CliConfig> CliConfig { get; set; }
+
+        public DbSet<Data.Room> Room { get; set; }
+
+        public DbSet<Data.Message> Message { get; set; }
+
+    }
+}

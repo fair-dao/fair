@@ -1,0 +1,128 @@
+﻿
+.navbar {
+    box-shadow: #e2dfdf8c 1px 1px;
+    color: $page-color;
+    background-color: $navbar-bkcolor;
+    font-size: 1.2rem;
+    display:block;
+}
+
+
+.navbar * {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+.navbar input {
+    color: #000;
+    background-color: #FFF;
+}
+
+
+.navbar input[type=date] {
+    width: 11rem;
+}
+
+.navbar input[type=datetime-local] {
+    width: 14rem;
+    cursor: pointer;
+    height: 2.5rem;
+    text-align: left;
+    background: url(/Images/buttons/date.png) right 5px center no-repeat #FFF;
+    border-color: #dbdbdb;
+    border-width: 1px;
+    color: #363636;
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(0.5rem - 1px);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: calc(0.5rem - 1px);
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 6px 6px;
+}
+
+
+
+.navbar-burger, .burger {
+    line-height: 3.25rem;
+    text-align: center;
+    width: auto !important;
+    cursor: none !important;
+}
+
+.navbar-burger > * { /*右侧项*/
+    min-width: 3.25rem;
+}
+
+.navbar-burger a, .navbar-burger a:hover, .navbar-burger a:active {
+    color: #FFF;
+}
+
+.navbar .is-active * {
+    color: #000;
+}
+
+.navbar .is-active .navbar-link {
+    display: block;
+}
+
+.navbar-burger > i, .navbar-burger > a {
+    height: 3.25rem;
+    color: #4a4a4a;
+    line-height: 3.25rem !important;
+    display: inline-block;
+    cursor: pointer;
+}
+.navbar-right {
+    display: flex;
+}
+
+.navbar-right > * { 
+    line-height: 3.25rem;
+}
+.navbar-right i{
+    font-size:1.5rem;
+    width:1.5rem;
+    font-weight:bolder;
+}
+/*修正select控件、checkbox控件在导航栏过高的问题*/
+.navbar-item .select {
+    font-size: 1rem;
+}
+
+.navbar-item .is-checkradio[type=checkbox] + label::before, .navbar-item .is-checkradio[type=checkbox] + label:before, .navbar-item .is-checkradio[type=radio] + label::before, .navbar-item .is-checkradio[type=radio] + label:before {
+    top: 0.2rem;
+}
+
+.navbar-item .is-checkradio[type=checkbox] + label::after, .navbar-item .is-checkradio[type=checkbox] + label:after {
+    top: .5rem;
+}
+/*------------------------*/
+
+.navbar .navbar-title {
+   line-height:1.2;
+   font-size:1rem;
+}
+.navbar .navbar-face{
+    height:2.25rem;
+    margin:auto 0.5rem auto 0rem;
+} 
+.navbar .navbar-face img {
+    max-height: 2.25rem !important;
+    border-radius: 2.25rem;
+}
+.navbar .navbar-item .nav-subtitle {
+    display: block;
+    font-size: 0.5rem;
+    color: #625e5e;
+}
+
+/*定义小屏为800以下*/
+@media only screen and (max-width: 800px) {
+.navbar-item{
+    padding: .5rem 0.25rem;
+}
+}

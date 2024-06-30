@@ -1,0 +1,73 @@
+﻿@namespace fair.ui
+@inherits UIBase
+<div @attributes="Attributes" class="@classes">
+    @ChildContent
+</div>
+
+
+@code {
+
+    string classes => CssBuilder.Default("container")
+        .AddClassFromAttributes(Attributes)
+        .AddClass("is-widescreen", IsWidescreen)
+        .AddClass("is-fullhd", IsFullhd)
+        .AddClass("is-max-desktop", IsMaxDesktop)
+        .AddClass("is-max-widescreen", IsMaxWidescreen)
+        .AddClass("is-fluid", IsFluid)
+        .AddClass("is-padding", IsPadding)
+        .AddClass("is-bottom-margin", IsBottomMargin)
+        .Build();
+
+
+    /// <summary>
+    /// 是否宽屏
+    /// </summary>
+    [Parameter]
+    public bool IsWidescreen { get; set; }
+
+    /// <summary>
+    /// 是否内设边距
+    /// </summary>
+    [Parameter]
+    public bool IsPadding { get; set; }
+
+
+    /// <summary>
+    /// 是否内设边距
+    /// </summary>
+    [Parameter]
+    public bool IsBottomMargin { get; set; }
+
+    /// <summary>
+    /// 是否高清
+    /// </summary>
+    [Parameter]
+    public bool IsFullhd { get; set; }
+
+
+    /// <summary>
+    /// 是否最大桌面
+    /// </summary>
+    [Parameter]
+    public bool IsMaxDesktop { get; set; }
+
+    /// <summary>
+    /// 是否最大宽屏
+    /// </summary>
+    [Parameter]
+    public bool IsMaxWidescreen { get; set; }
+
+
+    /// <summary>
+    /// 是否流体容器，两边留32px间隙
+    /// </summary>
+    [Parameter]
+    public bool IsFluid { get; set; }
+
+    /// <summary>
+    /// 子内容
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

@@ -1,0 +1,17 @@
+{
+  "compileOnSave": true, 
+  "compilerOptions": {
+    "target": "ES6",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "module": "ES6",
+    "lib": [ "ES6", "DOM" ],
+    "outDir": "dist/" 
+  },
+  "include": [
+    "src/lib/com/*",
+    "src/lib/zxing/*"
+  ]
+}

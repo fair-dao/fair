@@ -1,0 +1,112 @@
+﻿@*左边条*@
+@namespace fair.ui
+@inherits UIBase
+<aside class="com-sidebar is-size-5 @(IsMini && !IsKeep ? " com-sidebar-mini" : "") @(IsKeep ?" com-sidebar-keep":"")" @onmouseover="MouseOver" @onmouseout="MouseOut" style="@(mustShow ? "display:block" :"")">
+
+    <div class="com-sidebar-header" style="">
+        <div class="com-sidebar-logo">
+            <UIcon Icon="@Icon" Size="FontSize.Size4" />
+        </div>
+        <p class="com-sidebar-title" @onclick="TitleClicked" style="@(Nav!=null?"cursor:pointer;":"")" title="@NavTip">@Title</p><UIcon Icon="close" class="right is-size-4" onclick="return fair.ui.SwitchSidebar(0);"></UIcon>
+    </div>
+    <CascadingValue Value=this>
+    @ChildContent
+    </CascadingValue>
+      
+
+
+</aside>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    [Parameter]
+    public RenderFragment SidebarControls { get; set; }
+
+    
+
+    public string sidebarButtnClass => IsMini ? "expand-left" : "expand-right";
+
+    /// <summary>
+    /// 点击标题跳转的地址（首页）
+    /// </summary>
+    [Parameter]
+    public string Nav { get; set; }
+
+    /// <summary>
+    /// 首页导航提示
+    /// </summary>
+    [Parameter]
+    public string NavTip { get; set; }
+
+    /// <summary>
+    /// 网站Logo
+    /// </summary>
+    [Parameter]
+    public string Icon { get; set; }
+
+    /// <summary>
+    /// 网站标题
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; }
+
+    /// <summary>
+    /// 用户头像
+    /// </summary>
+    [Parameter]
+    public string UserFace { get; set; }
+
+    /// <summary>
+    /// 用户户显示名
+    /// </summary>
+    [Parameter]
+    public string ShowName { get; set; }
+
+    public bool mustShow { get; set; } = false;
+
+    public bool IsMini { get; set; } = false;
+
+    bool IsKeep { get; set; } = false;
+
+
+    public void TitleClicked()
+    {
+        if (!string.IsNullOrEmpty(Nav))
+        {
+            navManager.NavigateTo(Nav);
+        }
+    }
+
+
+    public void Flush()
+    {
+        StateHasChanged();
+    }
+
+    public void MouseOver(MouseEventArgs e)
+    {
+
+
+        if (IsMini && e.ClientX < 270)
+        {
+
+            IsKeep = true;
+        }
+    }
+
+    public void MouseOut(MouseEventArgs e)
+    {
+        if (IsMini && e.ClientX >= 270)
+        {
+            IsKeep = false;
+        }
+    }
+
+  
+ 
+
+}

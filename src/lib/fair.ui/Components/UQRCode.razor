@@ -1,0 +1,51 @@
+﻿@namespace fair.ui
+@inherits UIBase
+
+<div id="@imgId"  @attributes="Attributes"></div>
+
+@code {
+    /// <summary>
+    /// 需要展示为二维码的数据
+    /// </summary>
+    [Parameter]
+    public string Data { get; set; } = "";
+
+    IJSObjectReference jsObject;
+
+    string DataUrl { get; set; }
+
+    string imgId { get; set; }
+
+
+    protected override Task OnInitializedAsync()
+    {
+
+        imgId = $"img{Guid.NewGuid()}";
+
+        JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/fair.ui/js/gqrcode.js").AsTask().ContinueWith(t =>
+        {
+            if (t.Exception is null)
+            {
+                jsObject = t.Result;
+
+                jsObject.InvokeVoidAsync("QRCode.Show", imgId, Data).AsTask().ContinueWith(t =>
+        {
+
+            if (t.Exception is null) StateHasChanged();
+
+        });
+            }
+
+        });
+
+        return base.OnInitializedAsync();
+    }
+
+    protected override ValueTask DisposeAsync(bool disposing)
+    {
+        jsObject?.DisposeAsync();
+        return base.DisposeAsync(disposing);
+    }
+
+
+}

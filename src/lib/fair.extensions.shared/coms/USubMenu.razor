@@ -1,0 +1,120 @@
+﻿
+
+@*以桌面图标的方式显示子菜单*@
+@inherits ComBase
+@if (ComMenus?.Count() > 0)
+{
+
+
+    @foreach (var menu in ComMenus)
+    {
+        if (!String.IsNullOrEmpty(menu.Link))
+        {
+           
+            <DynamicComponent Type="GetComType(menu.Link)"></DynamicComponent>
+        }
+    }
+}
+@if (DesktopMenus?.Count() > 0)
+{
+    <UDesk>
+
+        @foreach (var menu in DesktopMenus)
+        {
+            <UDeskItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UDeskItem>
+        }
+
+    </UDesk>
+}
+@if (ListMenus?.Count() > 0)
+{
+    <UList>
+        @foreach (var menu in ListMenus)
+        {
+            <UListItem Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor" Nav="@menu.Link">
+            </UListItem>
+            @*
+    <UListItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UListItem>*@
+        }
+
+
+    </UList>
+
+}
+
+@code {
+    [Parameter]
+    public string MenuId { get; set; }
+
+
+    [Parameter]
+    /// <summary>
+    /// 显示方式
+    /// </summary>
+    public fair.extensions.shared.entity.MenuShowModes ShowMode { get; set; } = MenuShowModes.Any;
+
+    /// <summary>
+    /// 当前菜单
+    /// </summary>
+    public fair.extensions.shared.entity.VCommpent Menu { get; set; }
+
+    public IEnumerable<fair.extensions.shared.entity.VCommpent> DesktopMenus { get; set; }
+
+    public IEnumerable<fair.extensions.shared.entity.VCommpent> ListMenus { get; set; }
+
+    public IEnumerable<fair.extensions.shared.entity.VCommpent> ComMenus { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        fair.extensions.shared.entity.VCommpent me = sysHelper.ClientConfig.MTabs.FirstOrDefault(m => m.Id == MenuId);
+        if (me?.SubMenus != null)
+        {
+            ProcessMenu(me);
+        }
+        else
+        {
+
+
+            await this.WraperFromResult<fair.extensions.shared.entity.VCommpent>($"{sysHelper.ApiUrl}gensys_user/GetMenu/{MenuId}", "", HttpMethod.Post, okAction: (menu) =>
+           {
+               ProcessMenu(menu);
+           });
+        }
+
+
+        await base.OnInitializedAsync();
+    }
+
+    Type GetComType(string name)
+    {
+        try
+        {
+            var t = Type.GetType(name);
+            if (t == null) throw new Exception();
+            return t;
+        }
+        catch
+        {
+            Console.WriteLine(name);
+            return typeof(coms.ComError);
+        }
+
+    }
+
+    void ProcessMenu(fair.extensions.shared.entity.VCommpent menu)
+    {
+        Console.WriteLine($"menus:{menu?.Text},{menu?.SubMenus?.Count}");
+
+        if (ShowMode != MenuShowModes.Any)
+        {
+            menu.SubMenus.ForEach(m => m.ShowMode = ShowMode);
+        }
+        ComMenus = menu.SubMenus.Where(m => m.ShowMode == MenuShowModes.CommpentMode && m.Link !=null && m.Link.IndexOf(".") > 0);
+        DesktopMenus = menu.SubMenus.Where(m => m.ShowMode == MenuShowModes.IconMode);
+        ListMenus = menu.SubMenus.Where(m => m.ShowMode == MenuShowModes.ListMode);
+        this.InvokeAsync(() => this.StateHasChanged());
+
+    }
+
+}

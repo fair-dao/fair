@@ -1,0 +1,153 @@
+@namespace BulmaRazor.Components
+@inherits BulmaComponentBase
+
+<div class="@classes">
+    <ModalBackground />
+    @if (opts != null)
+    {
+        <div @attributes="Attributes" class="@contentClasses">
+            <Message Color="opts.Color">
+                <HeaderSlot>
+                    <p>@opts.Title</p>
+                    @if (opts.ShowClose)
+                    {
+                        <button class="delete" aria-label="close" @onclick="Close"></button>
+                    }
+                </HeaderSlot>
+                <BodySlot>
+                    @if (opts.Type == 1 || opts.Type == 2)
+                    {
+                        @:@opts.Message
+                    }
+                    else if (opts.Type == 3)
+                    {
+                        <Field>
+                            <Label>@opts.Message</Label>
+                            <Control>
+                                <input placeholder="@opts.Placeholder" @bind-value="val" autofocus />
+                            </Control>
+                        </Field>
+                    }
+
+
+
+                </BodySlot>
+
+                <FooterSlot>
+                    <ULevel IsMobile>
+                        <ULevelItem>   <UButton @onclick="Ok" Color="opts.OKColor">@opts.OKText</UButton></ULevelItem>
+                        @if (opts.Type == 2 || opts.Type == 3)
+                        {
+                            <ULevelItem>   <UButton @onclick="Cancel" Color="opts.CancelColor">@opts.CancelText</UButton></ULevelItem>
+                        }
+                    </ULevel>
+                </FooterSlot>
+
+
+            </Message>
+        </div>
+    }
+</div>
+
+@code {
+
+    string classes => CssBuilder.Default("modal")
+        .AddClass("is-active", IsActive)
+        .Build();
+
+    string contentClasses => CssBuilder.Default("modal-content")
+        .AddClassFromAttributes(Attributes)
+        .Build();
+
+    private string HeaderText { get; set; }
+    private string val = "";
+
+    private bool IsActive { get; set; }
+
+    private DialogOptions opts;
+
+    private void Show(DialogOptions options)
+    {
+        IsActive = true;
+        opts = options;
+        StateHasChanged();
+    }
+
+    public void Alert(string msg, string title = null)
+    {
+        Show(new DialogOptions()
+            {
+                Type = 1,
+                Message = msg,
+                Title = title,
+            });
+    }
+
+    public void Alert(string msg, DialogOptions options)
+    {
+        options.Type = 1;
+        options.Message = msg;
+        Show(options);
+    }
+
+    public void Confirm(string msg, string title = null)
+    {
+        Show(new DialogOptions()
+            {
+                Type = 2,
+                Message = msg,
+                Title = title
+            });
+    }
+
+    public void Confirm(string msg, DialogOptions options)
+    {
+        options.Type = 2;
+        options.Message = msg;
+        Show(options);
+    }
+
+    public void Prompt(string msg, string defaultValue = "", string title = null)
+    {
+        val = defaultValue;
+        Show(new DialogOptions()
+            {
+                Type = 3,
+                Message = msg,
+                Title = title
+            });
+    }
+
+    public void Prompt(string msg, string defaultValue, DialogOptions options)
+    {
+        val = defaultValue;
+        options.Type = 3;
+        options.Message = msg;
+        Show(options);
+    }
+
+    private void Ok()
+    {
+        IsActive = false;
+        opts.OK?.Invoke();
+        opts.Result?.Invoke(val);
+    }
+
+    private void Cancel()
+    {
+        IsActive = false;
+        opts.Cancel?.Invoke();
+    }
+
+    private void Close()
+    {
+        IsActive = false;
+        if (opts.Type == 2)
+        {
+            opts.Cancel?.Invoke();
+        }
+        opts.Close?.Invoke();
+    }
+
+
+}

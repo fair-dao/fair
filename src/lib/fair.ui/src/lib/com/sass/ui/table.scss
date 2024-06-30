@@ -1,0 +1,49 @@
+﻿/*table.table .is-checkradio[type=checkbox] + label:first-of-type, table .is-checkradio[type=radio] + label:first-of-type {*/
+/*    margin-left: .4rem;
+    padding-left: 0;*/
+/*margin-top:0.1rem;
+}*/
+.is-checkradio[type=checkbox] + label::before, .is-checkradio[type=checkbox] + label:before, .is-checkradio[type=radio] + label::before, .is-checkradio[type=radio] + label:before {
+    top: 0.1rem;
+}
+
+
+ .is-checkradio[type=radio] + label::after, .is-checkradio[type=radio] + label:after {
+    top: 0.1rem;
+}
+
+.table-container table.table {
+    table-layout: fixed;
+}
+table.table thead td{
+    background-color: #eeeeff;
+}
+table.table td{
+display:table-cell; vertical-align:middle;
+}
+
+
+
+table .col-fixed { //固定第一列，其它的列请更改left
+    position: sticky;
+    left: 0; 
+    z-index: 1;
+
+}
+
+table tbody .col-fixed {
+    background: #fff;
+}
+
+table .row-fixed { //固定第一行，其它的行请更改top
+    position: sticky;
+    top: 0; 
+}
+
+
+@media screen and (min-width: 1280px) {
+    .auto-width{
+        width:auto !important;
+    }
+}
+

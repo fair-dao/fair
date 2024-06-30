@@ -1,0 +1,52 @@
+﻿
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+	<PropertyGroup>
+		<Authors>fair-coder</Authors>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<Title>fair ui</Title>
+		<Product>fair ui</Product>
+		<Description>fair ui</Description>
+		<Copyright>@2024 freecoder2024. All rights reserved.</Copyright>
+		<Version>8.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="wwwroot\js\zxing\**" />
+	  <Content Remove="wwwroot\js\zxing\**" />
+	  <EmbeddedResource Remove="wwwroot\js\zxing\**" />
+	  <None Remove="wwwroot\js\zxing\**" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="compilerconfig.json" />
+    <None Include="Components\Button\UButton.razor" />
+    <None Include="Components\Button\UButtons.razor" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="_Imports.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,88 @@
+﻿@namespace fair.ui
+@inherits FormItem<bool>
+    <div class="control">
+        <input id="@Name-@Value" type="checkbox" class="@classes" @attributes="Attributes"
+               name="@Name" value="@Value" checked="@Checked" @onchange="ChangeHandle">
+        @if (Label != null || ChildContent != null)
+        {
+            <label for="@Name-@Value">
+                @Label@ChildContent
+            </label>
+        }
+    </div>
+
+@code {
+
+
+
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public bool Checked { get; set; }
+
+    string classes => CssBuilder.Default("is-checkradio")
+         .AddClassFromAttributes(Attributes)
+         .Build();
+
+    /// <summary>
+    /// 选中状态改变事件
+    /// </summary>
+
+    [Parameter]
+    public EventCallback<bool> OnChanged { get; set; }
+
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    private async Task ChangeHandle(ChangeEventArgs e)
+    {
+        Console.WriteLine($"ChangeHandle:{e.Value}");
+        Checked = !Checked;
+        SetVale();
+        if (OnChanged.HasDelegate)
+        {
+            await OnChanged.InvokeAsync(Checked);
+        }
+        base.OnValueChanged(e);
+    }
+
+
+    void SetVale()
+    {  
+      
+        if (Container != null )
+        {
+            if (Container.SubmitData==null){
+                Container.SubmitData = new Dictionary<string, object>();
+            }
+            //checkbox控件在有UFrom时可以用数组保存，提交字段名为name+"s"
+            string names=Name+"s";
+            if (!Container.SubmitData.ContainsKey(names)|| Container.SubmitData[names]==null)
+            {
+                Container.SubmitData[names] = new List<String>();
+            }
+            var list = Container.SubmitData[names] as List<String>;
+            if (Checked)
+            {
+                if (!list.Contains(this.Value)) list.Add(this.Value);
+            }
+            else
+            {
+                if (list.Contains(this.Value)) list.Remove(this.Value);
+            }
+            Container.SubmitData[names] = list;
+        }
+
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        SetVale();
+
+        return base.OnInitializedAsync();
+    }
+
+
+}

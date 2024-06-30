@@ -1,0 +1,33 @@
+﻿.ui-scanner {
+    display: none;
+    width: 100vw;
+    background-color:#000;
+    height: 100vh;
+    position: absolute;
+    z-index:999;
+    top:-100000px;
+}
+
+.ui-scanner.scanning {
+    display: block;
+    top: 0;
+}
+
+.ui-scanner .ui-scaner-cancel {
+    z-index: 999;
+    bottom: 15vh;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    position: absolute;
+}
+
+.ui-scanner video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+

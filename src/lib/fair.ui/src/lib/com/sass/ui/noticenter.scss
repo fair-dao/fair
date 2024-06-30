@@ -1,0 +1,22 @@
+﻿.com-noticenter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.com-topmsg {
+    z-index: 999;
+    position: absolute;
+    width: 700px;
+    left: calc((100vw - 700px)/2);
+    top: 0.5rem;
+}
+
+/*定义手机*/
+@media only screen and (max-width: 800px) {
+    .com-topmsg {
+        width: 90vw;
+        left: 5vw;
+    }
+}

@@ -1,0 +1,145 @@
+﻿@namespace fair.ui
+@inherits UIBase;
+
+@if (IsShow)
+{
+    <NavLink class="@ClassNames" @attributes="Attributes" href="@Nav" @onclick=@NavClicked>
+        
+        <div class="left"  @onclick="@LeftClick">
+            <UIcon IconColor="@IconColor" Icon="@Icon" IconType="@IconType" Mark="@Mark"></UIcon>        
+        </div>
+        <div class="mid"  @onclick="@LeftClick">@Title</div>
+
+        <div class="right" >
+            @if (RightContent != null)
+            {
+
+                <span class="right-content">
+                    @RightContent
+                </span>
+
+            }
+
+            @if (!HideArrow)
+            {
+                <UIcon Icon="right"></UIcon>
+            }
+
+        </div>
+    </NavLink>
+}
+@code {
+
+
+    /// <summary>
+    /// 父容器
+    /// </summary>
+    [CascadingParameter]
+    public UList Container { get; set; }
+
+    /// <summary>
+    /// 在右边显示箭头
+    /// </summary>
+    [Parameter]
+    public bool HideArrow { get; set; } = false;
+
+    /// <summary>
+    /// 角标
+    /// </summary>
+    [Parameter]
+    public int Mark { get; set; } = 0;
+
+    /// <summary>
+    /// 绑定对象,当点击时会将Tag传给事件
+    /// </summary>
+    [Parameter]
+    public UIItem Tag { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public IconType IconType { get; set; }
+    /// <summary>
+    /// 图标
+    /// </summary>
+    [Parameter]
+    public string Icon { get; set; }
+
+    [Parameter]
+    public string IconColor { get; set; } = "blue";
+
+    [Parameter]
+    public string Nav { get; set; }
+
+
+
+    [Parameter]
+    public RenderFragment RightContent { get; set; }
+
+
+    [Parameter]
+    public bool IsNewPage { get; set; } = false;
+
+
+    public string ClassNames => Tag?.Actived == true ? "com-item is-active" : "com-item";
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [Parameter]
+    public bool IsShow { get; set; } = true;
+
+
+    [Parameter]
+    public UIItemHandler Clicked { get; set; }
+
+
+    [Parameter]
+    public UIItemHandler LeftClicked { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+
+        if (IsNewPage)
+        {
+            if (this.Attributes == null)
+            {
+                this.Attributes = new Dictionary<string, object>();
+
+
+            }
+            this.Attributes["target"] = "_blank";
+        }
+        return base.OnInitializedAsync();
+    }
+
+
+    protected override void OnParametersSet()
+    {
+
+        base.OnParametersSet();
+
+        if (Tag != null)
+        {
+            if (Icon == null) Icon = Tag.Icon;
+            if (IconColor == null) IconColor = Tag.IconColor;
+            if (string.IsNullOrEmpty(Title)) Title = Tag.Title;
+        }
+    }
+
+    void NavClicked()
+    {
+
+        if (Clicked != null)
+        {
+            Clicked(Tag, EventArgs.Empty);
+        }
+    }
+
+    void LeftClick()
+    {
+        LeftClicked?.Invoke(Tag, EventArgs.Empty);
+    }
+
+}

@@ -1,0 +1,120 @@
+﻿@inherits Page
+<div class="sidebar-switch" title="管理" onclick="return fair.ui.SwitchSidebar(-1);">
+    <UIcon Icon="category-management" />
+</div>
+<UQRScaner FoundCode="QRFoundCode" @bind-Scanning="@scanning"></UQRScaner>
+@if (string.IsNullOrEmpty(scanResult))
+{
+    <UPage ContentPadding>
+     <TitlePanel>
+         <div style="flex:0 0 3.5rem;">
+         </div>
+         <div class="com-page-topnav-search is-size-4">
+             <UIcon IconType="@IconType.Search" />
+             <input class="input" type="text" placeholder="想搜点什么吗？" @onclick="ToSearch">
+         </div>
+     </TitlePanel>
+     <ActionPanel>
+         @if (sysHelper.ClientConfig?.MTabs != null)
+            {
+
+                foreach (shared.entity.VCommpent tab in sysHelper.ClientConfig.MTabs)
+                {
+                    if (tab.Id != fair.extensions.shared.entity.SysMenuIds.HOME && tab.Id != fair.extensions.shared.entity.SysMenuIds.ME)
+                    {
+                        <UIcon Icon="@(tab.Icon+"-fill")" IconColor="@tab.IconColor" class="com-phone-hide" Text="@Localer[tab.Text]"
+                               @onclick='e=>navManager.NavigateTo(tab.ShowMode== MenuShowModes.CommpentMode ?"/base/Dypage/"+tab.Link:tab.Link)'></UIcon>
+                    }
+
+                }
+            }
+            <UIcon IconType="IconType.ScanCode"
+                  PhoneHideText IconColor="#FFF" Text="@Localer["扫一扫"]" @onclick="()=>scanning=true"></UIcon>
+
+         </ActionPanel>
+         <ContentPanel>
+             <UDesk>
+                 @if (home?.SubMenus.Count>0)
+                {
+                    @foreach (var menu in home.SubMenus)
+                    {
+                        <UDeskItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UDeskItem>
+                    }
+
+                }
+            </UDesk>
+        </ContentPanel>
+    </UPage>
+}
+else
+{
+    <UPage>
+        <TitlePanel>
+            @Localer["无法识别的信息"]
+        </TitlePanel>
+        <ContentPanel>
+            @scanResult
+        </ContentPanel>
+        <TabPanel>
+
+        </TabPanel>
+    </UPage>
+}
+
+@code {
+    public fair.extensions.shared.entity.VCommpent home = null;
+    bool scanning { get; set; }
+
+    /// <summary>
+    /// 未处理的扫描结果
+    /// </summary>
+    string scanResult { get; set; }
+
+
+    void QRFoundCode(object obj, string code)
+    {
+        scanning = false;
+        if (code != null)
+        {
+            Toast(code);
+            if (code.StartsWith("/")) //内部网址
+            {
+                Nav(code);
+                return;
+            }
+            else if (code.StartsWith("{"))
+            { //json对象
+
+            }
+            else
+            if (code.StartsWith("https://"))
+            { //外部网址
+                Confirm(Localer["外部跳转"], Localer["是否打开"] + code + "?", () =>
+                {
+                    Nav(code);
+                });
+            }
+            else if (code.StartsWith("fair:")) //插件
+            {
+
+            }
+            else
+            {
+                scanResult = code;
+            }
+        }
+        this.InvokeAsync(() => StateHasChanged());
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        home = sysHelper.ClientConfig.MTabs.FirstOrDefault(m => m.Id == "home");
+
+    }
+
+    void ToSearch()
+    {
+        Nav("/Search");
+    }
+}

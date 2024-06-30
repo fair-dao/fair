@@ -1,0 +1,25 @@
+﻿/*对应udesk*/
+.com-desk {
+    flex-wrap: wrap;
+    display: flex;
+    text-align: center;
+    padding:0.5rem;
+}
+
+.com-desk .column {
+    justify-items: center;
+    justify-self: center;
+}
+
+.com-desk i {
+    font-size: 2.8rem;
+    line-height: normal;
+}
+
+
+.com-desk .column .title {
+    color: $page-color;
+    font-weight: 400;
+    font-size: 0.8rem;
+    line-height: normal;
+}

@@ -1,0 +1,28 @@
+﻿
+
+.com-toast {
+    position: absolute;
+    z-index: 999;
+    color: $toast-color;
+    font-size: 0.9rem;
+    line-height: 20px;
+    opacity: 0.95;
+    text-align: center;
+}
+
+.com-toast span {
+    text-align: center;
+    padding: 0.4rem 1rem;
+    background-color: $toast-bkcolor;
+    border-radius: 1rem 1rem;
+    display: block;
+    max-width: 80vw;
+}
+
+.com-toast span.err {
+    background-color: $toast-err-bkcolor;
+}
+
+.com-toast span.warn {
+    background-color: $toast-warn-bkcolor;
+}

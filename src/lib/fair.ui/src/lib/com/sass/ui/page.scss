@@ -1,0 +1,78 @@
+﻿.com-page {
+    background-color: var(--bkColor);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.com-page .com-page-topnav {
+    min-height: 3.5rem;
+    display: flex;
+    background-color: var(--bkcolor);
+    margin: 0 !important;
+    padding: .5rem !important;
+    overflow: hidden;
+    color: var(--forColor);
+    height: 3.5rem;
+    font-size: 1.75rem;
+    box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22) !important;
+    align-items: center;
+}
+.com-page-focusnav{
+    height:1px;
+    background-color:val(--forColor);
+    display:none;
+}
+
+.com-page-controlpanel {
+    background-color: var(--bkColor);
+    /*---与nav的浅色分隔线--*/
+    border-top: 1px dashed #222;
+}
+
+.com-page-topnav .com-right {
+    display: flex;
+    align-content: flex-end;
+    justify-content: center;
+}
+
+.com-sidebar-mini ~ .com-main .com-page-topnav .com-page-topnav-search {
+    width: calc(100vw - 40rem);
+}
+
+
+.com-page-content {
+    background-color: var(--pgBkColor);
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    height:100vh;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+
+.com-page-content.has-top {
+    height: calc(100vh - 3.5rem);
+}
+
+
+.com-page-title {
+    flex: auto;
+    font-size: 1.5rem;
+    display:flex;
+    align-content:center;
+    justify-content:center;
+    align-items:center;
+}
+.com-page-title>*{
+    display:flex;
+}
+
+.com-page-content::-webkit-scrollbar {
+    width: 0;
+}
+
+/*定义手机*/
+@media only screen and (max-width: 800px) {
+
+}

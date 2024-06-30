@@ -1,0 +1,235 @@
+﻿@namespace fair.ui
+@inherits UIBase
+<div @attributes="Attributes" class="@classes" id="@ContentId" @ref="content" @onscroll="OnScroll">
+    @if (RecordCount == null && ShowLoading)
+    {
+        <ULoading IsActive="ShowLoading"></ULoading>
+    }
+    else
+    {
+        @*    <div style="text-align:center; width:20rem;margin: 2rem auto;font-size:1.2rem;">@Localer["加载中"]</div>*@
+
+        @if (RecordCount == 0)
+        {
+            <div style="text-align:center; width:20rem;margin: 2rem auto;font-size:1.2rem;">@Localer["没有发现记录"]</div>
+
+        }
+        else if (RecordCount > 0)
+        {
+            @ChildContent
+
+        }
+    }
+</div>
+
+@code {
+
+    public delegate Task<bool> LoadHandler();
+
+    public DateTime StartTime { get; set; } = DateTime.Now;
+
+    /// <summary>
+    /// 加载前页
+    /// </summary>
+    [Parameter]
+    public LoadHandler TopLoad { get; set; }
+
+    [Parameter]
+    public bool? IsLoaded { get; set; }
+
+
+    private bool showLoading = false;
+    bool ShowLoading
+    {
+        set
+        {
+            showLoading = value;
+        }
+        get
+        {
+            return IsLoaded == false && showLoading;
+        }
+
+    }
+
+    /// <summary>
+    /// 记录条数
+    /// </summary>
+    [Parameter]
+    public int? RecordCount { get; set; } = 1;
+
+    /// <summary>
+    /// 第一次加载
+    /// </summary>
+    public async Task InitLoad()
+    {
+        await TopLoad();
+        ScrollToEnd();
+
+    }
+
+
+
+
+    /// <summary>
+    /// 加载前页
+    /// </summary>
+    [Parameter]
+    public LoadHandler BottomLoad { get; set; }
+
+
+    public ElementReference content;
+
+    string classes => CssBuilder.Default("com-content")
+        .AddClassFromAttributes(Attributes)
+        .AddClass("is-padding", IsPadding)
+        .AddClass("is-center", IsCenter)
+        .AddClass("com-content-onlynav", HasNav && !HasTab)
+        .AddClass("com-content-onlytab", HasTab && !HasNav)
+        .AddClass("com-content-navtab", HasTab && HasNav)
+        .AddClass("com-content-full",!HasTab && !HasNav)
+    .Build();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    /// <summary>
+    /// 上面没有导航栏
+    /// </summary>
+    [Parameter]
+    public bool HasNav { get; set; } = true;
+
+    /// <summary>
+    /// 没有Tab
+    /// </summary>
+    [Parameter]
+    public bool HasTab { get; set; } = false;
+    int LastScrollTop { get; set; } = 0;
+    int ScrollHeight { get; set; } = 0;
+    bool dataLoading = false;
+    // DateTime LastLoadingTime;
+    private async Task OnScroll(EventArgs e)
+    {
+        if (dataLoading) return;
+        //3秒内只能加载一次
+        //if ((DateTime.Now-LastLoadingTime).TotalSeconds<3) return;
+        if (BottomLoad != null || TopLoad != null)
+        {
+            int[] datas;
+            try
+            {
+                datas = await JSRuntime.InvokeAsync<int[]>(
+                    "getScrollData", ContentId);
+            }
+            catch (Exception e1)
+            {
+                Console.Error.Write("坐标获取失败" + e1.Message);
+                return;
+            }
+
+            if (datas.Length > 1)
+            {
+                LastScrollTop = datas[0];
+                ScrollHeight = datas[1];
+                Console.WriteLine($"ss:{datas[0]},{datas[1]}");
+                if (!TopZero && LastScrollTop == 0 && TopLoad != null)
+                {
+                    dataLoading = true;
+                    TopZero = await TopLoad();
+                    if (!TopZero)
+                    {
+                        await ScrollTo(16);
+                    }
+
+                    dataLoading = false;
+
+                }
+                else
+                {
+                    if (!BottomZero && ScrollHeight == LastScrollTop && BottomLoad != null)
+                    {
+                        dataLoading = true;
+                        BottomZero = await BottomLoad();
+                        dataLoading = false;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    ///顶不没有了
+    bool TopZero = false;
+    /// <summary>
+    /// 底部没有了
+    /// </summary>
+    bool BottomZero = false;
+
+    private string contentId;
+
+    string ContentId
+    {
+        get
+        {
+            object id = null;
+            if (Attributes != null && Attributes.TryGetValue("id", out id))
+            {
+                contentId = id.ToString();
+            }
+            if (contentId == null) contentId = Guid.NewGuid().ToString();
+            return contentId;
+
+        }
+
+    }
+    /// <summary>
+    /// 移到底部
+    /// </summary>
+    public async Task ScrollToEnd()
+    {
+        jsRuntime.InvokeVoidAsync("scrollMsg", ContentId, "end");
+    }
+
+
+    /// <summary>
+    /// 移到底部
+    /// </summary>
+    public async Task ScrollTo(int sit)
+    {
+        await jsRuntime.InvokeVoidAsync("scrollMsg", ContentId, sit);
+    }
+
+
+    protected override Task OnInitializedAsync()
+    {
+        CheckLoading();
+        return base.OnInitializedAsync();
+    }
+
+
+    /// <summary>
+    /// 是否两边留1rem间隙
+    /// </summary>
+    [Parameter]
+    public bool IsPadding { get; set; }
+
+
+    /// <summary>
+    /// 内容是否水平居中
+    /// </summary>
+    [Parameter]
+    public bool IsCenter { get; set; }
+
+    async Task CheckLoading()
+    {
+
+        await Task.Delay(1000);
+        if (RecordCount == null)
+        {
+            ShowLoading = true;
+            this.InvokeAsync(() => StateHasChanged());
+        }
+    }
+}

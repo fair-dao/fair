@@ -1,0 +1,149 @@
+﻿@namespace fair.ui
+<Dialog @ref="dialog" style="max-width: 90vw;"></Dialog>
+
+@code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    Dialog dialog;
+
+    [Parameter]
+    public AlertMessage NotiMessage { get; set; }
+
+
+    protected override bool ShouldRender()
+    {
+
+        return base.ShouldRender();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+            switch (NotiMessage.ShowType)
+            {
+                case ShowTypes.Alert:
+                    this.Alert(this.NotiMessage.Message, this.NotiMessage.Title, AlertMessageType.Info);
+                    break;
+                case ShowTypes.Confirm:
+                    this.Confim(this.NotiMessage.Message, this.NotiMessage.Yes, this.NotiMessage.Title,this.NotiMessage.Cancel,this.NotiMessage.ButtonTexts);
+                    break;
+                case ShowTypes.Message:
+                    break;
+                case ShowTypes.Notification:
+                    break;
+                case ShowTypes.Prompt:
+                    this.Prompt(this.NotiMessage.Message, this.NotiMessage.Ok, this.NotiMessage.DefaultValue, this.NotiMessage.Title);
+                    break;
+
+
+            }
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    /// <summary>
+    /// 弹窗
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="title"></param>
+    public void Alert(string msg, string title = null, AlertMessageType type = AlertMessageType.Info)
+    {
+
+
+        title ??= string.Empty;
+        Color c = Color.Default;
+        switch (type)
+        {
+            case AlertMessageType.Err:
+                c = Color.Danger;
+                break;
+            case AlertMessageType.Warn:
+                c = Color.Dark;
+                break;
+        }
+        var op = new DialogOptions() { Color = c, OKColor = c };
+        op.Title = title;
+        op.OK= ()=>{
+            Remove();
+        };
+
+        dialog.Alert(msg, op);
+    }
+
+    /// <summary>
+    /// 确认框
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="ok"></param>
+    /// <param name="title"></param>
+    /// <param name="cancel"></param>
+    public void Confim(string msg, Action ok, string title = null, Action cancel = null,string buttonTexts=null)
+    {
+        var op = new DialogOptions()
+        {
+            Color = Color.Light,
+            OK = () => {
+                   Remove();
+           ok?.Invoke();
+           },
+            Cancel = () => {
+                Remove();
+                cancel?.Invoke(); }
+        };
+        if (string.IsNullOrEmpty(buttonTexts))
+        {
+            buttonTexts = "确定,取消";   
+        }
+        string[] btns=buttonTexts.Split(',');
+        if (btns.Length >= 2)
+        {
+            op.OKText = btns[0];
+            op.CancelText = btns[1];
+        }
+        op.Title = title;
+        dialog.Confirm(msg, op);
+    }
+
+
+
+    void Remove()
+    {
+                 if (UIBase.Notifications.ContainsKey(Id))
+            {
+                if (UIBase.Notifications.TryRemove(Id, out _))
+                {
+                    if (UIBase.NotificationsChanged != null)
+                    {
+                        UIBase.NotificationsChanged(Id, null);
+                    }
+                }
+            }
+    }
+
+    /// <summary>
+    /// 提示框
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="ok">确认处理</param>
+    /// <param name="defaultValue"></param>
+    /// <param name="title"></param>
+    public void Prompt(string msg, Action<string> ok, string defaultValue = null, string title = null)
+    {
+        var op = new DialogOptions()
+        {
+            Color = Color.Warning,
+            Result = (res) => { Remove(); ok?.Invoke(res); },
+            Cancel=()=>{ Remove();}
+        };
+
+        op.Title = title;
+        dialog.Prompt(msg, defaultValue, op);
+    }
+
+
+}

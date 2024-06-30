@@ -1,0 +1,101 @@
+﻿.ui-icon {
+    cursor: pointer;
+    padding: 0.35em;
+    text-align: inherit;
+    vertical-align: middle;
+    line-height: 1;
+    flex-direction: column;
+}
+
+.ui-icon .ui-icon-text {
+    font-size: .45em;
+}
+.ui-icon.inline {
+    display: inline-flex;
+    flex-direction:row;
+}
+.ui-icon.inline>div{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.ui-icon .ui-icon-ico {
+    padding:.15em;
+    display: flex;
+}
+.ui-icon.inline .ui-icon-text{
+    font-size: .75em;
+}
+
+
+
+i[class*="icon-"] {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-right i[class*=icon-] {
+    line-height: 1.6rem;
+}
+
+.ui-icon .hots {
+    display: inline-block;
+    position: relative;
+    background-color: #ff3860;
+    border-radius: 0.5rem 0.5rem;
+    min-width: 1rem;
+    font-size: 0.5rem;
+    line-height: 1rem;
+    color: #fff;
+    top: -1.2em;
+    left: -0.5rem;
+    text-align: center;
+}
+
+
+.ui-icon.is-size-1 img {
+    width: 3rem;
+}
+
+
+.ui-icon.is-size-2 img{
+    width:2.5rem;
+}
+
+
+.ui-icon.is-size-3 img {
+    width: 2rem;
+}
+
+
+.ui-icon.is-size-4 img {
+    width: 1.5rem;
+}
+
+.ui-icon.is-size-5 img {
+    width: 1.25rem;
+}
+
+.ui-icon.is-size-6 img {
+    width: 1rem;
+}
+
+.ui-icon.is-size-7 img {
+    width: 0.75rem;
+}
+
+
+/*圆形图标按钮*/
+.is-round {
+    border-radius: 50%;
+    background-color: var(--forColor);
+    color: var(--bkColor);
+}
+
+/*定义小屏为800以下*/
+@media only screen and (max-width: 800px) {
+    .hide800 {
+        display: none !important;
+    }
+}

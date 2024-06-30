@@ -1,0 +1,43 @@
+﻿/*页面背景*/
+$page-bk-color: #f7f7f7;
+/*页面前景色*/
+$page-color: #808080;
+$page-splite-color: #e0e0e082; //分隔线颜色
+$page-offline-color:#e62828; //离线时的颜色
+$page-control-bkcolor: #f7f7f7; //页面控件背景颜色如按钮
+$page-control-sdbkcolor:#FFF;//控件深度背景
+$page-input-bkcolor: #f7f7f7; //页面输入框背景颜色
+$page-control-color: #000; //页面控件文字颜色
+
+
+// toast(消息提示) 组件 {
+$toast-color: #FFF; //消息文字颜色
+$toast-bkcolor: #070606; //背景色
+$toast-err-bkcolor: #e62828; //错误背景色
+$toast-warn-bkcolor: #e2c316; //警告背景色
+//}
+
+
+// sidebar(边栏导航) 组件 { 
+$sidebar-bk-color: #343a40;
+$sidebar-color: #c2c7d0;
+$sidebar-border-color: #4f5962;
+$sidebar-nav-acitvebkcolor: rgba(255,255,255,.1); //边栏菜单选中前景颜色 
+$sidebar-nav-acitvecolor: #FFF;//边栏菜单选中颜色
+$sidebar-controlbutton-color: rgba(0,0,0,.5);
+
+/* }*/
+// navbar(上边导航）组件 {
+$navbar-bkcolor: #FFF;
+//}
+
+// tabs(下边tab）组件 {
+$tabs-color:#181818;
+$tabs-bkcolor:#f7f7f7;
+$tabs-activecolor: #07c160; //tab激活时的颜色
+$tabs-showMode-bkcolor: #f2f2f2; //圆形tab按钮背景颜色 
+$tabs-showMode-activebkcolor: #e8e8e8;//圆形tab按钮激活背景颜色
+$tabs-border-color: $page-splite-color; //tab边框颜色 
+//}
+
+

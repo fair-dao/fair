@@ -1,0 +1,49 @@
+﻿@namespace fair.ui
+@inherits UIBase
+
+<div @attributes="Attributes" class="@classes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <span class="title">@Localer[Text]</span>
+    }
+</div>
+
+
+
+@code {
+
+   
+    string classes => CssBuilder.Default("pageloader")
+       .AddClass("is-active",IsActive)
+        .Build();
+
+    /// <summary>
+    /// 加载提示文本
+    /// </summary>
+    [Parameter]
+    public string Text { get; set; } = "正在加载";
+
+
+    /// <summary>
+    /// 是否激活
+    /// </summary>
+    [Parameter]
+    public bool IsActive { get; set; }
+
+    /// <summary>
+    /// 遮罩背景色
+    /// </summary>
+    [Parameter]
+    public string Background { get; set; }
+
+    /// <summary>
+    /// 提示文本
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

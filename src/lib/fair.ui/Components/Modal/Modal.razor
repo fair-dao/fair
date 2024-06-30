@@ -1,0 +1,80 @@
+@namespace BulmaRazor.Components
+
+@inherits BulmaComponentBase
+
+
+<div @attributes="Attributes" class="@classes">
+    <ModalBackground @onclick="backgroundClickHandle"/>
+    <div class="modal-content">
+        @ChildContent
+    </div>
+    @if (ShowClose)
+    {
+        <button class="modal-close is-large" aria-label="close" @onclick="Close"></button>
+    }
+</div>
+
+@code{
+
+    string classes => CssBuilder.Default("modal")
+        .AddClassFromAttributes(Attributes)
+        .AddClass("is-active", IsActive)
+        .Build();
+    
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [Parameter]
+    public bool IsActive { get; set; }
+
+    /// <summary>
+    /// 点击背景是否关闭，默认true
+    /// </summary>
+    [Parameter]
+    public bool CloseOnClickBackground { get; set; } = false;
+
+    /// <summary>
+    /// 是否显示关闭图标
+    /// </summary>
+    [Parameter]
+    public bool ShowClose { get; set; } = true;
+
+    
+    /// <summary>
+    /// 关闭回调
+    /// </summary>
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    
+    /// <summary>
+    /// 子内容
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// 关闭
+    /// </summary>
+    public Task Close()
+    {
+        IsActive = false;
+        return OnClose.InvokeAsync();
+    }
+
+    /// <summary>
+    /// 显示
+    /// </summary>
+    public void Show()
+    {
+        IsActive = true;
+    }
+
+    private void backgroundClickHandle()
+    {
+        if (CloseOnClickBackground)
+        {
+            Close();
+        }
+    }
+
+}

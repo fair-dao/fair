@@ -1,0 +1,21 @@
+﻿@namespace fair.ui
+@inherits UIBase
+<div style="display:flex;justify-content:center;align-items:center;height:calc(100vh - 6rem);width:100%;padding: 0 10%;overflow:hidden;">
+    @ChildContent
+    @if (Empty)
+    {
+        @Localer["什么也没有发现，过一会儿再试吧"]
+    }
+</div>
+
+@code {
+
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool Empty { get; set; } = false;
+
+
+}

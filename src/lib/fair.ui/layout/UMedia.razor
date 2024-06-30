@@ -1,0 +1,59 @@
+﻿@* --左中右结构的卡片-- *@
+@namespace fair.ui
+@inherits UIBase
+
+<article @attributes="Attributes" class="@classes" @onmousedown="MouseDown" @onmouseup="MouseUp" @ontouchstart="e=>MouseDown(null)" @ontouchend="e=>MouseUp(null)">
+    @ChildContent
+</article>
+
+@code {
+
+    string classes => CssBuilder.Default("media")
+        .AddClassFromAttributes(Attributes)
+        .Build();
+
+    /// <summary>
+    /// 子内容
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    private DateTime? touchStartTime{ get; set; }
+
+    /// <summary>
+    /// 长按事件
+    /// </summary>
+    [Parameter]
+    public EventCallback<MouseEventArgs> LongTouch{ get; set;}
+
+
+    
+
+    void MouseDown(MouseEventArgs arg)
+    {
+        if (LongTouch.HasDelegate)
+        {
+            touchStartTime = DateTime.Now;
+            Task.Run(() =>
+            {
+                Task.Delay(300).Wait();
+                var time = touchStartTime;
+                if (time != null && (DateTime.Now - time.Value).TotalMilliseconds >= 300)
+                {
+                    touchStartTime = null;
+                    LongTouch.InvokeAsync(arg);
+                }
+
+            });
+        }
+
+    }
+
+    void MouseUp(MouseEventArgs arg)
+    {
+        touchStartTime = null;
+
+    }
+
+}

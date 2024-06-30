@@ -1,0 +1,9 @@
+@namespace BulmaRazor.Components
+@inherits BulmaComponentBase
+
+
+<li @attributes="Attributes" class='@classes' @onclick="e => HandleClick()">
+    <a @attributes="AddAtts">
+        @LabelSlot
+    </a>
+</li>

@@ -1,0 +1,22 @@
+@namespace BulmaRazor.Components
+@inherits BulmaComponentBase
+
+
+<div @attributes="Attributes" class="@classes">
+    <ul>
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </ul>
+</div>
+@if (!IsTabOnly)
+{
+    <div class="mb-1">
+    @foreach (var item in items)
+    {
+        <div class="@item.contentCls">
+            @item.ContentSlot
+        </div>
+    }
+    </div>
+}

@@ -1,0 +1,90 @@
+﻿
+.com-tabs {
+    position: fixed;
+    width: 100%;
+    height: 3.25rem;
+    bottom: 0;
+    color: $tabs-color;
+    border-top: 1px solid #d2d2d2;
+    background-color: $tabs-bkcolor;
+    display: flex;
+    user-select: none;
+    align-items: center;
+    font-size:1.5rem;
+}
+.com-tabs * {
+    outline: none;
+    background: none;
+    user-select: none;
+    justify-content: center;
+    align-content: center;
+}
+.com-tabs > * {
+    flex-basis: 100%;
+    text-align: center;
+    display:flex;
+}
+
+.com-tabs div {
+    line-height: 1rem;
+    display:flex;
+}
+.com-tabs-title {
+    margin-top: -0.2rem;
+}
+
+.com-tabs i {
+    display: block;
+    color: #000;
+    font-size: 1.75rem !important;
+    height: 2.4rem;
+    line-height: 2.4rem;
+}
+
+.com-tabs .is-active > * {
+    color: $tabs-activecolor;
+}
+
+.com-tabs .showMode1 {
+    text-align: center;
+}
+
+.com-tabs .showMode1 i {
+    position: relative;
+    margin-top: -1rem;
+    left: 50%;
+    margin-left: -2.2rem;
+    width: 4.4rem;
+    height: 4.4rem;
+    background-color: $tabs-showMode-bkcolor;
+    border-radius: 50% 50%;
+    font-size: 2rem !important;
+    padding: 0.75rem 0.1rem;
+}
+
+
+
+.com-tabs .showMode1.is-active i {
+    background-color: $tabs-showMode-activebkcolor;
+}
+
+.com-tabs .showMode1 div {
+    position: relative;
+    font-size: 0.9rem;
+    margin-top: -1.5rem;
+}
+
+.com-tabs .hots, .media .hots{
+    display: inline-block;
+    position: relative;
+    background-color: #ff3860;
+    border-radius: 0.5rem 0.5rem;
+    min-width: 1rem;
+    font-size: 0.5rem;
+    line-height: 1rem;
+    color: #fff;
+    margin-top: -2rem;
+    top: -3rem;
+    right: -1rem;
+    text-align: center;
+}

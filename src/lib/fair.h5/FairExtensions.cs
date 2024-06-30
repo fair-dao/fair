@@ -1,0 +1,32 @@
+﻿using fair.extensions.shared;
+using fair.extensions.shared.data;
+using fair.extensions.shared.entity;
+using fair.h5;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    public static class FairExtensions
+    {
+        public static async Task RunFairHost( this WebAssemblyHostBuilder builder, params fair.extensions.shared.Extender[]? extenders)
+        {
+
+            builder.RootComponents.Add<fair.extensions.shared.Routes>("app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
+            SysHelper.AppStartTime = DateTime.Now;
+            builder.Services.AddSingleton<gensysDatabase>();
+            builder.Services.AddSingleton<IDataStore, LocaldbStore>();
+            builder.Services.AddSingleton<Env>();
+            builder.Services.AddSingleton<SysHelper, H5Helper>();
+            SysHelper.EntryAssembly = Assembly.GetExecutingAssembly();
+            Configure.ConfigureServices(builder.Services,extenders);
+            WebAssemblyHost host = builder.Build();
+            await Configure.ConfigureProviders(host.Services);
+            host?.RunAsync();
+         
+        }
+    }
+}
