@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Com", "Com", "{9FD6FC3E-513
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.maui", "fair.maui\fair.maui.csproj", "{A594BD08-18E7-4D55-99A3-06B357503597}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fair.maui.demo", "..\demo\fair.maui.demo\fair.maui.demo.csproj", "{C60EE903-EB26-4B8F-8DFE-EB75923F366D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,12 @@ Global
 		{A594BD08-18E7-4D55-99A3-06B357503597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A594BD08-18E7-4D55-99A3-06B357503597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A594BD08-18E7-4D55-99A3-06B357503597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
