@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.extensions.shared", "l
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.extensions.main", "lib\fair.extensions.main\fair.extensions.main.csproj", "{2BC5EA1F-7E54-4F49-8243-E888585373F8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "扩展", "扩展", "{0663BA06-F67F-48E1-AC31-FDAA3B9AC435}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extends", "Extends", "{0663BA06-F67F-48E1-AC31-FDAA3B9AC435}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{82D6E507-6AB4-4C2B-9501-45B49D2C852C}"
 EndProject
@@ -22,6 +22,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.maui.demo", "demo\fair.maui.demo\fair.maui.demo.csproj", "{C60EE903-EB26-4B8F-8DFE-EB75923F366D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fair.h5.demo", "demo\fair.h5.demo\fair.h5.demo.csproj", "{4FF62056-D203-4DA1-A5F4-2689AAFE6B70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{D583DF4C-BA5E-4829-9698-76EE135F1A03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Others", "Others", "{4BD5E20C-41FA-4864-9062-34CBE3EF4FB2}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\nuget.yml = ..\.github\workflows\nuget.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +76,8 @@ Global
 		{D8C3330A-D5DE-49EF-A246-D0C9C3C8902A} = {9FD6FC3E-5137-421D-9490-1265170D178C}
 		{2BC5EA1F-7E54-4F49-8243-E888585373F8} = {0663BA06-F67F-48E1-AC31-FDAA3B9AC435}
 		{A594BD08-18E7-4D55-99A3-06B357503597} = {82D6E507-6AB4-4C2B-9501-45B49D2C852C}
+		{C60EE903-EB26-4B8F-8DFE-EB75923F366D} = {D583DF4C-BA5E-4829-9698-76EE135F1A03}
+		{4FF62056-D203-4DA1-A5F4-2689AAFE6B70} = {D583DF4C-BA5E-4829-9698-76EE135F1A03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EC5B8F0-7DC2-4646-9006-88617AC94E0F}
