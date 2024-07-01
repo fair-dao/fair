@@ -15,7 +15,7 @@
 		<Version></Version>
 		<PackageProjectUrl>https://fair-dao.com/</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/fair-dao/fair</RepositoryUrl>
 		<PackageId></PackageId>
 	</PropertyGroup>
