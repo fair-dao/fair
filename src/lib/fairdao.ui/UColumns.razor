@@ -1,0 +1,10 @@
+﻿@namespace fairdao.ui
+<CascadingValue Value=this>
+    <div class="columns is-multiline is-mobile is-vcentered">@ChildContent</div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

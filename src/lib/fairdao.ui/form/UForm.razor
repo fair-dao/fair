@@ -1,0 +1,290 @@
+﻿@inherits UIBase
+@namespace fairdao.ui
+@if (IsShow)
+{
+    <CascadingValue Value=this>
+        @if (IsModal)
+        {
+            <div class="@classes">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">@Title</p>
+                        <button class="delete" aria-label="close" @onclick="()=> {IsShowChanged.InvokeAsync(false); }"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        @ChildContent
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success is-fullwidth is-medium" @onclick="@( async (e) => { await Submit(); })">@SubmitButtonText</button>
+                    </footer>
+                </div>
+            </div>
+
+        }
+        else
+        {
+
+            <div class="com-form" style="padding:1.5rem;">
+                @ChildContent
+                @if (!String.IsNullOrEmpty(SubmitPasswordField))
+                {
+                    <div class="field has-addons">
+
+                        <div class="control is-expanded">
+                            <input type="text" class="input is-medium" name="@SubmitPasswordField" @bind-value="PassowrdValue" placeholder="@PasswordText" />
+                        </div>
+
+                        <div class="control">
+                            <button class="button is-success is-medium" @onclick="@( async (e) => { await Submit(); })"> <i class="icon-ic_fluent_checkmark_20_regular"></i> @SubmitButtonText </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    if (ShowSubmitButton)
+                    {
+                        <div class="field">
+                            <label class="label"></label>
+                            <div class="control">
+                                <button class="button is-success  is-fullwidth is-medium" @onclick="@( async (e) => { await Submit(); })"> <i class="icon-ic_fluent_checkmark_20_regular"></i> @SubmitButtonText </button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </CascadingValue>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// 密码字段名（不为空则带密码提交)
+    /// </summary>
+    [Parameter]
+    public string SubmitPasswordField { get; set; }
+
+    [Parameter]
+    public bool ShowSubmitButton { get; set; } = true;
+
+    [Parameter]
+    public string PasswordText { get; set; } = "操作密码";
+
+    string PassowrdValue { get; set; }
+
+    public string classes => CssBuilder.Default("modal com-form is-active")
+       .AddClass("is-inline", IsInline).Build();
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [Parameter]
+    public bool IsShow { get; set; } = true;
+
+    /// <summary>
+    /// Lable和Input是否显示在同一行
+    /// </summary>
+    [Parameter]
+    public bool IsInline { get; set; } = false;
+
+    [Parameter]
+    /// <summary>
+    /// 标题
+    /// </summary>
+    public string Title { get; set; }
+
+
+    [Parameter]
+    public EventCallback<bool> IsShowChanged { get; set; }
+
+    /// <summary>
+    /// 表单验证是否通过
+    /// </summary>
+    public bool Passed { get; set; } = true;
+
+    /// <summary>
+    /// 是否为弹窗模式
+    /// </summary>
+    [Parameter]
+    public bool IsModal { get; set; } = false;
+
+    /// <summary>
+    /// 提交按钮
+    /// </summary>
+    [Parameter]
+    public string SubmitButtonText { get; set; } = "确 定";
+
+
+    /// <summary>
+    /// 验证未通过的信息
+    /// </summary>
+    public Dictionary<string, string> ErrList = new Dictionary<string, string>();
+
+    /// <summary>
+    /// 需要提交的数据
+    /// </summary>
+    public Dictionary<string, object> SubmitData = new Dictionary<string, object>();
+
+
+
+    /// <summary>
+    /// 出错码
+    /// </summary>
+    public string ErrCode { get; set; }
+
+    /// <summary>
+    /// 是否点过提交按钮
+    /// </summary>
+    public bool SubmitClicked { get; set; } = false;
+
+    /// <summary>
+    /// 提交事件（自处理表单验证通过后的流程，用于处理复杂的流程)
+    /// </summary>
+    [Parameter]
+    public EventCallback<Dictionary<string, object>> OnSubmit { get; set; }
+
+
+    [Parameter]
+    public AutoSubmit AutoSubmit { get; set; }
+
+    async Task Submit()
+    {
+        Console.WriteLine($"提交：{AutoSubmit?.Url}");
+        try
+        {
+            //加入操作密码
+            if (!string.IsNullOrEmpty(SubmitPasswordField))
+            {
+                SubmitData[SubmitPasswordField] = PassowrdValue;
+            }
+            SubmitClicked = true;
+            if (ErrList.Count > 0)
+            {
+                string err = ErrList.First().Value;
+                if (string.IsNullOrEmpty(err))
+                {
+                    err = "Input data error";
+                }
+                this.Toast(err);
+                return;
+            }
+            if (AutoSubmit == null) //没有错误才能提交
+            {
+                //自处理流程
+                if (OnSubmit.HasDelegate) await OnSubmit.InvokeAsync(SubmitData);
+            }
+            else
+            {
+                object data = null;
+                switch (AutoSubmit.Type)
+                {
+                    case "form"://表单方式
+                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        foreach (var key in SubmitData.Keys)
+                        {
+                            object o1 = SubmitData[key];
+                            if (o1 != null)
+                            {
+                                if (o1 is List<string> list)
+                                {
+                                    sb.Append($"&{key}={string.Join(',', list)}");
+                                }
+                                else
+                                {
+
+                                    sb.Append($"&{key}={o1.ToString()}");
+                                }
+                            }
+                            else
+                            {
+                                sb.Append($"&{key}=");
+                            }
+                        }
+                        if (SubmitData.Keys.Count > 0) sb.Remove(0, 1);
+                        data = sb.ToString();
+                        break;
+                    case "json":
+                    default:
+                        data = SubmitData;
+                        break;
+                }
+
+                this.httpClient.With(this.ThrowException).With(ProcessResult).SubmitResult<IconItem<RecordItem>>(AutoSubmit.Url, data, AutoSubmit.Method);
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+    }
+
+
+    void ProcessResult(object obj, Result o)
+    {
+        if (o == null || o.state == Result.STATE_ERR)
+        {
+            this.Toast(o.msg);
+            return;
+        }
+        IsShow = false;
+        this.InvokeAsync(() =>
+        {
+            IsShowChanged.InvokeAsync(false);
+        });
+
+
+        if (string.IsNullOrEmpty(AutoSubmit.FinishedRedirect))
+        {
+            if (o != null && o.cmd != null)
+            {
+                //从返回数据里获取跳转地址
+
+                AutoSubmit.FinishedRedirect = o.cmd;
+            }
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(AutoSubmit.FinishedRedirect))
+        {
+            Console.WriteLine(AutoSubmit.FinishedRedirect);
+            switch (AutoSubmit.FinishedRedirect)
+            {
+                case "go":
+                    jsRuntime.InvokeVoidAsync($"window.history.go", -1);
+                    break;
+                case "auto": //刷新当前页
+                    navManager.NavigateTo(navManager.Uri);
+                    break;
+                case "back":
+                    jsRuntime.InvokeVoidAsync($"window.history.back", -1);
+                    break;
+                default:
+                    navManager.NavigateTo(AutoSubmit.FinishedRedirect);
+                    break;
+            }
+
+
+        }
+
+        if (AutoSubmit.ProcessResult != null) AutoSubmit.ProcessResult(o);
+        this.InvokeAsync(() => StateHasChanged());
+
+    }
+
+
+
+
+    protected override Task OnInitializedAsync()
+    {
+
+        return base.OnInitializedAsync();
+    }
+
+
+}

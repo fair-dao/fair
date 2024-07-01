@@ -1,0 +1,43 @@
+﻿@namespace fairdao.ui
+
+<CascadingValue Value=this>
+    <div class="com-list">
+        @ChildContent
+
+        @if (UIItems != null)
+            @foreach (UIItem item in UIItems)
+            {
+                <UListItem Tag="@item" Clicked="ItemClicked"></UListItem>
+            }
+
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    /// <summary>
+    /// 绑定数据
+    /// </summary>
+    [Parameter]
+    public List<UIItem> UIItems { get; set; }
+
+
+
+    [Parameter]
+    public UIItemHandler UIItemClicked { get; set; }
+
+
+    public void ItemClicked(UIItem item, EventArgs e)
+    {
+        if (item != null)
+        {
+            if (UIItemClicked != null) UIItemClicked(item, e);
+
+            if (item.Clicked != null) item.Clicked(item, e);
+        }
+    }
+
+}

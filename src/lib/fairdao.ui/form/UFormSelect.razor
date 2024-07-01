@@ -1,0 +1,183 @@
+﻿@namespace fairdao.ui
+@inherits UIBase
+@if (IsShow)
+{
+    <div class="control">
+        @if (!String.IsNullOrEmpty(Label))
+        {
+            <label class="label">@Label</label>
+        }
+
+        <div class="select is-fullwidth  has-icons-left">
+            <select name="@Name" @attributes="Attributes" value="@SelectValue" @onchange="OnSelectValueChaged" @onclick="Clicked">
+                @ChildContent
+                @if (Select != null)
+                {
+                    foreach (var key in Select.Keys)
+                    {
+                        <option value="@Select[key]">@key</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+}
+
+@code {
+
+
+    [Parameter]
+    public bool IsShow { get; set; } = true;
+
+    /// <summary>
+    /// 父容器
+    /// </summary>
+    [CascadingParameter]
+    public UForm Container { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// 值
+    /// </summary>
+    [Parameter]
+    public string SelectValue { get; set; }
+
+    /// <summary>
+    /// 是否带选择所有
+    /// </summary>
+    [Parameter]
+    public bool HasSelectAll { get; set; }
+
+    /// <summary>
+    /// 选项项名称
+    /// </summary>
+    public string SelectName { get; set; }
+
+    [Parameter] //更新父容器
+    public EventCallback<string> SelectValueChanged { get; set; }
+
+
+
+    /// <summary>
+    /// 标签
+    /// </summary>
+    [Parameter]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// 表单名
+    /// </summary>
+    [Parameter]
+    public string Name { get; set; }
+
+
+
+    /// <summary>
+    /// 远程获取列表项
+    /// </summary>
+    [Parameter]
+    public string FromUrl { get; set; }
+
+    /// <summary>
+    /// 加载信息
+    /// </summary>
+    public string loading { get; set; }
+
+    [Parameter]
+    public Dictionary<string, string> Select { get; set; }
+
+    void OnSelectValueChaged(ChangeEventArgs e)
+    {
+        SelectValue = e.Value?.ToString();
+        if (Container != null && this.Name != null)
+        {
+            Container.SubmitData[this.Name] = SelectValue;
+        }
+        var data = Select?.FirstOrDefault(m => m.Value == SelectValue);
+        if (data != null)
+        {
+            SelectName = data?.Key;
+        }
+        else SelectName = "";
+
+
+        SelectValueChanged.InvokeAsync(SelectValue);
+
+    }
+
+
+    void Clicked()
+    {
+        if (Container != null && this.Name != null)
+        {
+            Container.SubmitData[this.Name] = SelectValue;
+        }
+
+    }
+
+    //void SelectChanged(ChangeEventArgs e)
+    //{
+    //    Value = e.Value?.ToString();
+    //    Container.SubmitData[this.Name] = Value;
+    //    // ValueChanged.InvokeAsync(Value);
+    //}
+
+    protected override Task OnInitializedAsync()
+    {
+
+
+        //从服务器上获取当前用户可以创建的角色列表
+        if (!string.IsNullOrEmpty(FromUrl))
+        {
+            Select = new Dictionary<string, string>();
+            this.httpClient.With(this.ThrowException).PostResult<Dictionary<string, string>>(FromUrl, "").ContinueWith(r =>
+            {
+                if (r.Exception is null)
+                {
+                    var o = r.Result;
+                    if (HasSelectAll)
+                    {
+                        Select.Add(Localer["所有"], "");
+                    }
+                    foreach (var key in o.Keys)
+                    {
+                        Select.Add(key, o[key]);
+                    }
+                    if (String.IsNullOrEmpty(SelectValue) && Select.Count > 0)
+                    {
+                        SelectName = Select.Keys.FirstOrDefault();
+                        SelectValue = Select[SelectName];
+                        //通知值已改变
+                        // SelectValueChanged.InvokeAsync(SelectValue);
+                    }
+                    Console.WriteLine($"SelectedValue:{SelectValue}");
+                    SelectValueChanged.InvokeAsync(SelectValue);
+
+                }
+            }).ContinueWith(r =>
+            {
+                if (Container != null && this.Name != null)
+                {
+                    Container.SubmitData[this.Name] = SelectValue;
+                }
+            });
+
+            return Task.CompletedTask;
+
+        }
+        //
+        if (Container != null && this.Name != null)
+        {
+            Container.SubmitData[this.Name] = SelectValue;
+        }
+
+        return Task.CompletedTask;
+
+
+    }
+
+
+
+}

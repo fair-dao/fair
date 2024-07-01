@@ -1,0 +1,37 @@
+﻿@namespace fairdao.ui
+@inherits UIBase
+<div @attributes="Attributes" class="@classes">
+    @ChildContent
+</div>
+@code {
+
+    string classes => CssBuilder.Default("notification")
+        .AddClassFromAttributes(Attributes)
+        .AddClass(Color.Value, Color.Value)
+        .AddClass("is-light", IsLight)
+        .Build();
+
+    /// <summary>
+    /// 颜色
+    /// </summary>
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
+
+    /// <summary>
+    /// 浅色
+    /// </summary>
+    [Parameter]
+    public bool IsLight { get; set; }
+
+    /// <summary>
+    /// 子内容
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+}

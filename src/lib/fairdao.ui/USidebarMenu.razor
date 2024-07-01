@@ -1,0 +1,17 @@
+﻿@*左栏菜单*@
+@namespace fairdao.ui
+<div class="com-sidebar-menu">
+<CascadingValue Value=this>
+@ChildContent
+</CascadingValue>
+</div>
+
+    @code {
+
+        [CascadingParameter]
+        public USidebar Container { get; set; }
+
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+
+    }

@@ -1,0 +1,73 @@
+﻿@namespace fairdao.ui
+@if(Visible){
+<div @attributes="Attributes" class="@classes">
+    <div class="com-sidebar-suplink" @onclick="()=>Jmp()">
+    @if (!string.IsNullOrWhiteSpace(Image))
+        {
+           <img src="@Image" /><span>@Text</span>
+        }else{
+<i class="icon-@Icon" style="@(!string.IsNullOrEmpty(IconColor) ? $"color:{IconColor}":"")"></i><span>@Text</span>
+        }
+    </div>
+       @if (Hots > 0)
+    {
+        <span class="hots">@Hots</span>
+    }
+ 
+</div>
+}
+
+@code {
+
+
+    /// <summary>
+    /// 热点数
+    /// </summary>
+    [Parameter]
+    public int Hots { get; set; } = 0;
+    /// <summary>
+    /// 是否可见
+    /// </summary>
+    [Parameter]
+
+    public bool Visible { get; set; } = true;
+
+    [CascadingParameter]
+    public USidebar Sidebar{ get; set; }
+
+             /// <summary>
+        /// 附加属性
+        /// </summary>
+        [Parameter(CaptureUnmatchedValues = true)]
+        public Dictionary<string, object> Attributes { get; set; }
+
+    /// <summary>
+    /// 图标
+    /// </summary>
+    [Parameter]
+    public string Icon { get; set; }
+
+    /// <summary>
+    /// 图像
+    /// </summary>
+    [Parameter]
+    public string Image{ get; set;}
+
+    [Parameter]
+    public string Text { get; set; }
+    [Parameter]
+    public string Url { get; set; }
+    [Parameter]
+    public string IconColor { get; set; }
+
+    public string classes => CssBuilder.Default("com-sidebar-item").AddClassFromAttributes(Attributes).Build();
+
+    void Jmp()
+    {
+
+        navManager.NavigateTo(Url);
+
+       
+    }
+
+}

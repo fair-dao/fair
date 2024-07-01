@@ -1,0 +1,1 @@
+# A blockchain wallet plugin based on the fair framework, supporting Ethereum and Tron networks

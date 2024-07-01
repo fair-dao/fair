@@ -1,0 +1,155 @@
+@namespace fairdao.ui
+@inherits FormItem<decimal>
+<div class="field">
+    <label class="label">@Label</label><div class="@classes" @attributes="Attributes">
+        <div class="control">
+            <button type="button" @onclick="Dec" disabled="@Disabled" class="button @elementClasses">-</button>
+        </div>
+        <div class="control is-expanded">
+            <input class="input has-text-centered @elementClasses" disabled="@Disabled" @bind-value="Value">
+        </div>
+        <div class="control">
+            <button type="button" @onclick="Add" disabled="@Disabled" class="button @elementClasses">+</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    ///
+    /// </summary>
+    private string classes => CssBuilder.Default("field")
+        .AddClassFromAttributes(Attributes)
+        .AddClass("has-addons")
+        .AddClass(Color.Value, Color.Value)
+        .Build();
+
+    private string elementClasses => CssBuilder.Default("")
+        .AddClass(Color.Value, Color.Value)
+        .AddClass("is-small", IsSmall)
+        .AddClass("is-normal", IsNormal)
+        .AddClass("is-medium", IsMedium)
+        .AddClass("is-large", IsLarge)
+        .AddClass("is-outlined", IsOutlined)
+        .Build();
+
+    private string format;
+    private decimal value;
+
+    /// <summary>
+    /// 颜色
+    /// </summary>
+    [Parameter]
+    public Color Color { get; set; } = Color.Default;
+
+    /// <summary>
+    /// 轮廓样式
+    /// </summary>
+    [Parameter] public bool IsOutlined { get; set; }
+
+    /// <summary>
+    /// 小尺寸
+    /// </summary>
+    [Parameter]
+    public bool IsSmall { get; set; }
+
+    /// <summary>
+    /// 正常尺寸
+    /// </summary>
+    [Parameter]
+    public bool IsNormal { get; set; }
+
+    /// <summary>
+    /// 中尺寸
+    /// </summary>
+    [Parameter]
+    public bool IsMedium { get; set; }
+
+    /// <summary>
+    /// 大尺寸
+    /// </summary>
+    [Parameter]
+    public bool IsLarge { get; set; }
+
+    /// <summary>
+    /// 是否禁用
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+
+
+    /// <summary>
+    /// 最大值
+    /// </summary>
+    [Parameter] public decimal? Max { get; set; }
+    /// <summary>
+    /// 最小值
+    /// </summary>
+    [Parameter] public decimal? Min { get; set; }
+
+    /// <summary>
+    /// 步长 默认1
+    /// </summary>
+    [Parameter] public decimal Step { get; set; } = 1;
+
+
+    /// <summary>
+    /// 精度，小数位
+    /// </summary>
+    [Parameter] public int? Precision { get; set; }
+
+    /// <summary>
+    /// 值
+    /// </summary>
+    [Parameter]
+    public decimal Value
+    {
+        get => value; set
+        {
+            this.value = value;
+        }
+    }
+
+
+
+
+
+    private async Task SetValue(decimal val)
+    {
+        if (Min.HasValue && Min.Value > val) return;
+        if (Max.HasValue && Max.Value < val) return;
+        Value = val;
+        await Fire();
+    }
+
+    private async Task Fire()
+    {
+        if (Container != null) Container.SubmitData[this.Name] = Value.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private async Task Add()
+    {
+        decimal val = (decimal)Value;
+
+        var v = Math.Round(val + Step, Precision ?? 0);
+        await SetValue(v);
+
+    }
+
+    private async Task Dec()
+    {
+        decimal val = (decimal)Value;
+        var v = Math.Round(val - Step, Precision ?? 0);
+        await SetValue(v);
+
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+
+        if (Container != null) Container.SubmitData[this.Name] = Value.ToString();
+        return base.OnInitializedAsync();
+    }
+}

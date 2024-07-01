@@ -1,0 +1,36 @@
+﻿@*左边栏下面按钮*@
+@namespace fairdao.ui
+<div class="com-sidebar-footer">
+    <UIcon Icon="@Container.sidebarButtnClass" class="com-sidebar-button" Size="FontSize.Size5" @onclick="SidebarButtonClicked"></UIcon>
+    <div class="com-sidebar-footer-buttons">
+        <CascadingValue Value=this>
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public USidebar Container { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    public void SidebarButtonClicked(MouseEventArgs e)
+    {
+        //jsRuntime.InvokeVoidAsync("alert", e.ScreenX + "," + e.OffsetX + "," + e.ClientX);
+        if (e.ClientX < 46) //在最左上角发生的点击是手机端
+        {
+            Container.mustShow = !Container.mustShow;
+        }
+        else
+        {
+
+        }
+
+        Container.IsMini = !Container.IsMini;
+        Container.Flush();
+    }
+}

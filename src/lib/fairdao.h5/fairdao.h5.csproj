@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<WasmEnableSIMD>false</WasmEnableSIMD>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<CompressionEnabled>false</CompressionEnabled>
+		<Authors>fairdao</Authors>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<Title>fair wallet html5</Title>
+		<Product>fair h5</Product>
+		<Description>fair html5</Description>
+		<Copyright></Copyright>
+		<PackageProjectUrl>https://fair-dao.com/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/fair-dao/fair</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageId>fairdao.h5</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\fairdao.extensions.main\fairdao.extensions.main.csproj" />
+	</ItemGroup>
+
+</Project>

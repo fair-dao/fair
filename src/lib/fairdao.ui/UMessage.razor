@@ -1,0 +1,29 @@
+﻿@namespace fairdao.ui
+<article class="message is-@Type" @ref="msg">
+        <div class="message-header">
+            <p>@Title</p>
+            <button class="delete" aria-label="delete" @onclick="Close"></button>
+        </div>
+        <div class="message-body">
+           @ChildContent
+        </div>
+    </article>
+
+@code {
+
+    public ElementReference msg;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Type { get; set; } = "info";
+
+
+    void Close()
+    {
+        this.jsRuntime.InvokeVoidAsync("com.dom.remove", msg);
+
+    }
+}
