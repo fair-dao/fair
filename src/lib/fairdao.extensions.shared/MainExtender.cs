@@ -12,5 +12,6 @@ namespace fairdao.extensions.shared
     /// </summary>
     public class MainServiceExtender : ServiceExtender
     {
+
     }
 }

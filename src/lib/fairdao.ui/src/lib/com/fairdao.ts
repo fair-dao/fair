@@ -1,5 +1,4 @@
 ﻿/*fair Js库 */
-
     export class base {
         /**
          * 获取指定字符串的hash值  

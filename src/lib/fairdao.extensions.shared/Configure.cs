@@ -110,12 +110,17 @@ namespace fairdao.extensions.shared
             return null;
         }
 
-        public static IServiceCollection ConfigureServices(IServiceCollection services, fairdao.extensions.shared.Extender[]? extenders)
+        public static IServiceCollection ConfigureServices(IServiceCollection services, fairdao.extensions.shared.Extender[]? extenders) 
         {
             ConfigureExtenders(services, extenders);
             fairdao.extensions.shared.SysHelper.Services = services;
             services.AddTransient<fairdao.extensions.shared.IAPIHttpClient, fairdao.extensions.shared.APIHttpClient>();
-
+            // 添加默认的账号服务
+            var account = services.FirstOrDefault(m => m.ServiceType == typeof(IAccountService));
+            if (account == null)
+            {
+                services.AddSingleton<IAccountService, AccountService>();
+            }
             services.AddOptions();
             services.Configure<JsonSerializerOptions>(options =>
             {

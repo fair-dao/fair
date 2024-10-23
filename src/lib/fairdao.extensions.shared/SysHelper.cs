@@ -254,15 +254,6 @@ namespace fairdao.extensions.shared
         {
             return $"{s1}{s2}";
         }
-        public string GetFace(string face)
-        {
-         
-          
-            return $"/_content/fairdao.extensions.wallet/images.chains/{face??"no"}.svg";
-
-        }
-
-
 
 
 

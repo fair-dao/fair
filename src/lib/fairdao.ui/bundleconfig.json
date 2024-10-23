@@ -6,6 +6,6 @@
       "dist/icons.js"
     ],
     "minify": {"enabled": false}
-   
+    
   }
 ]

@@ -1,5 +1,5 @@
-﻿import * as fair from '/_content/fairdao.ui/js/fairdao.ui.min.js';
-window.fair = fair;
+﻿import * as fairdao from '/_content/fairdao.ui/js/fairdao.ui.min.js';
+window.fairdao = fairdao;
 window.blazorCulture = {
     get: function () {
         try {

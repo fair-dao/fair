@@ -1,4 +1,6 @@
-﻿using fairdao.extensions.shared.entity;
+﻿
+using fairdao.extensions.shared.entity;
+using fairdao.extensions.shared.services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -75,6 +77,7 @@ namespace fairdao.extensions.main
         {
 
             base.Config(services);
+     
         }
 
     }

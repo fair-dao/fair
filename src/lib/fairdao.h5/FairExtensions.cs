@@ -1,6 +1,7 @@
 ﻿using fairdao.extensions.shared;
 using fairdao.extensions.shared.data;
 using fairdao.extensions.shared.entity;
+using fairdao.extensions.shared.services;
 using fairdao.h5;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -22,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddSingleton<Env>();
             builder.Services.AddSingleton<SysHelper, H5Helper>();
             SysHelper.EntryAssembly = Assembly.GetExecutingAssembly();
-            Configure.ConfigureServices(builder.Services,extenders);
+            Configure.ConfigureServices(builder.Services, extenders);
             WebAssemblyHost host = builder.Build();
             await Configure.ConfigureProviders(host.Services);
             host?.RunAsync();

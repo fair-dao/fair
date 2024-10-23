@@ -5,7 +5,7 @@
 
 <USidebar Icon="category-management" Title="@Localer["访达导航"]" Nav="/#home" NavTip="@Localer["访达导航"]">
     <USidebarMenu>
-        <USidebarMenuSupItem Image="@sysHelper.GetFace(curAccount?.ChainId)" Text="@curAccount?.NickName" Url="/wallet/login"></USidebarMenuSupItem>
+        <USidebarMenuSupItem Image="@AccountService?.GetProfilePhoto(curAccount)" Text="@(curAccount?.NickName??Localer["未登录"])" Url="@(AccountService?.LoginUrl??"#")"></USidebarMenuSupItem>
         @if (sidebarMenus != null)
         {
             foreach (var m in sidebarMenus)
@@ -73,7 +73,7 @@
     fairdao.extensions.shared.services.TransService Trans { get; set; }
 
 
-    WalletAccount curAccount;
+    BlockchainAccount curAccount;
 
     bool isV = false;
     Modal m1;
@@ -119,6 +119,7 @@
     [Inject]
     IServiceProvider provider { get; set; }
 
+    IAccountService AccountService;
 
     DateTime? ServerTime { get; set; }
 
@@ -126,10 +127,10 @@
     protected override async Task OnInitializedAsync()
     {
         CurLang = await sysHelper.GetCurLang();
-        IAccountService service = provider.GetService(typeof(IAccountService)) as IAccountService;
-        if (service != null)
+        AccountService = provider.GetService(typeof(IAccountService)) as IAccountService;
+        if (AccountService != null)
         {
-            curAccount = await service.GetWalletAccountAsync();
+            curAccount = await AccountService.GetAccountAsync();
         }
 
         sysHelper.ConfigChanged += new SysHelper.ConfigChangedHandler(ConfigChanged);

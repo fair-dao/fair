@@ -39,7 +39,6 @@
             display: none;
         }
     }
-
 </style>
 
 @if (ShowPage)
@@ -108,7 +107,8 @@
 @code {
     [Inject]
     IServiceProvider provider { get; set; }
-
+    [Inject]
+    IAccountService AccountService { get; set; }
 
     public List<fairdao.extensions.shared.entity.VCommpent> MTabs = null;
 
@@ -167,25 +167,19 @@
 
     bool showLoadTime = false;
 
-    WalletAccount curAccount;
+    BlockchainAccount curAccount;
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("index page init...");
-        IAccountService service = provider.GetService(typeof(IAccountService)) as IAccountService;
-        if (service != null)
+        curAccount = await AccountService.GetAccountAsync();
+        if (curAccount?.Account == null) //需要一个钱包用户才能访问首页
         {
-            curAccount = await service.GetWalletAccountAsync();
-            if (curAccount?.Account == null) //需要一个钱包用户才能访问首页
+            if (AccountService.LoginRequired)
             {
-                if (service.LoginUrl != null)
-                {
-                    Nav(service.LoginUrl);
-                    return;
-                }
+                Nav(AccountService.LoginUrl);
+                return;
             }
         }
-        //ToShowLoadTime();
-
         base.OnInitializedAsync();
         PageLoad();
 

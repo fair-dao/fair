@@ -8,9 +8,9 @@ namespace fairdao.extensions.shared.entity
 {
 
     /// <summary>
-    /// 主钱包账户
+    /// 区块链账户
     /// </summary>
-    public class WalletAccount
+    public class BlockchainAccount
     {
         /// <summary>
         /// 账号
@@ -37,6 +37,12 @@ namespace fairdao.extensions.shared.entity
         /// 昵称
         /// </summary>
         public string NickName { get; set; }
+
+        /// <summary>
+        /// 头像
+        /// </summary>
+        public string ProfilePhoto { get; set; }
+
         /// <summary>
         /// Token过期时间
         /// </summary>
