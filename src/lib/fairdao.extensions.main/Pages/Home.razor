@@ -6,16 +6,16 @@
 @if (string.IsNullOrEmpty(scanResult))
 {
     <UPage ContentPadding>
-     <TitlePanel>
-         <div style="flex:0 0 3.5rem;">
-         </div>
-         <div class="com-page-topnav-search is-size-4">
-             <UIcon IconType="@IconType.Search" />
-             <input class="input" type="text" placeholder="想搜点什么吗？" @onclick="ToSearch">
-         </div>
-     </TitlePanel>
-     <ActionPanel>
-         @if (sysHelper.ClientConfig?.MTabs != null)
+        <TitlePanel>
+            <div style="flex:0 0 3.5rem;">
+            </div>
+            <div class="com-page-topnav-search is-size-4">
+                <UIcon IconType="@IconType.Search" />
+                <input class="input" type="text" placeholder="想搜点什么吗？" @onclick="ToSearch">
+            </div>
+        </TitlePanel>
+        <ActionPanel>
+            @if (sysHelper.ClientConfig?.MTabs != null)
             {
 
                 foreach (shared.entity.VCommpent tab in sysHelper.ClientConfig.MTabs)
@@ -29,12 +29,12 @@
                 }
             }
             <UIcon IconType="IconType.ScanCode"
-                  PhoneHideText IconColor="#FFF" Text="@Localer["扫一扫"]" @onclick="()=>scanning=true"></UIcon>
+                   PhoneHideText IconColor="#FFF" Text="@Localer["扫一扫"]" @onclick="()=>scanning=true"></UIcon>
 
-         </ActionPanel>
-         <ContentPanel>
-             <UDesk>
-                 @if (home?.SubMenus.Count>0)
+        </ActionPanel>
+        <ContentPanel>
+            <UDesk>
+                @if (home?.SubMenus.Count > 0)
                 {
                     @foreach (var menu in home.SubMenus)
                     {

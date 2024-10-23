@@ -6,6 +6,7 @@ using fairdao.h5;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -22,6 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddSingleton<IDataStore, LocaldbStore>();
             builder.Services.AddSingleton<Env>();
             builder.Services.AddSingleton<SysHelper, H5Helper>();
+            builder.Services.AddFluentUIComponents();
             SysHelper.EntryAssembly = Assembly.GetExecutingAssembly();
             Configure.ConfigureServices(builder.Services, extenders);
             WebAssemblyHost host = builder.Build();
