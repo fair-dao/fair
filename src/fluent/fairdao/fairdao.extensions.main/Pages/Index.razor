@@ -3,104 +3,63 @@
 @page "/reload"
 @using System.Globalization
 @using System.Text
-@using fairdao.ui
-@layout USidebarLayout
 @inherits Page
-<style type="text/css">
 
-    .toast-box {
-        display: block;
-        min-width: 6rem;
-    }
-
-        .toast-box a {
-            text-decoration: none !important;
-        }
-
-        .toast-box .toast-header {
-            text-align: left;
-            font-size: 0.75rem;
-        }
-
-        .toast-box .toast-content {
-            font-size: 1rem;
-            padding: 0.5rem;
-            text-align: left;
-            color: #caf1df;
-        }
-
-        .toast-box .toast-footer {
-            text-align: right;
-        }
-
-
-    @@media (min-width: 800px) {
-        .com-tabs {
-            display: none;
-        }
-    }
-</style>
-
-@if (ShowPage)
-{
-
-
-    <ComTabs>
-        @if (MTabs != null)
-        {
-            foreach (var topMenu in MTabs)
-            {
-                try
-                {
-                    Console.WriteLine($"{topMenu.Text},{topMenu.Link}");
-                    @if (topMenu.ShowMode == MenuShowModes.CommpentMode && !string.IsNullOrWhiteSpace(topMenu.Link)) //自定义组件
-                    {
-                        <ComTab Icon="@topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
-                            @if (Type.GetType(topMenu.Link) != null)
+<ComTabs>
+                            @if (MTabs != null)
                             {
-                                Console.WriteLine($"link:{topMenu.Link}");
-                                <DynamicComponent Type="@Type.GetType(topMenu.Link)"></DynamicComponent>
-                            }
-                        </ComTab>
-                    }
-                    else
-                    {
-                        <ComTab Icon="@topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
-                            <div class="com-content  com-content-nonav" style="padding:3rem 0;">
-                                <UDesk>
-                                    @foreach (var menu in topMenu.SubMenus)
+                                foreach (var topMenu in MTabs)
+                                {
+                                    try
                                     {
-                                        <UDeskItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UDeskItem>
+                                        Console.WriteLine($"{topMenu.Text},{topMenu.Link}");
+                                        @if (topMenu.ShowMode == MenuShowModes.CommpentMode && !string.IsNullOrWhiteSpace(topMenu.Link)) //自定义组件
+                                        {
+                                            <ComTab SelectedIcon="@topMenu.SelectedIcon" UnselectedIcon="topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
+                                                @if (Type.GetType(topMenu.Link) != null)
+                                                {
+                                                    Console.WriteLine($"link:{topMenu.Link}");
+                                                    <DynamicComponent Type="@Type.GetType(topMenu.Link)"></DynamicComponent>
+                                                }
+                                            </ComTab>
+                                        }
+                                        else
+                                        {
+                                            <ComTab SelectedIcon="@topMenu.SelectedIcon" UnselectedIcon="topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
+                                                <div class="com-content  com-content-nonav" style="padding:3rem 0;">
+                                                    <UDesk>
+                                                        @foreach (var menu in topMenu.SubMenus)
+                                                        {
+                                                            <UDeskItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UDeskItem>
+                                                        }
+
+                                                    </UDesk>
+                                                </div>
+
+                                            </ComTab>
+                                        }
                                     }
+                                    catch (Exception e)
+                                    {
 
-                                </UDesk>
-                            </div>
-
-                        </ComTab>
-                    }
-                }
-                catch (Exception e)
-                {
-
-                    Console.WriteLine(e);
-                }
-            }
+                                        Console.WriteLine(e);
+                                    }
+                                }
 
 
-        }
+                            }
 
-    </ComTabs>
-}
+                        </ComTabs>
 
 
-@if (false) //未登录
-{
-    <clientPage.Pages.Login Account="" LogonHandler="(a,b)=>{ Logon_Hander(a);}"></clientPage.Pages.Login>
-}
-@if (showLoadTime)
-{
-    <div style="position:absolute;left:1rem;bottom:0.25rem; z-index:999; font-size:0.5rem;color:#ddd;padding:0.2rem 1rem;border-radius:0.8rem; background-color:#444;">启动用时@(Math.Round((RunedTime.Value - SysHelper.AppStartTime).TotalMilliseconds / 1000, 2))秒</div>
-}
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
+
+
 
 
 
@@ -131,7 +90,7 @@
     public string CurTabName { get; set; }
 
 
-    
+
     public bool NetConnected { get; set; } = true;
 
 

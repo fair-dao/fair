@@ -1,0 +1,20 @@
+﻿using Microsoft.Extensions.Logging;
+
+namespace fairdao.maui.demo
+{
+    public static class MauiProgram
+    {
+        public static MauiApp CreateMauiApp()
+        {
+            var builder = MauiApp.CreateBuilder();
+            return builder
+                .UseMauiApp<App>()
+              .ConfigureFonts(fonts =>
+              {
+                  fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+              }).RunFairHost(
+                new fairdao.extensions.main.Extender()).Result;
+
+        }
+    }
+}

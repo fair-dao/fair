@@ -1,0 +1,19 @@
+﻿<a href="@Link" class="fairdao-shortcut">
+    <div class="fairdao-shortcut-ico">
+        <FluentIcon Value="Icon"></FluentIcon>
+    </div>
+    <div class="fairdao-shortcut-text">
+        @Text
+    </div>
+</a>
+
+@code {
+    [Parameter]
+    public Icon Icon { get; set; }
+
+    [Parameter]
+    public string Text{ get; set; }
+
+    [Parameter]
+    public string Link{ get; set; }
+}

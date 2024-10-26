@@ -1,0 +1,142 @@
+﻿
+@inherits UIBase
+<div class="com-page">
+    @if (TitlePanel != null || ActionPanel != null)
+    {
+        <div class="com-page-topnav">
+            @if (TitlePanel != null)
+            {
+                @if (needBackButton == true && TabPanel == null)
+                {
+                    <div style="flex:0 0 3rem">
+                        <UIcon Icon="back" Size="fairdao.ui.FontSize.Size4" @onclick="Back"></UIcon>
+                    </div>
+                }
+                <div class="com-page-title">
+                    @TitlePanel
+                </div>
+                <div class="com-right">
+                    @ActionPanel
+                </div>
+            }
+        </div>
+        <h1 claa="com-page-focusnav"></h1>
+    }
+    @if (ControlPanel != null)
+    {
+        <div class="com-page-controlpanel">
+            @ControlPanel
+        </div>
+
+    }
+
+    @if (ContentPanel != null)
+    {
+        <div class="com-page-content @(ContentPadding?"p-5":"") @(HasTop ? "has-top":"")">
+            @ContentPanel
+            <div style="height:4rem;">
+            </div>
+        </div>
+    }
+    @if (BottomPanel != null || TabPanel!=null)
+    {
+        <div class="com-page-bottom">
+            @BottomPanel
+
+            @if (TabPanel != null)
+            {
+                <ComTabs>
+                    @TabPanel
+                    @if (needBackButton == true)
+                    {
+                        <div @onclick="Back">
+                            <UIcon Icon="back" Size="fairdao.ui.FontSize.Size4" Text="@Localer["返回"]" Inline="false"></UIcon>
+                        </div>
+                    }
+                </ComTabs>
+            }
+
+        </div>
+    }
+</div>
+
+
+@code {
+
+
+    /// <summary>
+    /// 底部面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment BottomPanel { get; set; }
+
+    /// <summary>
+    /// 标题面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment TitlePanel { get; set; }
+
+    [Parameter]
+    public bool ContentPadding { get; set; } = false;
+
+    /// <summary>
+    /// 右边操作面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ActionPanel { get; set; }
+
+
+    /// <summary>
+    /// 顶部面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ControlPanel { get; set; }
+
+
+    bool HasTop
+    {
+        get
+        {
+            return (TitlePanel != null || ActionPanel != null);
+        }
+    }
+
+    /// <summary>
+    /// 正文面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ContentPanel { get; set; }
+
+
+
+    /// <summary>
+    /// 底部面板（一般为Tab)
+    /// </summary>
+    [Parameter]
+    public RenderFragment TabPanel { get; set; }
+
+    /// <summary>
+    /// 需要返回按钮
+    /// </summary>
+    bool? needBackButton;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        string url = navManager.Uri;
+        if (!string.IsNullOrEmpty(url))
+        {
+            if (!url.EndsWith("/") && url.IndexOf("/#") < 0)
+            {
+                needBackButton = true;
+                return;
+            }
+
+        }
+        needBackButton = false;
+
+    }
+
+
+}
+

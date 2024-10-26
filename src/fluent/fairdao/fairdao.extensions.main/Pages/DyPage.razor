@@ -1,0 +1,25 @@
+﻿@page "/base/Dypage/{ComponentType}"
+@inherits Page
+@if (comm != null)
+{
+    <DynamicComponent @ref="dyComponent" Type="@comm"></DynamicComponent>
+}
+@code {
+
+    [Parameter]
+    public string ComponentType{get;set;}
+
+
+    public Type comm;
+
+
+    DynamicComponent dyComponent;
+
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine($"com:{ComponentType}");
+        comm= Type.GetType(ComponentType.Replace("-","."));
+        return base.OnInitializedAsync();
+    }
+
+}

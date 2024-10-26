@@ -2,6 +2,7 @@
 using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared.services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,8 @@ namespace fairdao.extensions.main
                     {
                         Id = "home",
                         Parent = VCommpent.Page,
-                        Icon = "finder",
+                        Icon = new  Icons.Regular.Size20.Home(),
+                            SelectedIcon=new Icons.Filled.Size20.Home(),
                         Text = "访达",
                         SortId = -1111111111,
                         ShowMode = MenuShowModes.CommpentMode,
@@ -37,8 +39,8 @@ namespace fairdao.extensions.main
                         {
                             new VCommpent
                             {
-                                Id = "softinfo",
-                                Icon = "announcement",
+                                Id="home-softinfo",
+                                Icon =  new Icons.Regular.Size20.Info(),
                                 Text = "软件信息",
                                 SortId = 150,
                                 ShowMode = MenuShowModes.IconMode,
@@ -51,7 +53,8 @@ namespace fairdao.extensions.main
                     {
                         Id = "find",
                         Parent = VCommpent.Page,
-                        Icon = "commore",
+                        Icon = new Icons.Regular.Size20.AppsAddIn(),
+                        SelectedIcon=new Icons.Filled.Size20.AppsAddIn(),
                         Text = "探索",
                         SortId = 21111,
                         ShowMode = MenuShowModes.CommpentMode,
@@ -62,7 +65,7 @@ namespace fairdao.extensions.main
                     {
                         Id = "syssetup",
                         Parent = VCommpent.Sidebar,
-                        Icon = "setup",
+                        Icon = new Icons.Regular.Size20.Settings(),
                         Text = "系统设置",
                         SortId = 111111111,
                         ShowMode = MenuShowModes.DropdownMode,
@@ -71,7 +74,7 @@ namespace fairdao.extensions.main
                             new VCommpent
                             {
                                 Id = "softinfo",
-                                Icon = "announcement",
+                                Icon =  new Icons.Regular.Size20.Info(),
                                 Text = "软件信息",
                                 SortId = 150,
                                 ShowMode = MenuShowModes.IconMode,
@@ -90,7 +93,7 @@ namespace fairdao.extensions.main
         {
 
             base.Config(services);
-     
+
         }
 
     }
