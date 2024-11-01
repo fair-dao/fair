@@ -1,0 +1,13 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/fairdao.css",
+    "inputFiles": [ 
+      "Components/**/*.scss", // globbing patterns are supported
+      "Pages/**/*.scss" 
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "all"
+    } 
+  }
+]

@@ -13,7 +13,7 @@ namespace fairdao.maui.demo
               {
                   fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
               }).RunFairHost(
-                new fairdao.extensions.main.Extender()).Result;
+                new fairdao.extensions.shared.Extender()).Result;
 
         }
     }

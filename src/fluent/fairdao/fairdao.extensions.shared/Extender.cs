@@ -1,118 +1,173 @@
-﻿using fairdao.extensions.shared.entity;
+﻿
+using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared.services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace fairdao.extensions.shared
 {
     /// <summary>
-    /// 热扩展（从网络中下载并加载的扩展，要求热扩展插件不能超过10kb，同时必须开源）
+    /// 延伸器
     /// </summary>
-    public class Extender
+    public class Extender : fairdao.extensions.shared.MainServiceExtender
     {
-        #region 扩展器相关属性
 
-
-        /// <summary>
-        /// 插件Id
-        /// </summary>
-        public virtual string Id { get; set; } = "";
-
-
-        /// <summary>
-        /// 扩展名称
-        /// </summary>
-        public virtual string Name { get; set; } = "";
-
-
-        public List<VCommpent> Menus { get; set; }
-
-        /// <summary>
-        /// 版本
-        /// </summary>
-        public String Version { get; set; }
-
-        /// <summary>
-        /// 提供者
-        /// </summary>
-        public string Provider { get; set; }
-
-        /// <summary>
-        /// 程序集名
-        /// </summary>
-        public virtual string AssemblyName { get; set; }
-
-        /// <summary>
-        /// API服务地址列表
-        /// </summary>
-        public virtual List<string> APIAddresses { get; set; }
-
-
-
-
-        /// <summary>
-        /// 提供搜索的类型
-        /// </summary>
-        public virtual List<string> SearchTypes { get; set; }
-
-        /// <summary>
-        /// 提供的可视化组件列表
-        /// </summary>
-        public virtual VCommpent[]? VCommpents { get; }
-
-        #endregion
-
-        #region 初始化扩展
-
-        public virtual async void Use(IServiceProvider provider)
+        public Extender() : this("", "")
         {
-            var sysHelper = provider.GetRequiredService<SysHelper>();
-            var curLang = await sysHelper.GetCurLang();
-        }
-        #endregion
 
-
-
-        #region 为扩展器提供搜索功能
-
-        /// <summary>
-        /// 搜索信息
-        /// </summary>
-        /// <param name="type">信息类型</param>
-        /// <param name="key">搜索关键字</param>
-        public virtual void Search(string type, string key)
-        {
 
         }
 
-        /// <summary>
-        /// 搜索停留提示
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public virtual List<string> SearchPrompt(string type, string key)
+        public Extender(string copyRight, string version, params VCommpent[] commpents)
         {
-            return null;
+
+            var asm = SysHelper.GetAsmData(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+            if (string.IsNullOrEmpty(version))
+            {
+                Version = $"Version {asm.Ver}";
+            }
+            else Version = version;
+            if (string.IsNullOrEmpty(copyRight))
+            {
+                CopyRight = $"Copyright by {asm.Company}";
+            }
+            else CopyRight = copyRight;
+            if (commpents?.Count() > 0)
+            {
+                vCommpents = commpents.ToList();
+            }
         }
 
 
+        public override string Name { get => "系统"; set => base.Name = value; }
+
+        public static string CopyRight { get; set; }
+
+
         /// <summary>
-        /// 获取热搜关键词
+        /// 版本信息
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual List<string> GetHotKeys(string type)
+        public static string Version { get; set; }
+
+
+        public override List<string> SearchTypes { get => new List<string> { "功能", "扩展" }; set => base.SearchTypes = value; }
+
+
+        private List<VCommpent> vCommpents;
+
+        public override List<VCommpent> VCommpents
         {
-            return new List<string>();
+            get
+            {
+                if (vCommpents == null)
+                {
+                    vCommpents = new List<VCommpent> {
+                    new VCommpent
+                    {
+                        Id = "home",
+                        Parent = VCommpent.Page,
+                        Icon = new  Icons.Regular.Size20.Home(),
+                            SelectedIcon=new Icons.Filled.Size20.Home(),
+                        Text = "访达",
+                        SortId = -1,
+                        ShowMode = MenuShowModes.CommpentMode,
+                        Link = "fairdao.extensions.shared.Pages.Home,fairdao.extensions.shared",
+                        SubCommpents = new List<VCommpent>
+                        {
+                            new VCommpent
+                            {
+                                Icon =  new Icons.Regular.Size20.Info(),
+                                Text = "软件信息",
+                                SortId = 150,
+                                ShowMode = MenuShowModes.IconMode,
+                                Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
+                            }
+                        }
+                    },
+                    new VCommpent
+                    {
+                        Id = "find",
+                        Parent = VCommpent.Page,
+                        Icon = new Icons.Regular.Size20.AppsAddIn(),
+                        SelectedIcon=new Icons.Filled.Size20.AppsAddIn(),
+                        Text = "探索",
+                        SortId = 21111,
+                        ShowMode = MenuShowModes.CommpentMode,
+                        Link = "fairdao.extensions.shared.Pages.Found,fairdao.extensions.shared"
+
+                    },
+                    new VCommpent
+                    {
+                        Id = "syssetup",
+                        Parent = VCommpent.Sidebar,
+                        Icon = new Icons.Regular.Size20.Settings(),
+                        Text = "系统设置",
+                        SortId = 111111111,
+                        ShowMode = MenuShowModes.DropdownMode,
+                        SubCommpents = new List<VCommpent>
+                        {
+                            new VCommpent
+                            {
+                                Icon =  new Icons.Regular.Size20.AppsSettings(),
+                                Text = "外观设置",
+                                SortId = 1,
+                                ShowMode = MenuShowModes.IconMode,
+                                Link = "fairdao.extensions.shared.Pages.SiteSettings,fairdao.extensions.shared"
+
+                            }
+                        }
+                    },
+                    new VCommpent
+                    {
+                        Id = "sysinfo",
+                        Parent = VCommpent.Sidebar,
+                        Icon = new Icons.Regular.Size20.Settings(),
+                        Text = "关于软件",
+                        SortId = Int32.MaxValue,
+                        ShowMode = MenuShowModes.DropdownMode,
+                        SubCommpents = new List<VCommpent>
+                        {
+                            new VCommpent
+                            {
+                                Icon =  new Icons.Regular.Size20.Info(),
+                                Text = "软件信息",
+                                SortId = 1150,
+                                ShowMode = MenuShowModes.IconMode,
+                                Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
+
+                            },
+                            new VCommpent
+                            {
+                                Icon =  new Icons.Regular.Size20.Info(),
+                                Text = "开源组件",
+                                SortId = 1150,
+                                ShowMode = MenuShowModes.IconMode,
+                                Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
+                            }
+                        }
+                    }
+
+                };
+
+
+                }
+
+                return vCommpents;
+            }
         }
 
-        #endregion
+        public override void Config(IServiceCollection services)
+        {
 
+            base.Config(services);
+
+        }
 
     }
 }

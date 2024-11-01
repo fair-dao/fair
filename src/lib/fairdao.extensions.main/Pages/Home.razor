@@ -23,7 +23,7 @@
                     if (tab.Id != fairdao.extensions.shared.entity.SysMenuIds.HOME && tab.Id != fairdao.extensions.shared.entity.SysMenuIds.ME)
                     {
                         <UIcon Icon="@(tab.Icon+"-fill")" IconColor="@tab.IconColor" class="com-phone-hide" Text="@Localer[tab.Text]"
-                               @onclick='e=>navManager.NavigateTo(tab.ShowMode== MenuShowModes.CommpentMode ?"/base/Dypage/"+tab.Link:tab.Link)'></UIcon>
+                               @onclick='e=>navManager.NavigateTo(GetLinkUrl(tab.Link))'></UIcon>
                     }
 
                 }

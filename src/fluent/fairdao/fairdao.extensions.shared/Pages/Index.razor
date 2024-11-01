@@ -1,0 +1,282 @@
+﻿@*管理员以及代理首页*@
+@page "/"
+@page "/reload"
+@using System.Globalization
+@using System.Text
+
+@inherits Page
+
+<FairdaoComTabs>
+    @if (MTabs != null)
+    {
+        foreach (var topMenu in MTabs)
+        {
+            try
+            {
+                Console.WriteLine($"{topMenu.Text},{topMenu.Link}");
+                @if (topMenu.ShowMode == MenuShowModes.CommpentMode && !string.IsNullOrWhiteSpace(topMenu.Link)) //自定义组件
+                {
+                    <FairdaoComTab SelectedIcon="@topMenu.SelectedIcon" UnselectedIcon="topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
+                        @if (Type.GetType(topMenu.Link) != null)
+                        {
+                            Console.WriteLine($"link:{topMenu.Link}");
+                            <DynamicComponent Type="@Type.GetType(topMenu.Link)"></DynamicComponent>
+                        }
+                    </FairdaoComTab>
+                }
+                else
+                {
+                    <ComTab SelectedIcon="@topMenu.SelectedIcon" UnselectedIcon="topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
+                        <div class="com-content  com-content-nonav" style="padding:3rem 0;">
+                            <UDesk>
+                                @foreach (var menu in topMenu.SubCommpents)
+                                {
+                                    <UDeskItem Nav="@menu.Link" Title="@Localer[menu.Text]" Icon="@menu.Icon" IconColor="@menu.IconColor"></UDeskItem>
+                                }
+
+                            </UDesk>
+                        </div>
+
+                    </ComTab>
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e);
+            }
+        }
+
+
+    }
+
+</FairdaoComTabs>
+
+
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
+
+
+
+
+
+@code {
+    [Inject]
+    IServiceProvider provider { get; set; }
+    [Inject]
+    IAccountService AccountService { get; set; }
+
+    public List<fairdao.extensions.shared.entity.VCommpent> MTabs = null;
+
+    public static DateTime? RunedTime;
+
+    public bool ShowPage { get; set; } = false;
+
+
+    /// <summary>
+    /// 是否已登录
+    /// </summary>
+    bool Logined { get; set; } = true;
+
+
+    public int ChatHots { get; set; } = 0;
+
+    /// <summary>
+    /// 当前Tab标题
+    /// </summary>
+    public string CurTabName { get; set; }
+
+
+
+    public bool NetConnected { get; set; } = true;
+
+
+
+    [Inject]
+    fairdao.extensions.shared.services.TransService Trans { get; set; }
+
+
+    /// <summary>
+    /// 触发用户登录成功事件
+    /// </summary>
+    /// <returns></returns>
+    void Logon_Hander(object userData)
+    {
+        //设置登录
+
+
+        PageLoad().ContinueWith(r =>
+        {
+            Logined = true;
+            this.InvokeAsync(() => StateHasChanged());
+
+        });
+
+        //        navManager.NavigateTo("/reload");
+
+
+
+
+    }
+
+
+
+    bool showLoadTime = false;
+
+    BlockchainAccount curAccount;
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("index page init...");
+        curAccount = await AccountService.GetAccountAsync();
+        if (curAccount?.Account == null) //需要一个钱包用户才能访问首页
+        {
+            if (AccountService.LoginRequired)
+            {
+                Nav(AccountService.LoginUrl);
+                return;
+            }
+        }
+        base.OnInitializedAsync();
+        PageLoad();
+
+
+
+    }
+
+
+    /// <summary>
+    /// 显示加载用时
+    /// </summary>
+    /// <returns></returns>
+    async Task ToShowLoadTime()
+    {
+        Console.WriteLine("首页加载");
+
+        if (RunedTime == null)
+        {
+
+            showLoadTime = true;
+            RunedTime = DateTime.Now;
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                showLoadTime = false;
+                this.InvokeAsync(() => { StateHasChanged(); });
+            });
+        }
+    }
+
+    async Task PageLoad()
+    {
+
+        try
+        {
+            string url = navManager.Uri.ToString();
+            //是否是api页面调用
+            string token = sysHelper.GetQuery(url, "token");
+            Console.WriteLine($"{DateTime.Now} query token:{token}");
+            string jmpUrl = "";
+            bool forceLoad = false;
+
+            string lang = sysHelper.GetQuery(url, "lang"); //语言
+            if (!string.IsNullOrWhiteSpace(lang))
+            {
+                int index = lang.IndexOf("-");
+                if (index > 0)
+                {
+                    lang = lang.Substring(0, index);
+                }
+                string curLang = await sysHelper.GetCulture();
+                if (lang != curLang)
+                {
+                    await sysHelper.SetCulture(lang);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(jmpUrl))
+            {
+                navManager.NavigateTo(jmpUrl, forceLoad);
+
+            }
+            else
+            {
+
+
+                ShowHomePage();
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("index初始化出错:{0}", ex);
+        }
+    }
+
+    Task ShowHomePage()
+    {
+        string url = navManager.Uri.ToString();
+        int index = url.IndexOf("#");
+
+        if (index > 0)
+        {
+            CurTabName = Uri.UnescapeDataString(url.Substring(index + 1));
+        }
+
+        Console.WriteLine("my started");
+
+        ShowMenu();
+        return Task.CompletedTask;
+    }
+
+    void ShowMenu()
+    {
+
+
+        //最多显示5个Tab项，其它纳入Found 页
+        if (sysHelper.ClientConfig?.MTabs != null)
+        {
+            MTabs = sysHelper.ClientConfig.MTabs.Take(5).ToList();
+
+            if (string.IsNullOrWhiteSpace(CurTabName) && MTabs.Count > 0) //设置手机端当前页
+            {
+                // string defaultId = gensys.shared.entity.SysMenuIds.CHAT;
+                // if (sysHelper.IsSiteAdmin())
+                // {
+                string defaultId = SysMenuIds.HOME;
+
+                //     }
+                var defaultMenu = MTabs.FirstOrDefault(m => m.Id == defaultId);
+                if (defaultMenu != null) CurTabName = Localer[defaultMenu.Text];
+                else CurTabName = Localer[MTabs[0].Text];
+            }
+        }
+
+        ShowPage = true;
+    }
+
+
+    async Task GetLangInfo()
+    {
+
+        string lang = await sysHelper.GetCulture();
+        sysHelper.LocalData = await Trans.GetAllLocalWords(sysHelper.LangLibName, lang);
+        sysHelper.SaveLocalData();
+    }
+
+    protected override ValueTask DisposeAsync(bool disposing)
+    {
+
+        return base.DisposeAsync(disposing);
+    }
+
+
+
+
+
+}

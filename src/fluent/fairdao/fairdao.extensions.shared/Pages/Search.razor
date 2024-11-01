@@ -1,0 +1,77 @@
+﻿@page "/Search"
+@inherits Page
+
+<FluentLayout>
+    <FluentHeader Class="siteheader">
+        @if (string.IsNullOrEmpty(KeyType))
+        {
+            @Localer["您想搜索什么?"]
+        }
+        else
+        {
+            @($"{Localer["查找"]} - {Localer[KeyType]}")
+        }
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content">
+            <ErrorBoundary>
+                <ChildContent>
+                    @if (string.IsNullOrEmpty(KeyType))
+                    {
+                        <FluentGrid AdaptiveRendering="true" Style="background-color: var(--neutral-layer-3); padding: 4px; ">
+                            @foreach (var ext in SysHelper.Extenders)
+                            {
+                                if (ext.SearchTypes?.Count > 0)
+                                {
+                                    @foreach (var keyType in ext.SearchTypes)
+                                    {
+                                        <FluentGridItem xs="6" sm="3" HiddenWhen="GridItemHidden.SmAndDown">
+                                            <div class="card" @onclick="()=>SelectKeyType(ext,keyType)">
+                                                @(Localer[ext.Name]) / @Localer[keyType]
+                                            </div>
+                                        </FluentGridItem>
+                                    }
+
+                                }
+                            }
+                        </FluentGrid>
+                    }
+                    else
+                    {
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="@Localer["想找什么呢?"]">
+                            <span class="icon is-left">
+                                <FluentIcon Value="@(new Icons.Regular.Size20.Search())"></FluentIcon>
+                            </span>
+                        </p>
+                    }
+             
+
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <div class="blazor-error-boundary">@ex.Message</div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
+
+
+
+@code {
+
+    public string KeyType { get; set; }
+
+    ExtenderBase CurExtender;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    void SelectKeyType(ExtenderBase ext, string keyType)
+    {
+        this.CurExtender = ext;
+        this.KeyType = keyType;
+    }
+}

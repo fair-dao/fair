@@ -1,0 +1,110 @@
+﻿@namespace fairdao.extensions.shared.Components
+<div class="@TitleCssClass showMode@(ShowMode)" @onclick=@Activate>
+    @if (String.IsNullOrEmpty(StrIcon) || StrIcon.StartsWith("-"))
+    {
+        <span style="font-size:.75rem">@Title</span>
+    }
+    else
+    {
+        <div class="fairdao-comtab-ico">
+            <FluentIcon Value="@Icon" />
+        </div>
+        <div class="fairdao-comtab-txt">@Title</div>
+
+    }
+    @if (Hots > 0)
+    {
+        <span class="hots">@Hots</span>
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    public FairdaoComTabs Container { get; set; }
+
+
+
+
+    /// <summary>
+    /// Tab显示模式（0：普通，1：凸起的圆形）
+    /// </summary>
+    [Parameter]
+    public int ShowMode { get; set; } = 0;
+
+    [Parameter]
+    public bool Selected { get; set; } = false;
+
+    [Parameter]
+    public EventHandler Clicked { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    /// <summary>
+    /// 图标
+    /// </summary>
+
+    public Icon Icon { get; set; }
+
+
+    /// <summary>
+    /// 图标
+    /// </summary>
+    [Parameter]
+    public Icon UnselectedIcon { get; set; }
+
+    /// <summary>
+    /// 图标
+    /// </summary>
+    [Parameter]
+    public Icon SelectedIcon { get; set; }
+
+
+    string StrIcon => $"{Icon}{IconState}";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public string IconState { get; set; } = "";
+
+    /// <summary>
+    /// 热点数，大于0会显示红圆点
+    /// </summary>
+    [Parameter]
+    public int? Hots { get; set; }
+
+
+    string TitleCssClass => Container.ActiveComTab == this ? "is-active" : null;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Icon = UnselectedIcon;
+        Container.AddTab(this);
+        if (this.Selected)
+        {
+            Activate();
+        }
+    }
+
+    public void Dispose()
+    {
+        Container.RemoveTab(this);
+    }
+
+    void Activate()
+    {
+        if (Clicked != null)
+        {
+            Clicked(this, EventArgs.Empty);
+            return;
+        }
+
+        Container.SetActivateTab(this);
+    }
+}

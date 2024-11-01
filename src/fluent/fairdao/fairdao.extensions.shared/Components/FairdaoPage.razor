@@ -1,0 +1,126 @@
+﻿@inherits UIBase
+<FluentLayout Class="fairdao-page">
+    <FluentHeader Class="siteheader">
+        @if (TitlePanel != null || ActionPanel != null)
+        {
+
+            @if (TitlePanel != null)
+            {
+                @if (needBackButton == true )
+                {
+                    <FluentIcon Value="@(new Icons.Regular.Size24.ArrowCircleLeft())" @onclick="Back" Color="Color.Fill" />
+                }
+                <FluentSpacer />
+                @TitlePanel
+                <FluentSpacer />
+                @ActionPanel
+            }
+        }
+    </FluentHeader>
+    @if (ControlPanel != null)
+    {
+        @ControlPanel
+    }
+
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class='@bodyClass'>
+            <ErrorBoundary>
+                <ChildContent>
+
+                    @if (ContentPanel != null)
+                    {
+                        @ContentPanel
+                    }
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <div class="blazor-error-boundary">@ex.Message</div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </FluentBodyContent>
+    </FluentStack>
+   
+
+</FluentLayout>
+
+
+@code {
+
+
+    /// <summary>
+    /// 底部面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment BottomPanel { get; set; }
+
+    /// <summary>
+    /// 标题面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment TitlePanel { get; set; }
+
+    [Parameter]
+    public bool ContentPadding { get; set; } = false;
+
+    /// <summary>
+    /// 右边操作面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ActionPanel { get; set; }
+
+
+    /// <summary>
+    /// 顶部面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ControlPanel { get; set; }
+
+
+    bool HasTop
+    {
+        get
+        {
+            return (TitlePanel != null || ActionPanel != null);
+        }
+    }
+
+    private string bodyClass=> $"body-content{(ContentPadding? " fairdao-padding":"")}";
+
+    /// <summary>
+    /// 正文面板
+    /// </summary>
+    [Parameter]
+    public RenderFragment ContentPanel { get; set; }
+
+
+
+    /// <summary>
+    /// 底部面板（一般为Tab)
+    /// </summary>
+    [Parameter]
+    public RenderFragment TabPanel { get; set; }
+
+    /// <summary>
+    /// 需要返回按钮
+    /// </summary>
+    bool? needBackButton;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        string url = navManager.Uri;
+        if (!string.IsNullOrEmpty(url))
+        {
+            if (!url.EndsWith("/") && url.IndexOf("/#") < 0)
+            {
+                needBackButton = true;
+                return;
+            }
+
+        }
+        needBackButton = false;
+
+    }
+
+
+}
+

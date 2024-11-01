@@ -56,6 +56,22 @@ namespace fairdao.extensions.shared
         }
 
 
+        /// <summary>
+        /// 获取连接网址
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        public string GetLinkUrl(string link)
+        {
+            if (link.IndexOf('/') >= 0)
+            {
+                return link;
+            }
+            else
+            {
+                return $"/fairdao/load/{link.Replace(".","-")}";
+            }
+        }
 
 
         /// <summary>
@@ -235,7 +251,7 @@ namespace fairdao.extensions.shared
                     AlertMessage.Message = string.Empty;
 
                 }
-                JSRuntime.InvokeVoidAsync("com.runSelector", "app");
+                //JSRuntime.InvokeVoidAsync("com.runSelector", "app");
             }
             return base.OnAfterRenderAsync(firstRender);
 

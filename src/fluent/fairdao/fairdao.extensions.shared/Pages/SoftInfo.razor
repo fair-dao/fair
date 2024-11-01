@@ -1,0 +1,75 @@
+﻿@page "/fair/sysInfo"
+@using System.Diagnostics
+@using System.Reflection
+@inherits fairdao.extensions.shared.Pages.Page
+<FairdaoPage ContentPadding>
+    <TitlePanel>
+        @Localer["软件信息"]
+    </TitlePanel>
+    <ContentPanel>
+        <FairdaoComTabs>
+            <FairdaoComTab Title="@Localer["核心组件"]">
+
+                @if (cores.Count > 0)
+                {
+                    @foreach (var a in cores.Keys)
+                    {
+                        <Card>
+                            <CardHeader>@a</CardHeader>
+                            <CardContent>
+                                <div>全称：@cores[a].Name </div>
+                                <div>版本：@cores[a].Ver</div>
+                                <div>开发者：@cores[a].Company</div>
+                            </CardContent>
+                        </Card>
+                        <br />
+                    }
+                }
+
+            </FairdaoComTab>
+            <FairdaoComTab Title="@Localer["扩展组件"]">
+                @if (exts.Count > 0)
+                {
+                    @foreach (var a in exts.Keys)
+                    {
+                        <Card>
+                            <CardHeader>@a</CardHeader>
+                            <CardContent>
+                                <div>全称：@exts[a].Name </div>
+                                <div>版本：@exts[a].Ver</div>
+                                <div>开发者：@exts[a].Company</div>
+                            </CardContent>
+                        </Card>
+                        <br />
+                    }
+                }
+
+
+            </FairdaoComTab>
+        </FairdaoComTabs>
+    </ContentPanel>
+</FairdaoPage>
+
+@code {
+    Dictionary<string, Records.AsmData> cores = new();
+
+    Dictionary<string, Records.AsmData> exts = new();
+    protected override void OnInitialized()
+    {
+        System.Reflection.Assembly main = SysHelper.EntryAssembly;
+        cores.Add($"主程序", SysHelper.GetAsmData(main));
+        System.Reflection.Assembly share = typeof(fairdao.extensions.shared.SysHelper).Assembly;
+        cores.Add("扩展共享库", SysHelper.GetAsmData(share));
+
+        int i = 0;
+        foreach (var a in SysHelper.Extenders)
+        {
+            var ass = SysHelper.GetAsmData(a.GetType().Assembly);
+            if (ass != null)
+                exts.Add($"{i++}.{a.Name}({a.Id})", ass);
+        }
+
+        base.OnInitialized();
+    }
+
+}

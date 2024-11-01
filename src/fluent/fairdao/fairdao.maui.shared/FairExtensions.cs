@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
         public static async Task<MauiApp> RunFairHost(
-          this MauiAppBuilder builder, params fairdao.extensions.shared.Extender[]? extenders)
+          this MauiAppBuilder builder, params fairdao.extensions.shared.ExtenderBase[]? extenders)
         {
             SysHelper.AppStartTime = DateTime.Now;
 

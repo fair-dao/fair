@@ -1,0 +1,20 @@
+﻿.fair-desk {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.fairdao-shortcut {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-decoration: none;
+}
+
+    .fairdao-shortcut svg {
+        width: 2.75rem !important;
+    }
+
+    .fairdao-shortcut .fairdao-shortcut-text {
+        font-size: 0.75rem;
+        margin-top: -0.5rem;
+    }

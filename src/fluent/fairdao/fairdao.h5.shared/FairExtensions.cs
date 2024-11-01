@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class FairExtensions
     {
-        public static async Task RunFairHost( this WebAssemblyHostBuilder builder, params fairdao.extensions.shared.Extender[]? extenders)
+        public static async Task RunFairHost( this WebAssemblyHostBuilder builder, params fairdao.extensions.shared.ExtenderBase[]? extenders)
         {
 
             builder.RootComponents.Add<fairdao.extensions.shared.Routes>("#app");

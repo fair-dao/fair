@@ -69,7 +69,8 @@ namespace fairdao.extensions.shared
         protected fairdao.extensions.shared.SysHelper sysHelper { get; set; }
 
 
-      
+
+
 
 
         public override void ThrowException(object data, Exception e)

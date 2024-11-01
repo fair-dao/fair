@@ -32,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\fairdao.extensions.main\fairdao.extensions.main.csproj" />
+	  <ProjectReference Include="..\fairdao.extensions.shared\fairdao.extensions.shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

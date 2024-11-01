@@ -1,0 +1,82 @@
+﻿
+.fairdao-comtabs {
+    position: fixed;
+    width: 100%;
+    height: 3.25rem;
+    bottom: 0;
+    color: var(--neutral-foreground-rest);
+    border-top: 1px solid #d2d2d2;
+    background-color: var(--neutral-fill-layer-rest);
+    display: none;
+    user-select: none;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+    .fairdao-comtabs svg {
+        width: 1.75rem !important;
+    }
+
+    .fairdao-comtabs .fairdao-comtab-txt {
+        font-size: 0.75rem !important;
+        margin-top: -0.6rem;
+    }
+
+    .fairdao-comtabs .is-active * {
+        color: var(--accent-fill-rest);
+    }
+
+    .fairdao-comtabs > * {
+        flex-basis: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .fairdao-comtabs .hots, .media .hots {
+        display: inline-block;
+        position: relative;
+        background-color: #ff3860;
+        border-radius: 0.5rem 0.5rem;
+        min-width: 1rem;
+        font-size: 0.5rem;
+        line-height: 1rem;
+        color: #fff;
+        margin-top: -2rem;
+        top: -3rem;
+        right: -1rem;
+        text-align: center;
+    }
+
+
+.fairdao-comtab {
+    height: calc(100vh - 3.25rem);
+    width: 100%;
+}
+
+
+    .fairdao-comtab .body-content {
+        height: calc(100vh - 3.25rem);
+    }
+
+    .fairdao-comtab header + .main .body-content {
+        height: calc(100vh - 3.25rem - 50px);
+    }
+
+
+    .fairdao-comtab footer > * {
+        height: 3.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+@media (max-width: 600px) {
+    .fairdao-comtabs {
+        display: flex !important;
+    }
+
+    .fairdao-comtab footer {
+        display: none !important;
+    }
+}

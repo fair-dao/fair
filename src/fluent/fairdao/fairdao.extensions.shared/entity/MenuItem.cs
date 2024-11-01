@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,9 +14,15 @@ namespace fairdao.extensions.shared.entity
     /// </summary>
     public class VCommpent : ICloneable
     {
-
+        /// <summary>
+        /// 边栏导航组件
+        /// </summary>
         public const string Sidebar = "sidebar";
-        public const string Page = "page";
+        /// <summary>
+        /// 底部导航组件
+        /// </summary>
+        public const string Page = "tabpage";
+
         /// <summary>
         /// 可视组件Id
         /// </summary>
@@ -93,11 +100,39 @@ namespace fairdao.extensions.shared.entity
         /// </summary>
         public string[] Roles { get; set; }
 
+        /// <summary>
+        ///  参数列表
+        /// </summary>
+        public List<string> Params { get; set; }
+
+        private List<VCommpent> vCommpents=new List<VCommpent>();
 
         /// <summary>
         /// 子组件集合
         /// </summary>
-        public List<VCommpent> SubMenus { get; set; } = new List<VCommpent>();
+        public List<VCommpent> SubCommpents
+        {
+            get
+            {
+                return vCommpents;
+            }
+            set
+            {
+                var a = value;
+                if (a != null)
+                {
+                    foreach (var sub in a)
+                    {
+                        if (sub.Parent == null)
+                        {
+                            sub.Parent = Id;
+                        }
+                        sub.Id = $"{Id}-{BitConverter.ToUInt32(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes($"{sub.Text}-{sub.ShowMode}-{sub.Link}-{sub.Params}")))}";
+                    }
+                }
+                vCommpents = value;
+            }
+        }
 
         public object Clone()
         {

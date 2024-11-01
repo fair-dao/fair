@@ -1,12 +1,23 @@
 ﻿
 @using Microsoft.AspNetCore.Components.Routing
+@inject fairdao.extensions.shared.localization.GensysLocaler Localer
 <Router AppAssembly="@typeof(Configure).Assembly" AdditionalAssemblies="@Configure.PageAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageNotFound>
-        </PageNotFound>
+        <FairdaoPage>
+            <TitlePanel>
+                @Localer["页面维护"]
+            </TitlePanel>
+            <ContentPanel>
+                <FairdaoPageMessage>
+                    @Localer["页面正在维护"]
+                </FairdaoPageMessage>
+
+            </ContentPanel>
+        </FairdaoPage>
+
     </NotFound>
 </Router>
