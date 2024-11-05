@@ -23,11 +23,11 @@ namespace fairdao.extensions.shared
 
 
         public static List<Assembly>? PageAssemblies;
-        private static List<fairdao.extensions.shared.ExtenderBase>? extenders;
+        private static List<fairdao.extensions.shared.Extender>? extenders;
 
 
 
-        private static void ConfigureExtenders(IServiceCollection services, fairdao.extensions.shared.ExtenderBase[]? extenders)
+        private static void ConfigureExtenders(IServiceCollection services, fairdao.extensions.shared.Extender[]? extenders)
         {
             if (!(extenders?.Length > 0))
             {
@@ -76,7 +76,7 @@ namespace fairdao.extensions.shared
                         // 使用 Activator.CreateInstance 方法实例化类
                         object instance = Activator.CreateInstance(type);
                         // 判断实例化结果是否成功
-                        if (instance is fairdao.extensions.shared.ExtenderBase myObject)
+                        if (instance is fairdao.extensions.shared.Extender myObject)
                         {
                             Configure.extenders.Add(myObject);
                         }
@@ -110,7 +110,7 @@ namespace fairdao.extensions.shared
             return null;
         }
 
-        public static IServiceCollection ConfigureServices(IServiceCollection services, fairdao.extensions.shared.ExtenderBase[]? extenders) 
+        public static IServiceCollection ConfigureServices(IServiceCollection services, fairdao.extensions.shared.Extender[]? extenders) 
         {
             ConfigureExtenders(services, extenders);
             fairdao.extensions.shared.SysHelper.Services = services;
@@ -152,7 +152,7 @@ namespace fairdao.extensions.shared
         }
 
 
-        public void Load(ExtenderBase extender)
+        public void Load(Extender extender)
         {
 
         }

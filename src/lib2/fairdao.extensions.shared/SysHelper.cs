@@ -1,6 +1,7 @@
 ﻿
 using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared;
+using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared.localization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +21,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static fairdao.extensions.shared.entity.Records;
-using System.Reflection.Metadata.Ecma335;
 
 namespace fairdao.extensions.shared
 {
@@ -45,7 +44,7 @@ namespace fairdao.extensions.shared
         public event ConfigChangedHandler ConfigChanged;
 
 
-        public static List<fairdao.extensions.shared.ExtenderBase> Extenders;
+        public static List<fairdao.extensions.shared.Extender> Extenders;
 
    
 
@@ -95,40 +94,6 @@ namespace fairdao.extensions.shared
 
         public static SysHelper CurHelper;
 
-
-
-
-        /// <summary>
-        /// 获取程序集数据
-        /// </summary>
-        /// <param name="asm"></param>
-        /// <returns></returns>
-        public static Records.AsmData GetAsmData(System.Reflection.Assembly asm)
-        {
-            if (asm == null) return new Records.AsmData("", "", "");
-            string ver = "";
-            string company = "";
-            string name = "";
-            foreach (var a in asm.CustomAttributes)
-            {
-                if (a.AttributeType == typeof(System.Reflection.AssemblyCompanyAttribute))
-                {
-                    company = a.ConstructorArguments[0].ToString()?.Trim('\"');
-                    continue;
-                }
-                if (a.AttributeType == typeof(System.Reflection.AssemblyInformationalVersionAttribute))
-                {
-                    ver = a.ConstructorArguments[0].ToString()?.Trim('\"');
-                    continue;
-                }
-                if (a.AttributeType == typeof(System.Reflection.AssemblyProductAttribute))
-                {
-                    name = a.ConstructorArguments[0].ToString()?.Trim('\"');
-                    continue;
-                }
-            }
-            return new Records.AsmData(name, ver, company);
-        }
 
 
 
@@ -463,14 +428,7 @@ namespace fairdao.extensions.shared
             fairdao.extensions.shared.entity.IndexedConfigData<List<Culture>> cultures = await dataStore.GetConfig<fairdao.extensions.shared.entity.IndexedConfigData<List<Culture>>>($"cultures");
             fairdao.extensions.shared.entity.IndexedConfigData<string> langInfo = await dataStore.GetConfig<fairdao.extensions.shared.entity.IndexedConfigData<string>>($"{NAME_LOCALDATA_STOREID}-{lang}");
             LocalLang data = new LocalLang();
-            //if (cultures?.Entity == null)
-            //{
-            //    cultures=new IndexedConfigData<List<Culture>>();
-            //    cultures.Entity.Add(new Culture { DispName="中文", Name="zh" });
-            //    cultures.Entity.Add(new Culture { DispName = "English", Name = "en" });
-            //}
             data.Cultures = cultures?.Entity ?? new List<Culture>();
-            
             LangInfo lan = null;
             if (!string.IsNullOrEmpty(langInfo?.Entity))
             {
@@ -670,6 +628,7 @@ namespace fairdao.extensions.shared
                 }
             }
         }
+
         public async Task ReloadConfig()
         {
             var config = new ClientConfig();
@@ -680,7 +639,6 @@ namespace fairdao.extensions.shared
 
                 List<VCommpent> tabs = new List<VCommpent>();
                 List<VCommpent> sides = new List<VCommpent>();
-                List<VCommpent> tools = new List<VCommpent>();
                 //应用插件配置
                 Extenders?.ForEach(extender =>
                 {
@@ -698,9 +656,9 @@ namespace fairdao.extensions.shared
                                 }
                                 else
                                 {
-                                    if (com.SubCommpents?.Count > 0)
+                                    if (com.SubMenus?.Count > 0)
                                     {
-                                        oldCom.SubCommpents.AddRange(com.SubCommpents);
+                                        oldCom.SubMenus.AddRange(com.SubMenus);
                                     }
                                 }
                             }
@@ -713,26 +671,11 @@ namespace fairdao.extensions.shared
                                 }
                                 else
                                 {
-                                    if (com.SubCommpents?.Count > 0)
+                                    if (com.SubMenus?.Count > 0)
                                     {
-                                        side.SubCommpents.AddRange(com.SubCommpents);
+                                        side.SubMenus.AddRange(com.SubMenus);
                                     }
                                 }
-                            }else if (com.Parent == VCommpent.Tool)
-                            {
-                                var tool = tools.FirstOrDefault(m => m.Id == com.Id);
-                                if (tool == null)
-                                {
-                                    tools.Add(com);
-                                }
-                                else
-                                {
-                                    if (com.SubCommpents?.Count > 0)
-                                    {
-                                        tool.SubCommpents.AddRange(com.SubCommpents);
-                                    }
-                                }
-
                             }
                             else
                             {
@@ -742,25 +685,25 @@ namespace fairdao.extensions.shared
                                 {
                                     foreach (var tab in tabs)
                                     {
-                                        comParent = tab.SubCommpents.FirstOrDefault(sub => sub.Id == com.Parent);
+                                        comParent = tab.SubMenus.FirstOrDefault(sub => sub.Id == com.Parent);
                                         if (comParent != null) { break; }
                                     }
                                     if (comParent == null)
                                     {
                                         foreach (var side in sides)
                                         {
-                                            comParent = side.SubCommpents.FirstOrDefault(sub => sub.Id == com.Parent);
+                                            comParent = side.SubMenus.FirstOrDefault(sub => sub.Id == com.Parent);
                                             if (comParent != null) { break; }
                                         }
                                     }
                                 }
                                 if (comParent != null)
                                 {
-                                    if (comParent.SubCommpents == null)
+                                    if (comParent.SubMenus == null)
                                     {
-                                        comParent.SubCommpents = new List<VCommpent>();
+                                        comParent.SubMenus = new List<VCommpent>();
                                     }
-                                    comParent.SubCommpents.Add(com);
+                                    comParent.SubMenus.Add(com);
                                 }
 
                             }
@@ -771,7 +714,6 @@ namespace fairdao.extensions.shared
                 tabs.Sort((a, b) => (a.SortId ?? 0).CompareTo(b.SortId ?? 0));
                 config.MTabs = tabs;
                 config.Sides = sides;
-                config.Tools = tools;
                 await SetClientConfig(config);
                 ClientConfig = config;
             }
@@ -779,101 +721,6 @@ namespace fairdao.extensions.shared
             {
                 Console.WriteLine(e);
             }
-        }
-
-        private SortedList<string,VCommpent> VCommpents = new ();
-
-
-        /// <summary>
-        /// 根据Id获取组件 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public VCommpent GetVCommpent(string id)
-        {
-            
-            if (VCommpents.TryGetValue(id, out VCommpent vCommpent))
-            {
-                return vCommpent;
-            }else
-            {
-
-                var v = SearchCommpent(ClientConfig.MTabs, id);
-                if (v == null)
-                {
-                    v=SearchCommpent(ClientConfig.Sides, id);
-                    if (v == null)
-                    {
-                        v = SearchCommpent(ClientConfig.Tools, id);
-                    }
-                }
-               
-                if (v != null)
-                {
-                    VCommpents?.TryAdd(v.Id, v); 
-                }
-                return v;
-            }
-        }
-
-
-        /// <summary>
-        /// 获取子组件列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IDictionary<VCommpent, Type>> GetSubCommpents(string parentComponetId, int comType)
-        {
-            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type> ();
-            var com=GetVCommpent(parentComponetId);
-            if (com.SubCommpents != null)
-            {
-                var types = com.SubCommpents.Where(m => (int)m.ComType == comType).ToList();
-
-                if (types.Count() > 0)
-                {
-                    types.Sort((a, b) => a.SortId.Value.CompareTo(b.SortId.Value));
-
-                    foreach (var type in types)
-                    {
-                        if (comType >= (int)ComponentType.CommpentMode)
-                        {
-                            try
-                            {
-                                Type t = Type.GetType(type.Link);
-                                if (t != null)
-                                {
-                                    ts.Add(type, t);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                            }
-                        }
-                        else ts.Add(type, null);
-                    }
-                }
-                
-            }
-            return ts;
-        }
-
-        /// <summary>
-        /// 搜索组件
-        /// </summary>
-        /// <param name="coms"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private VCommpent SearchCommpent(List<VCommpent> coms, string id) {
-            if (coms == null || coms.Count == 0) return null;
-            foreach(var com in coms)
-            {
-                if (com.Id==id) return com;
-                var c=SearchCommpent(com.SubCommpents, id);
-                if (c != null) return c;
-            }
-            return null;
         }
     }
 

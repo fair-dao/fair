@@ -50,7 +50,6 @@ namespace fairdao.extensions.shared.entity
         public List<fairdao.extensions.shared.entity.VCommpent> Sides { get; set; }
 
      
-        public List<fairdao.extensions.shared.entity.VCommpent> Tools { get; set; }
 
 
 

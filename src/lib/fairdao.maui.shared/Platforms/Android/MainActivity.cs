@@ -18,7 +18,6 @@ using AndroidNet = Android.Net;
 using AndroidOS = Android.OS;
 using Android.Content.Res;
 using Microsoft.AspNetCore.Components.WebView.Maui;
-using BulmaRazor.Components;
 
 namespace fairdao.maui.shared
 {

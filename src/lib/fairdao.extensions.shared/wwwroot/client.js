@@ -1,19 +1,4 @@
-﻿import * as fairdao from '/_content/fairdao.ui/js/fairdao.ui.min.js';
-window.fairdao = fairdao;
-window.blazorCulture = {
-    get: function () {
-        try {
-            return window.localStorage['BlazorCulture'];
-        } catch (e) {
-            console.log(e);
-        }
-    },
-    set: function (value) {
-        window.localStorage['BlazorCulture'] = value;
-    }
-};
-
-
+﻿
 /**
  * 调用Maui插件
  * @param {any} cmd 命令
@@ -59,8 +44,6 @@ window.ClientEnv = function () {
     } else env.IsApp = false;
     env.DeviceWidth = window.screen.width;
     env.DeviceHeight = window.screen.height;
-    env.IsAndroid = fairdao.env.IsAndroid();
-    env.IsIOS = fairdao.env.IsIOS();
     return env;
 }
 

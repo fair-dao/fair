@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Authors>fairdao</Authors>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<Copyright>@2024 fairdao. All rights reserved.</Copyright>
+		<Version>8.0.0</Version>
+		<Title>fair extensions shared</Title>
+		<Product>fair extensions shared</Product>
+		<Description>fair extensions shared</Description>
+		<PackageProjectUrl>https://fair-dao.com/</PackageProjectUrl>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/fair-dao/fair</RepositoryUrl>
+		<PackageId>fairdao.extensions.shared</PackageId>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="..\logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\fairdao.ui\fairdao.ui.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

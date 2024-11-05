@@ -9,27 +9,15 @@ using Microsoft.JSInterop;
 using fairdao.extensions.shared.entity;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
+using BulmaRazor.Components;
 using fairdao.extensions.shared;
 using fairdao.ui;
 using System.Runtime.InteropServices;
 
 namespace fairdao.extensions.shared
 {
-    public class ComBase :UIBase
+    public class ComBase : fairdao.ui.UIBase
     {
-
-        public void ComponentClick( VCommpent commpent )
-        {
-            if (commpent.ComType== ComponentType.ThirdLink)
-            {
-                NavManager.NavigateTo(commpent.Link);
-            }
-            else
-            {
-                NavManager.NavigateTo($"/fairdao/load/{commpent.Id}");
-            }
-
-        }
 
         public bool IsManageSysUser
         {
@@ -83,7 +71,22 @@ namespace fairdao.extensions.shared
 
 
 
-
+        /// <summary>
+        /// 获取连接网址
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        public string GetLinkUrl(string link)
+        {
+            if (link.IndexOf('/') >= 0)
+            {
+                return link;
+            }else
+            {
+                return $"/fairdao/load/{link}";
+            }
+        }
+      
 
 
         public override void ThrowException(object data, Exception e)

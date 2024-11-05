@@ -12,7 +12,7 @@ namespace fairdao.extensions.shared
     /// <summary>
     /// 延伸器
     /// </summary>
-    public class ServiceExtender : ExtenderBase
+    public class ServiceExtender :Extender
     {
 
         #region 为扩展器注册服务及应用服务

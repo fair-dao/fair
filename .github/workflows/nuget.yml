@@ -30,7 +30,7 @@ jobs:
       run: |
           #dotnet workload install android --ignore-failed-sources
           dotnet workload install maui --ignore-failed-sources
-          dotnet pack .\src\lib\ -o .\out /p:Version=8.0.$env:GITHUB_RUN_NUMBER
+          dotnet pack .\src\lib\ -o .\out /p:Version=8.1.$env:GITHUB_RUN_NUMBER
           #dotnet pack .\src\wallet\fair.extensions.wallet\ -o .\out /p:Version=8.3.$env:GITHUB_RUN_NUMBER-alpha
           dotnet nuget push .\out\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
     #- name: Restore Dependencies
