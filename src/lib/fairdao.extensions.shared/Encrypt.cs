@@ -10,7 +10,7 @@ namespace fairdao.extensions.shared
     /// <summary>
     /// 加密
     /// </summary>
-    public static class Encrypt
+    public static class Encrypt 
     {
         public static string EncodeNum(string data)
         {
