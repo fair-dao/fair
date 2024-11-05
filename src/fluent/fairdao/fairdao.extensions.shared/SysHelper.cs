@@ -20,6 +20,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static fairdao.extensions.shared.entity.Records;
+using System.Reflection.Metadata.Ecma335;
 
 namespace fairdao.extensions.shared
 {
@@ -678,6 +680,7 @@ namespace fairdao.extensions.shared
 
                 List<VCommpent> tabs = new List<VCommpent>();
                 List<VCommpent> sides = new List<VCommpent>();
+                List<VCommpent> tools = new List<VCommpent>();
                 //应用插件配置
                 Extenders?.ForEach(extender =>
                 {
@@ -715,6 +718,21 @@ namespace fairdao.extensions.shared
                                         side.SubCommpents.AddRange(com.SubCommpents);
                                     }
                                 }
+                            }else if (com.Parent == VCommpent.Tool)
+                            {
+                                var tool = tools.FirstOrDefault(m => m.Id == com.Id);
+                                if (tool == null)
+                                {
+                                    tools.Add(com);
+                                }
+                                else
+                                {
+                                    if (com.SubCommpents?.Count > 0)
+                                    {
+                                        tool.SubCommpents.AddRange(com.SubCommpents);
+                                    }
+                                }
+
                             }
                             else
                             {
@@ -753,6 +771,7 @@ namespace fairdao.extensions.shared
                 tabs.Sort((a, b) => (a.SortId ?? 0).CompareTo(b.SortId ?? 0));
                 config.MTabs = tabs;
                 config.Sides = sides;
+                config.Tools = tools;
                 await SetClientConfig(config);
                 ClientConfig = config;
             }
@@ -782,14 +801,62 @@ namespace fairdao.extensions.shared
                 var v = SearchCommpent(ClientConfig.MTabs, id);
                 if (v == null)
                 {
-                    v=SearchCommpent(ClientConfig.Sides, id);   
+                    v=SearchCommpent(ClientConfig.Sides, id);
+                    if (v == null)
+                    {
+                        v = SearchCommpent(ClientConfig.Tools, id);
+                    }
                 }
+               
                 if (v != null)
                 {
-                    VCommpents?.TryAdd(v.Id, vCommpent); 
+                    VCommpents?.TryAdd(v.Id, v); 
                 }
                 return v;
             }
+        }
+
+
+        /// <summary>
+        /// 获取子组件列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IDictionary<VCommpent, Type>> GetSubCommpents(string parentComponetId, int comType)
+        {
+            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type> ();
+            var com=GetVCommpent(parentComponetId);
+            if (com.SubCommpents != null)
+            {
+                var types = com.SubCommpents.Where(m => (int)m.ComType == comType).ToList();
+
+                if (types.Count() > 0)
+                {
+                    types.Sort((a, b) => a.SortId.Value.CompareTo(b.SortId.Value));
+
+                    foreach (var type in types)
+                    {
+                        if (comType >= (int)ComponentType.CommpentMode)
+                        {
+                            try
+                            {
+                                Type t = Type.GetType(type.Link);
+                                if (t != null)
+                                {
+                                    ts.Add(type, t);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                            }
+                        }
+                        else ts.Add(type, null);
+                    }
+                }
+                
+            }
+            return ts;
         }
 
         /// <summary>

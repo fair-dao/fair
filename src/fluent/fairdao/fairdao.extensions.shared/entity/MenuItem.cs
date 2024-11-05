@@ -24,6 +24,11 @@ namespace fairdao.extensions.shared.entity
         public const string Page = "tabpage";
 
         /// <summary>
+        /// 右上角工具组件
+        /// </summary>
+        public const string Tool = "toolbar";
+
+        /// <summary>
         /// 可视组件Id
         /// </summary>
         public string Id { get; set; }
@@ -86,9 +91,9 @@ namespace fairdao.extensions.shared.entity
         /// </summary>
         public int? State { get; set; }
         /// <summary>
-        /// 呈现模式
+        /// 组件类型
         /// </summary>
-        public MenuShowModes ShowMode { get; set; } = MenuShowModes.IconMode;
+        public ComponentType ComType { get; set; } = ComponentType.IconMode;
 
         /// <summary>
         /// 链接网址或组件类型（组件模式的时候）
@@ -127,7 +132,7 @@ namespace fairdao.extensions.shared.entity
                         {
                             sub.Parent = Id;
                         }
-                        sub.Id = $"{Id}-{BitConverter.ToUInt32(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes($"{sub.Text}-{sub.ShowMode}-{sub.Link}-{sub.Params}")))}";
+                        sub.Id = $"{Id}-{BitConverter.ToUInt32(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes($"{sub.Text}-{sub.ComType}-{sub.Link}-{sub.Params}")))}";
                     }
                 }
                 vCommpents = value;
@@ -153,12 +158,17 @@ namespace fairdao.extensions.shared.entity
     /// 组件呈现模式
     /// </summary>
 
-    public enum MenuShowModes
+    public enum ComponentType
     {
+        /// <summary>
+        /// 第三方链接
+        /// </summary>
+        ThirdLink = 0,
         /// <summary>
         /// 桌面图标模式
         /// </summary>
-        IconMode = 0,
+        IconMode = 1,
+
         /// <summary>
         /// 列表模式
         /// </summary>
@@ -166,23 +176,20 @@ namespace fairdao.extensions.shared.entity
         /// <summary>
         /// 大图菜单项模式
         /// </summary>
-        BigMenuItem = 4,
+        BigMenuItem = 10,
         /// <summary>
         /// 下拉菜单模式
         /// </summary>
-        DropdownMode = 6,
+        DropdownMode = 20,
         /// <summary>
         /// 组件模式
         /// </summary>
-        CommpentMode = 8,
-        /// <summary>
-        /// 第三方链接
-        /// </summary>
-        ThirdLink=10,
+        CommpentMode = 100,
+
         /// <summary>
         /// 任何模式
         /// </summary>
-        Any=15
+        Any=1000
 
     }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using fairdao.extensions.shared.entity;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +11,43 @@ namespace fairdao.extensions.shared.Pages
     public partial class Load
     {
         [Parameter]
-        public string ComponentType { get; set; }
-     
+        public string ComponentId { get; set; }
+
+        [Parameter]
+        public string? ComponentParamters { get; set; }
 
         public Type comm;
 
 
-        public DynamicComponent dyComponent;
 
         protected override Task OnInitializedAsync()
         {
-          
-            string strType = ComponentType?.Replace("-", ".");
-            Console.WriteLine($"com:{strType}");
-            Type type = Type.GetType(strType);
-            
+            Type type = null;
+            if (ComponentId.IndexOf("--") > 0)
+            {
+                string strType = ComponentId?.Replace("--", ".");
+                type = Type.GetType(strType);
+
+
+            }
+            else
+            {
+                VCommpent com = sysHelper.GetVCommpent(ComponentId);
+                if (com != null)
+                {
+                    if (com.ComType == ComponentType.ThirdLink)
+                    {
+                        navManager.NavigateTo(com.Link);
+                        return base.OnInitializedAsync();
+                    }
+                    else
+                    {
+                        type = Type.GetType(com.Link);
+
+                    }
+                }
+            }
+
             if (type != null)
             {
                 comm = type;

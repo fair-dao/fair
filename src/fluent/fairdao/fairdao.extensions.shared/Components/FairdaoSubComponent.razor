@@ -1,0 +1,56 @@
+﻿@using static fairdao.extensions.shared.entity.Records
+@inherits ComBase
+
+@if (Commpents?.Count > 0)
+{
+    if (ComType < 100)
+    {
+
+        <FluentGrid Spacing="3" Class="fair-desk" AdaptiveRendering="true">
+
+            @foreach (var menu in Commpents.Keys)
+            {
+                <FluentGridItem xs="4" sm="3" lg="2">
+                    <FairdaoShortcut Icon="menu.Icon" Text="@menu.Text" Link="@GetLinkUrl(menu)" />
+                </FluentGridItem>
+            }
+
+
+        </FluentGrid>
+    }
+    else
+    {
+        foreach (var c in Commpents.Values)
+        {
+
+            <DynamicComponent Type="c" Parameters="Parameters"></DynamicComponent>
+        }
+    }
+}
+@code {
+
+    /// <summary>
+    /// 组件类型
+    /// </summary>
+    [Parameter]
+    public string ParentId { get; set; }
+
+    [Parameter]
+    public IDictionary<string, object>? Parameters { get; set; }
+
+    /// <summary>
+    /// 插槽Id，如 start,midle,end,link
+    /// </summary>
+    [Parameter]
+    public int ComType { get; set; }
+
+    IDictionary<VCommpent, Type> Commpents { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Commpents = await sysHelper.GetSubCommpents(ParentId, ComType);
+        base.OnInitializedAsync();
+    }
+
+
+}

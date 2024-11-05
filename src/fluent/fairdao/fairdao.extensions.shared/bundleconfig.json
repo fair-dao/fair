@@ -6,8 +6,8 @@
       "Pages/**/*.scss" 
     ],
     "minify": {
-      "enabled": true,
-      "commentMode": "all"
+      "enabled": true, 
+      "commentMode": "all"  
     } 
   }
 ]

@@ -11,7 +11,6 @@ namespace fairdao.extensions.shared
     public class UIBase : ComponentBase, IAsyncDisposable
     {
 
-
         public RenderFragment RenderDialog { get; set; }
 
         [Inject]
@@ -55,6 +54,23 @@ namespace fairdao.extensions.shared
             // this.Toast(e.Message);
         }
 
+        /// <summary>
+        /// 获取连接网址
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        public string GetLinkUrl(VCommpent commpent)
+        {
+            if (commpent.ComType== ComponentType.ThirdLink)
+            {
+                return commpent.Link;
+            }
+            else
+            {
+                return $"/fairdao/load/{commpent.Id}";
+            }
+        }
+
 
         /// <summary>
         /// 获取连接网址
@@ -62,7 +78,7 @@ namespace fairdao.extensions.shared
         /// <param name="link"></param>
         /// <returns></returns>
         public string GetLinkUrl(string link)
-        {
+        {           
             if (link.IndexOf('/') >= 0)
             {
                 return link;

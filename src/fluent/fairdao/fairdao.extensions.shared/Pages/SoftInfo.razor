@@ -1,5 +1,4 @@
-﻿@page "/fair/sysInfo"
-@using System.Diagnostics
+﻿@using System.Diagnostics
 @using System.Reflection
 @inherits fairdao.extensions.shared.Pages.Page
 <FairdaoPage ContentPadding>
@@ -56,7 +55,7 @@
     Dictionary<string, Records.AsmData> exts = new();
     protected override void OnInitialized()
     {
-        System.Reflection.Assembly main = SysHelper.EntryAssembly;
+        var main =  Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
         cores.Add($"主程序", SysHelper.GetAsmData(main));
         System.Reflection.Assembly share = typeof(fairdao.extensions.shared.SysHelper).Assembly;
         cores.Add("扩展共享库", SysHelper.GetAsmData(share));

@@ -14,7 +14,7 @@
             try
             {
                 Console.WriteLine($"{topMenu.Text},{topMenu.Link}");
-                @if (topMenu.ShowMode == MenuShowModes.CommpentMode && !string.IsNullOrWhiteSpace(topMenu.Link)) //自定义组件
+                @if (topMenu.ComType == ComponentType.CommpentMode && !string.IsNullOrWhiteSpace(topMenu.Link)) //自定义组件
                 {
                     <FairdaoComTab SelectedIcon="@topMenu.SelectedIcon" UnselectedIcon="topMenu.Icon" Title="@Localer[topMenu.Text]" Hots="@topMenu.Hots" Selected="@(CurTabName==topMenu.Text)">
                         @if (Type.GetType(topMenu.Link) != null)

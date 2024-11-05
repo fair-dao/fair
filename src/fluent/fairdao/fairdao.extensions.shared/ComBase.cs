@@ -18,6 +18,19 @@ namespace fairdao.extensions.shared
     public class ComBase :UIBase
     {
 
+        public void ComponentClick( VCommpent commpent )
+        {
+            if (commpent.ComType== ComponentType.ThirdLink)
+            {
+                NavManager.NavigateTo(commpent.Link);
+            }
+            else
+            {
+                NavManager.NavigateTo($"/fairdao/load/{commpent.Id}");
+            }
+
+        }
+
         public bool IsManageSysUser
         {
             get

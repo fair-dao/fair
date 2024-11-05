@@ -1,6 +1,7 @@
-﻿@page "/fairdao/load/{ComponentType}"
+﻿@page "/fairdao/load/{ComponentId}"
+@page "/fairdao/load/{ComponentId}/{ComponentParamters}"
 @inherits Page
 @if (comm != null)
 {
-    <DynamicComponent @ref="dyComponent" Type="@comm"></DynamicComponent>
+    <DynamicComponent  Type="@comm"></DynamicComponent>
 }

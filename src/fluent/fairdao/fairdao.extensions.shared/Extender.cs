@@ -18,26 +18,31 @@ namespace fairdao.extensions.shared
     public class Extender : fairdao.extensions.shared.MainServiceExtender
     {
 
-        public Extender() : this("", "")
+        public Extender() : this("FAIR DAO","CopyRight By FAIR DAO", "v1.0")
         {
 
 
         }
 
-        public Extender(string copyRight, string version, params VCommpent[] commpents)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="logo">Logo图像（建议高度为32px,长度不超过100px）</param>
+        /// <param name="copyRight"></param>
+        /// <param name="version"></param>
+        /// <param name="commpents"></param>
+        public Extender(string logo, string copyRight, string version, params VCommpent[] commpents)
         {
+            if (logo.StartsWith("<") || logo.IndexOf(".")<0 )
+            {
+                Logo = logo;
+            }else
+            {
+                Logo = $"<img src=\"{logo}\" />";
+            }
 
-            var asm = SysHelper.GetAsmData(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
-            if (string.IsNullOrEmpty(version))
-            {
-                Version = $"Version {asm.Ver}";
-            }
-            else Version = version;
-            if (string.IsNullOrEmpty(copyRight))
-            {
-                CopyRight = $"Copyright by {asm.Company}";
-            }
-            else CopyRight = copyRight;
+            Version = version;
+            CopyRight = copyRight;
             if (commpents?.Count() > 0)
             {
                 vCommpents = commpents.ToList();
@@ -54,6 +59,9 @@ namespace fairdao.extensions.shared
         /// 版本信息
         /// </summary>
         public static string Version { get; set; }
+
+
+        public static string Logo { get; set; }
 
 
         public override List<string> SearchTypes { get => new List<string> { "功能", "扩展" }; set => base.SearchTypes = value; }
@@ -76,7 +84,7 @@ namespace fairdao.extensions.shared
                             SelectedIcon=new Icons.Filled.Size20.Home(),
                         Text = "访达",
                         SortId = -1,
-                        ShowMode = MenuShowModes.CommpentMode,
+                        ComType = ComponentType.CommpentMode,
                         Link = "fairdao.extensions.shared.Pages.Home,fairdao.extensions.shared",
                         SubCommpents = new List<VCommpent>
                         {
@@ -85,7 +93,7 @@ namespace fairdao.extensions.shared
                                 Icon =  new Icons.Regular.Size20.Info(),
                                 Text = "软件信息",
                                 SortId = 150,
-                                ShowMode = MenuShowModes.IconMode,
+                                ComType = ComponentType.IconMode,
                                 Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
                             }
                         }
@@ -98,7 +106,7 @@ namespace fairdao.extensions.shared
                         SelectedIcon=new Icons.Filled.Size20.AppsAddIn(),
                         Text = "探索",
                         SortId = 21111,
-                        ShowMode = MenuShowModes.CommpentMode,
+                        ComType = ComponentType.CommpentMode,
                         Link = "fairdao.extensions.shared.Pages.Found,fairdao.extensions.shared"
 
                     },
@@ -109,7 +117,7 @@ namespace fairdao.extensions.shared
                         Icon = new Icons.Regular.Size20.Settings(),
                         Text = "系统设置",
                         SortId = 111111111,
-                        ShowMode = MenuShowModes.DropdownMode,
+                        ComType = ComponentType.DropdownMode,
                         SubCommpents = new List<VCommpent>
                         {
                             new VCommpent
@@ -117,7 +125,7 @@ namespace fairdao.extensions.shared
                                 Icon =  new Icons.Regular.Size20.AppsSettings(),
                                 Text = "外观设置",
                                 SortId = 1,
-                                ShowMode = MenuShowModes.IconMode,
+                                ComType = ComponentType.IconMode,
                                 Link = "fairdao.extensions.shared.Pages.SiteSettings,fairdao.extensions.shared"
 
                             }
@@ -130,15 +138,15 @@ namespace fairdao.extensions.shared
                         Icon = new Icons.Regular.Size20.Settings(),
                         Text = "关于软件",
                         SortId = Int32.MaxValue,
-                        ShowMode = MenuShowModes.DropdownMode,
+                        ComType = ComponentType.DropdownMode,
                         SubCommpents = new List<VCommpent>
                         {
                             new VCommpent
                             {
                                 Icon =  new Icons.Regular.Size20.Info(),
-                                Text = "软件信息",
-                                SortId = 1150,
-                                ShowMode = MenuShowModes.IconMode,
+                                Text = "插件列表",
+                                SortId = 150,
+                                ComType = ComponentType.IconMode,
                                 Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
 
                             },
@@ -147,11 +155,32 @@ namespace fairdao.extensions.shared
                                 Icon =  new Icons.Regular.Size20.Info(),
                                 Text = "开源组件",
                                 SortId = 1150,
-                                ShowMode = MenuShowModes.IconMode,
-                                Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
+                                ComType = ComponentType.IconMode,
+                                Link = "fairdao.extensions.shared.Pages.OpenSource"
                             }
                         }
+                    },
+                    new VCommpent
+                    {
+                        Id="search",
+                        Parent=VCommpent.Tool,
+                        Icon = new Icons.Regular.Size20.Search(),
+                        Text = "查找",
+                        SortId = 100,
+                        ComType = ComponentType.CommpentMode,
+                        Link=  typeof( Pages.Search).ToString()
+                    },
+                    new VCommpent
+                    {
+                        Id="github",
+                        Parent=VCommpent.Tool,
+                        Icon= new FairDaoIcons.Size20.GitHub(),
+                        Text="github",
+                        SortId=10,
+                        ComType= ComponentType.ThirdLink,
+                        Link="http://github.com/microsoft/fluentui-blazor"
                     }
+
 
                 };
 

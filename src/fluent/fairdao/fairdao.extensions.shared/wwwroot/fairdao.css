@@ -346,14 +346,19 @@ header svg {
     }
 }
 
-
-.siteheader {
-    border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
-    margin-bottom: 0 !important;
+.siteheader .logo {
+    height: 2rem;
+    grid-column: 1;
+    color: var(--fill-color);
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
-
-    .siteheader .logo {
-        width: 108px;
-        height: 23px;
-        grid-column: 1;
+    .siteheader a {
+       text-decoration:none;
     }
+        .siteheader .logo img {
+            height: 2rem;
+        }
+        .siteheader .logo svg {
+            height: 2rem;
+        }

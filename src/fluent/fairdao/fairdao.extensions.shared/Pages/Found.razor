@@ -22,7 +22,7 @@
                         <FluentGridItem xs="4">
 
 
-                            @if (topMenu.ShowMode == MenuShowModes.CommpentMode) //自定义组件
+                            @if (topMenu.ComType == ComponentType.CommpentMode) //自定义组件
                             {
                                 <FairdaoShortcut Icon="@topMenu.Icon" Text="@topMenu.Text" Link="@($"/fairdao/load/{topMenu.Link}")" />
                             }

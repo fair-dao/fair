@@ -1,0 +1,41 @@
+﻿@inherits fairdao.extensions.shared.Pages.Page
+<FairdaoPage ContentPadding>
+    <TitlePanel>
+        @Localer["开源组件"]
+    </TitlePanel>
+    <ContentPanel>
+        <FluentStack Style="padding:1rem 0">
+            <FluentIcon Value="@(new Icons.Regular.Size20.Info())" Color="Color.Info" />
+            @Localer["以下是系统中用到的开源组件列表"]
+     
+        </FluentStack>
+      
+        <FluentAccordion>
+            <FluentAccordionItem>
+                <HeadingTemplate>
+                    FAIR DAO Framework
+                </HeadingTemplate>
+                <ChildContent>
+                    fair dao framework
+                    <div>
+                        <a href="https://github.com/fair-dao/">开源地址</a>
+                    </div>
+                </ChildContent>
+            </FluentAccordionItem>
+
+            <FluentAccordionItem>
+                <HeadingTemplate>
+                    Fluent UI Blazor
+                </HeadingTemplate>
+                <ChildContent>
+                    Microsoft Fluent UI Blazor components library. For use with ASP.NET Core Blazor applications
+                    <div>
+                        <a href="https://github.com/microsoft/fluentui-blazor">开源地址</a>
+                        <a href="https://www.fluentui-blazor.net/">演示地址</a>
+                    </div>
+                </ChildContent>
+            </FluentAccordionItem>
+        </FluentAccordion>
+    </ContentPanel>
+</FairdaoPage>
+
