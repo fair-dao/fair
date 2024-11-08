@@ -9,7 +9,7 @@ namespace fairdao.h5.demo
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             return builder.RunFairHost(
-                new fairdao.extensions.shared.Extender());
+                new fairdao.extensions.shared.Extender(),new fairdao.extensions.appCenter.Extender());
         }
     }
 }

@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\fairdao.h5.shared\fairdao.h5.shared.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\freecoder\fairproxy\fairdao.extensions.appCenter\fairdao.extensions.appCenter.csproj" />
+    <ProjectReference Include="..\..\lib\fairdao.h5.shared\fairdao.h5.shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

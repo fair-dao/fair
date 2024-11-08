@@ -35,7 +35,7 @@ namespace fairdao.extensions.shared
         /// </summary>
         public static Assembly EntryAssembly;
 
-     
+
         /// <summary>
         /// 配置改变事件
         /// </summary>
@@ -47,7 +47,7 @@ namespace fairdao.extensions.shared
 
         public static List<fairdao.extensions.shared.ExtenderBase> Extenders;
 
-   
+
 
 
         public event PageChangeed OnPageChange;
@@ -241,7 +241,7 @@ namespace fairdao.extensions.shared
         string storeKey;
 
 
-       
+
         public async Task<T> GetCache<T>(string cacheId)
         {
             var data = await dataStore.GetConfig<IndexedConfigData<T>>(cacheId);
@@ -470,7 +470,7 @@ namespace fairdao.extensions.shared
             //    cultures.Entity.Add(new Culture { DispName = "English", Name = "en" });
             //}
             data.Cultures = cultures?.Entity ?? new List<Culture>();
-            
+
             LangInfo lan = null;
             if (!string.IsNullOrEmpty(langInfo?.Entity))
             {
@@ -670,6 +670,28 @@ namespace fairdao.extensions.shared
                 }
             }
         }
+
+        void ProcessCommpent(SortedList<string, VCommpent> coms, VCommpent com)
+        {
+            var curCom = com;
+            if (coms.TryGetValue(com.Id, out curCom))
+            {
+                if (com.SubCommpents?.Count > 0)
+                {
+                    foreach (var sub in com.SubCommpents)
+                    {
+                        if (curCom.SubCommpents == null) curCom.SubCommpents = new();
+                        if (!curCom.SubCommpents.Any(m => m.Id == sub.Id)) curCom.SubCommpents.Add(sub);
+                        else ProcessCommpent(coms, sub);
+                    }
+                }
+            }
+            else
+            {
+                coms.TryAdd(com.Id, com);
+            }
+        }
+
         public async Task ReloadConfig()
         {
             var config = new ClientConfig();
@@ -677,7 +699,7 @@ namespace fairdao.extensions.shared
 
             try
             {
-
+                SortedList<string, VCommpent> coms = new();
                 List<VCommpent> tabs = new List<VCommpent>();
                 List<VCommpent> sides = new List<VCommpent>();
                 List<VCommpent> tools = new List<VCommpent>();
@@ -687,83 +709,26 @@ namespace fairdao.extensions.shared
                     //处理可视组件
                     if (extender.VCommpents != null)
                     {
+
                         foreach (var com in extender.VCommpents)
                         {
-                            if (com.Parent == VCommpent.Page)
+                            if (!coms.ContainsKey(com.Id))
                             {
-                                var oldCom = tabs.FirstOrDefault(m => m.Id == com.Id);
-                                if (oldCom == null)
+
+                                if (com.Parent == VCommpent.Page)
                                 {
                                     tabs.Add(com);
                                 }
-                                else
-                                {
-                                    if (com.SubCommpents?.Count > 0)
-                                    {
-                                        oldCom.SubCommpents.AddRange(com.SubCommpents);
-                                    }
-                                }
-                            }
-                            else if (com.Parent == VCommpent.Sidebar)
-                            {
-                                var side = sides.FirstOrDefault(m => m.Id == com.Id);
-                                if (side == null)
+                                else if (com.Parent == VCommpent.Sidebar)
                                 {
                                     sides.Add(com);
                                 }
-                                else
-                                {
-                                    if (com.SubCommpents?.Count > 0)
-                                    {
-                                        side.SubCommpents.AddRange(com.SubCommpents);
-                                    }
-                                }
-                            }else if (com.Parent == VCommpent.Tool)
-                            {
-                                var tool = tools.FirstOrDefault(m => m.Id == com.Id);
-                                if (tool == null)
+                                else if (com.Parent == VCommpent.Tool)
                                 {
                                     tools.Add(com);
                                 }
-                                else
-                                {
-                                    if (com.SubCommpents?.Count > 0)
-                                    {
-                                        tool.SubCommpents.AddRange(com.SubCommpents);
-                                    }
-                                }
-
                             }
-                            else
-                            {
-                                var comParent = tabs.FirstOrDefault(m => m.Id == com.Parent);
-                                if (comParent == null) sides.FirstOrDefault(m => m.Id == com.Parent);
-                                if (comParent == null)
-                                {
-                                    foreach (var tab in tabs)
-                                    {
-                                        comParent = tab.SubCommpents.FirstOrDefault(sub => sub.Id == com.Parent);
-                                        if (comParent != null) { break; }
-                                    }
-                                    if (comParent == null)
-                                    {
-                                        foreach (var side in sides)
-                                        {
-                                            comParent = side.SubCommpents.FirstOrDefault(sub => sub.Id == com.Parent);
-                                            if (comParent != null) { break; }
-                                        }
-                                    }
-                                }
-                                if (comParent != null)
-                                {
-                                    if (comParent.SubCommpents == null)
-                                    {
-                                        comParent.SubCommpents = new List<VCommpent>();
-                                    }
-                                    comParent.SubCommpents.Add(com);
-                                }
-
-                            }
+                            ProcessCommpent(coms,com);
                         }
                     }
 
@@ -781,7 +746,9 @@ namespace fairdao.extensions.shared
             }
         }
 
-        private SortedList<string,VCommpent> VCommpents = new ();
+
+
+        private SortedList<string, VCommpent> VCommpents = new();
 
 
         /// <summary>
@@ -791,26 +758,27 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public VCommpent GetVCommpent(string id)
         {
-            
+
             if (VCommpents.TryGetValue(id, out VCommpent vCommpent))
             {
                 return vCommpent;
-            }else
+            }
+            else
             {
 
                 var v = SearchCommpent(ClientConfig.MTabs, id);
                 if (v == null)
                 {
-                    v=SearchCommpent(ClientConfig.Sides, id);
+                    v = SearchCommpent(ClientConfig.Sides, id);
                     if (v == null)
                     {
                         v = SearchCommpent(ClientConfig.Tools, id);
                     }
                 }
-               
+
                 if (v != null)
                 {
-                    VCommpents?.TryAdd(v.Id, v); 
+                    VCommpents?.TryAdd(v.Id, v);
                 }
                 return v;
             }
@@ -824,8 +792,8 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public async Task<IDictionary<VCommpent, Type>> GetSubCommpents(string parentComponetId, int comType)
         {
-            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type> ();
-            var com=GetVCommpent(parentComponetId);
+            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type>();
+            var com = GetVCommpent(parentComponetId);
             if (com.SubCommpents != null)
             {
                 var types = com.SubCommpents.Where(m => (int)m.ComType == comType).ToList();
@@ -854,7 +822,7 @@ namespace fairdao.extensions.shared
                         else ts.Add(type, null);
                     }
                 }
-                
+
             }
             return ts;
         }
@@ -865,12 +833,13 @@ namespace fairdao.extensions.shared
         /// <param name="coms"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        private VCommpent SearchCommpent(List<VCommpent> coms, string id) {
+        private VCommpent SearchCommpent(List<VCommpent> coms, string id)
+        {
             if (coms == null || coms.Count == 0) return null;
-            foreach(var com in coms)
+            foreach (var com in coms)
             {
-                if (com.Id==id) return com;
-                var c=SearchCommpent(com.SubCommpents, id);
+                if (com.Id == id) return com;
+                var c = SearchCommpent(com.SubCommpents, id);
                 if (c != null) return c;
             }
             return null;
@@ -886,7 +855,7 @@ namespace fairdao.extensions.shared
             var helper = provider.GetService<SysHelper>();
             var http = provider.GetService<IAPIHttpClient>();
             await helper.Init();
-        
+
 
             await helper.InitCulture();
             var localer = provider.GetService<GensysLocaler>();

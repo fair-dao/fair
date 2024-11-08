@@ -3,11 +3,24 @@
     <FluentHeader Class="siteheader">
         <a href="/" aria-label="Back to the homepage">
             <div class="logo" role="presentation" aria-hidden="true" itemprop="logo" itemscope="itemscope">
-              @((MarkupString) Extender.Logo)
+                @((MarkupString)Extender.Logo)
             </div>
         </a>
         <FluentSpacer />
 
+
+
+        <FluentIcon Value="@(new Icons.Regular.Size20.ScanDash())" Color="Color.Fill" @onclick="()=>scanning=true" />
+        <NotificationCenter />
+
+        @if (sysHelper.ClientConfig?.Tools != null)
+        {
+
+            foreach (shared.entity.VCommpent tool in sysHelper.ClientConfig.Tools)
+            {
+                <FluentIcon Value="@tool.Icon" Color="Color.Fill" @onclick="()=> ComponentClick(tool)" />
+            }
+        }
         @if (sysHelper.ClientConfig?.MTabs != null)
         {
 
@@ -19,19 +32,6 @@
                 }
             }
         }
-
-        <FluentIcon Value="@(new Icons.Regular.Size20.ScanDash())" Color="Color.Fill" @onclick="()=>scanning=true" />
-
-        @if (sysHelper.ClientConfig?.Tools != null)
-        {
-
-            foreach (shared.entity.VCommpent tool in sysHelper.ClientConfig.Tools)
-            {
-                <FluentIcon Value="@tool.Icon" Color="Color.Fill" @onclick="()=> ComponentClick(tool)" />
-            }
-        }
-        <NotificationCenter />
-
 
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
@@ -49,7 +49,7 @@
                         <div>
                             @Localer["无法识别的信息"]
                         </div>
-                       
+
                         <div>
                             @scanResult
                         </div>

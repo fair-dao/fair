@@ -65,7 +65,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\fairdao.maui.shared\fairdao.maui.shared.csproj" />
+      <ProjectReference Include="..\..\lib\fairdao.maui.shared\fairdao.maui.shared.csproj" />
     </ItemGroup>
 
 </Project>
