@@ -15,7 +15,19 @@
                         <FluentNavGroup Expanded="m.Expand" Title="@Localer[m.Text]" Icon="m.Icon">
                             @foreach (var subMenu in m.SubCommpents)
                             {
-                                <FluentNavLink Href="@GetLinkUrl(subMenu)" Icon="subMenu.Icon" IconColor="Color.Accent">@Localer[subMenu.Text]</FluentNavLink>
+                                if (subMenu.SubCommpents?.Count > 0)
+                                {
+                                    <FluentNavGroup Expanded="subMenu.Expand" Title="@subMenu.Text" Icon="subMenu.Icon" IconColor="Color.Accent">
+                                        @foreach (var subMenu2 in m.SubCommpents)
+                                        {
+                                            <FluentNavLink Href="@GetLinkUrl(subMenu2)" Icon="subMenu2.Icon" IconColor="Color.Accent">@Localer[subMenu2.Text]</FluentNavLink>
+                                        }
+                                    </FluentNavGroup>
+                                }
+                                else
+                                {
+                                    <FluentNavLink Href="@GetLinkUrl(subMenu)" Icon="subMenu.Icon" IconColor="Color.Accent">@Localer[subMenu.Text]</FluentNavLink>
+                                }
                             }
                         </FluentNavGroup>
                     }
@@ -26,7 +38,7 @@
                 }
 
             </FluentNavMenu>
-           
+
         }
     </nav>
 </div>
