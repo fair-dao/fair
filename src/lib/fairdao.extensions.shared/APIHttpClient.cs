@@ -121,6 +121,12 @@ namespace fairdao.extensions.shared
             return this.GetStringAsync(url);
         }
 
+
+        public IAPIHttpClient WithBearer(string token)
+        {
+            this.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            return this;
+        }
         public IAPIHttpClient With(EventHandler<Result> resultHandler)
         {
             this.ResultHander = resultHandler;

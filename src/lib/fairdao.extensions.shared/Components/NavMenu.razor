@@ -18,7 +18,7 @@
                                 if (subMenu.SubCommpents?.Count > 0)
                                 {
                                     <FluentNavGroup Expanded="subMenu.Expand" Title="@subMenu.Text" Icon="subMenu.Icon" IconColor="Color.Accent">
-                                        @foreach (var subMenu2 in m.SubCommpents)
+                                        @foreach (var subMenu2 in subMenu.SubCommpents)
                                         {
                                             <FluentNavLink Href="@GetLinkUrl(subMenu2)" Icon="subMenu2.Icon" IconColor="Color.Accent">@Localer[subMenu2.Text]</FluentNavLink>
                                         }

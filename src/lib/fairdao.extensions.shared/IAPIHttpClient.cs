@@ -30,5 +30,13 @@ namespace fairdao.extensions.shared
         IAPIHttpClient With(EventHandler<Result> resultHander);
 
 
+        /// <summary>
+        /// 携带token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+
+        IAPIHttpClient WithBearer(string token);
+
     }
 }

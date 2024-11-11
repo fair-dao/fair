@@ -242,9 +242,6 @@ namespace fairdao.extensions.shared
             return c.ToSend<T>(url, content, HttpMethod.Post);
         }
 
-
-
-
         /// <summary>
         /// 提交json
         /// </summary>
