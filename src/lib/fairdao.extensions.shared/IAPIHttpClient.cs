@@ -18,12 +18,6 @@ namespace fairdao.extensions.shared
         Task<string> GetString(string url);
 
         /// <summary>
-        /// 异常处理Hander
-        /// </summary>
-        /// <param name="ExceptionHander"></param>
-        IAPIHttpClient With(EventHandler<Exception> ExceptionHander);
-
-        /// <summary>
         /// 处理Result
         /// </summary>
         /// <param name="ExceptionHander"></param>

@@ -13,6 +13,8 @@ namespace fairdao.extensions.shared.Pages
 {
     public class Page : fairdao.extensions.shared.ComBase
     {
+        [Parameter]
+        public VCommpent? VCommpent { get; set; }
 
         public override string CurPlugId => "base";
 

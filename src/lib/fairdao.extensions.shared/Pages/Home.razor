@@ -18,7 +18,7 @@
 
             foreach (shared.entity.VCommpent tool in sysHelper.ClientConfig.Tools)
             {
-                <FluentIcon Value="@tool.Icon" Color="Color.Fill" @onclick="()=> ComponentClick(tool)" />
+                <FluentIcon Value="@tool.Icon" Color="Color.Fill"  @onclick="()=> ComponentClick(tool)" />
             }
         }
         @if (sysHelper.ClientConfig?.MTabs != null)

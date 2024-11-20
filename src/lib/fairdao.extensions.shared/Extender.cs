@@ -1,6 +1,7 @@
 ﻿
 using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared.services;
+using fairdao.ui;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FluentUI.AspNetCore.Components;
 using System;
@@ -110,13 +111,23 @@ namespace fairdao.extensions.shared
                         Link = "fairdao.extensions.shared.Pages.Found,fairdao.extensions.shared"
 
                     },
+
+                    new VCommpent
+                    {
+                        Id = "appcenter",
+                        Parent = VCommpent.Sidebar,
+                        Icon = new Icons.Regular.Size20.AppsList(),
+                        Text = "应用中心",
+                        SortId = 10000,
+                        ComType = ComponentType.DropdownMode
+                    },
                     new VCommpent
                     {
                         Id = "syssetup",
                         Parent = VCommpent.Sidebar,
                         Icon = new Icons.Regular.Size20.Settings(),
                         Text = "系统设置",
-                        SortId = 111111111,
+                        SortId = Int32.MaxValue-1,
                         ComType = ComponentType.DropdownMode,
                         SubCommpents = new List<VCommpent>
                         {
@@ -135,7 +146,7 @@ namespace fairdao.extensions.shared
                     {
                         Id = "sysinfo",
                         Parent = VCommpent.Sidebar,
-                        Icon = new Icons.Regular.Size20.Settings(),
+                        Icon = new Icons.Regular.Size20.InfoShield(),
                         Text = "关于软件",
                         SortId = Int32.MaxValue,
                         ComType = ComponentType.DropdownMode,

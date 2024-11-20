@@ -3,5 +3,41 @@
 @inherits Page
 @if (comm != null)
 {
-    <DynamicComponent  Type="@comm"></DynamicComponent>
+    <DynamicComponent Type="@comm" @ref="dynamicComponent" Parameters="@ComParameters"></DynamicComponent>
+}
+else
+{
+    if (CurCommpent?.SubCommpents?.Count > 0)
+    {
+        <FairdaoPage ContentPadding>
+            <TitlePanel>
+                @Localer[CurCommpent?.Text]
+            </TitlePanel>
+
+            <ContentPanel>
+                <FairdaoSubComponent ParentCommpent="CurCommpent" ComType="(int)ComponentType.IconMode" />
+            </ContentPanel>
+        </FairdaoPage>
+    }
+    else
+    {
+        if (Loaded)
+        {
+            <FairdaoPage>
+                <TitlePanel>
+                    @Localer["组件"]
+                </TitlePanel>
+                <ContentPanel>
+                    <FairdaoPageMessage>
+                        组件加载失败：@ComponentId
+                        @if (CurCommpent?.Link != null)
+                        {
+                            <div>组件加载出错</div>
+                            <div>组件: @CurCommpent.Link</div>
+                        }
+                    </FairdaoPageMessage>
+                </ContentPanel>
+            </FairdaoPage>
+        }
+    }
 }

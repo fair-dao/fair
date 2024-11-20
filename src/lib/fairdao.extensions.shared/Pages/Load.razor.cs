@@ -18,11 +18,25 @@ namespace fairdao.extensions.shared.Pages
 
         public Type comm;
 
+        public bool Loaded = false;
+
+        public VCommpent CurCommpent;
 
 
+        public DynamicComponent dynamicComponent;
+        public Dictionary<string,object>? ComParameters { get; set; }
         protected override Task OnInitializedAsync()
         {
+
+            return base.OnInitializedAsync();
+        }
+
+         void LoadComponent()
+        {
+            
             Type type = null;
+            comm = null;
+     
             if (ComponentId.IndexOf("--") > 0)
             {
                 string strType = ComponentId?.Replace("--", ".");
@@ -32,19 +46,26 @@ namespace fairdao.extensions.shared.Pages
             }
             else
             {
-                VCommpent com = sysHelper.GetVCommpent(ComponentId);
-                if (com != null)
+                CurCommpent = sysHelper.GetVCommpent(ComponentId);
+                if (CurCommpent != null)
                 {
-                    if (com.ComType == ComponentType.ThirdLink)
+                    if (!string.IsNullOrEmpty(CurCommpent.Link))
                     {
-                        navManager.NavigateTo(com.Link);
-                        return base.OnInitializedAsync();
-                    }
-                    else
-                    {
-                        type = Type.GetType(com.Link);
+                        ComParameters = new Dictionary<string, object>();
+                        ComParameters.Add("VCommpent", CurCommpent);
 
+                        if (CurCommpent.ComType == ComponentType.ThirdLink)
+                        {
+                            navManager.NavigateTo(CurCommpent.Link);
+                            return;
+                        }
+                        else
+                        {
+                            type = Type.GetType(CurCommpent.Link);
+
+                        }
                     }
+
                 }
             }
 
@@ -52,7 +73,15 @@ namespace fairdao.extensions.shared.Pages
             {
                 comm = type;
             }
-            return base.OnInitializedAsync();
+            Loaded = true;
+        }
+
+        protected override Task OnParametersSetAsync()
+        {
+
+            LoadComponent();
+
+            return base.OnParametersSetAsync();
         }
     }
 }

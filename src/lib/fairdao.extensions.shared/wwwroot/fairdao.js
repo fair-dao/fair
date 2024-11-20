@@ -29,6 +29,16 @@ export class base {
     static log(msg, ...obj) {
         console.log(msg, obj);
     }
+    /**
+     *
+     * 美化json
+     * @param json
+     * @returns
+     */
+    static FormatJson(json) {
+        let obj = JSON.parse(json);
+        return JSON.stringify(obj, null, 4).replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
+    }
     static playAudio(url, loop = false) {
         let audio = document.createElement("audio");
         audio.setAttribute("autoplay", "autoplay");

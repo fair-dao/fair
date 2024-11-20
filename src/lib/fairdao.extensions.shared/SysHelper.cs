@@ -734,6 +734,8 @@ namespace fairdao.extensions.shared
 
                 });
                 tabs.Sort((a, b) => (a.SortId ?? 0).CompareTo(b.SortId ?? 0));
+                sides.Sort((a, b) => (a.SortId ?? 0).CompareTo(b.SortId ?? 0));
+                tools.Sort((a, b) => (a.SortId ?? 0).CompareTo(b.SortId ?? 0));
                 config.MTabs = tabs;
                 config.Sides = sides;
                 config.Tools = tools;
@@ -792,9 +794,19 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public async Task<IDictionary<VCommpent, Type>> GetSubCommpents(string parentComponetId, int comType)
         {
-            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type>();
             var com = GetVCommpent(parentComponetId);
-            if (com.SubCommpents != null)
+            return await GetSubCommpents(com, comType);
+        }
+
+        /// <summary>
+        /// 获取子组件列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IDictionary<VCommpent, Type>> GetSubCommpents(VCommpent com, int comType)
+        {
+            IDictionary<VCommpent, Type> ts = new Dictionary<VCommpent, Type>();
+            if (com?.SubCommpents != null)
             {
                 var types = com.SubCommpents.Where(m => (int)m.ComType == comType).ToList();
 
@@ -826,6 +838,7 @@ namespace fairdao.extensions.shared
             }
             return ts;
         }
+
 
         /// <summary>
         /// 搜索组件

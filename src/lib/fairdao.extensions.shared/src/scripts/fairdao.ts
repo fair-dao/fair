@@ -21,6 +21,18 @@
             console.log(msg, obj);
         }
 
+        /**
+         * 
+         * 美化json
+         * @param json
+         * @returns
+         */
+        public static FormatJson(json: any): string {
+            let obj=JSON.parse(json);
+            return JSON.stringify(obj, null, 4).replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
+        }
+         
+
         public static playAudio(url: string, loop: boolean = false): any {
             let audio = document.createElement("audio");
             audio.setAttribute("autoplay", "autoplay");

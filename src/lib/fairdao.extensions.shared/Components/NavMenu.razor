@@ -15,7 +15,7 @@
                         <FluentNavGroup Expanded="m.Expand" Title="@Localer[m.Text]" Icon="m.Icon">
                             @foreach (var subMenu in m.SubCommpents)
                             {
-                                if (subMenu.SubCommpents?.Count > 0)
+                            if (string.IsNullOrEmpty(subMenu.Link) && subMenu.SubCommpents?.Count > 0)
                                 {
                                     <FluentNavGroup Expanded="subMenu.Expand" Title="@subMenu.Text" Icon="subMenu.Icon" IconColor="Color.Accent">
                                         @foreach (var subMenu2 in subMenu.SubCommpents)

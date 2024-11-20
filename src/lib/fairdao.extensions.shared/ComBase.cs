@@ -12,15 +12,16 @@ using Microsoft.Extensions.Logging;
 using fairdao.extensions.shared;
 using fairdao.ui;
 using System.Runtime.InteropServices;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace fairdao.extensions.shared
 {
-    public class ComBase :UIBase
+    public class ComBase : UIBase
     {
 
-        public void ComponentClick( VCommpent commpent )
+        public void ComponentClick(VCommpent commpent)
         {
-            if (commpent.ComType== ComponentType.ThirdLink)
+            if (commpent.ComType == ComponentType.ThirdLink)
             {
                 NavManager.NavigateTo(commpent.Link);
             }
@@ -42,7 +43,7 @@ namespace fairdao.extensions.shared
         /// <summary>
         /// 当前插件Id(在插件服务端data\app.json文件里查看)
         /// </summary>
-        public virtual string CurPlugId{ get;}
+        public virtual string CurPlugId { get; }
 
         /// <summary>
         /// 页面加载中
@@ -50,12 +51,15 @@ namespace fairdao.extensions.shared
         public virtual bool? Loaded { get; set; }
 
 
- 
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
-    /// <summary>
-    /// 日志工厂
-    /// </summary>
-    [Inject]
+        [Inject]
+        public IToastService ToastService { get; set; }
+        /// <summary>
+        /// 日志工厂
+        /// </summary>
+        [Inject]
         protected ILoggerFactory LoggerFactory { get; set; }
 
         private ILogger logger;
@@ -88,7 +92,7 @@ namespace fairdao.extensions.shared
 
         public override void ThrowException(object data, Exception e)
         {
-     
+
             if (e is fairdao.extensions.shared.exs.NoPowerException) //无权访问
             {
                 this.InvokeAsync(() => { this.Toast(e.Message); });
@@ -277,20 +281,32 @@ namespace fairdao.extensions.shared
         /// </summary>
         ///<param name="action">动作</param>
         /// <returns></returns>
-        public Task WraperFromResult<T>(string url, string data, HttpMethod httpMethod, string format = "form", Action<T> okAction = null)
+        public async Task WraperFromResult<T>(string url, string data, HttpMethod httpMethod, string format = "form", Action<T> okAction = null,string token=null)
         {
             this.Loaded = false;
-
-            return httpClient.With(this.ThrowException).SubmitResult<T>(url, data, httpMethod).ContinueWith(preTask =>
-                { 
-                    this.Loaded= true;
-                    if (preTask.Exception?.InnerException == null)
+            try
+            {
+                if (!string.IsNullOrEmpty(token))
+                {
+                    httpClient.WithBearer(token);
+                }
+                
+                await httpClient.SubmitResult<T>(url, data, httpMethod).ContinueWith(preTask =>
                     {
-                        if (okAction != null) okAction(preTask.Result);
-
-                    }
-                });
-
+                        this.Loaded = true;
+                        if (preTask.Exception?.InnerException == null)
+                        {
+                            if (okAction != null) okAction(preTask.Result);
+                        }
+                        else throw preTask.Exception?.InnerException;
+                    });
+            }catch(Exception e)
+            {
+                this.Loaded = true;
+                this.DialogService.ShowErrorAsync(e.Message);
+                this.StateHasChanged();
+            }
+          
         }
 
 
@@ -304,7 +320,7 @@ namespace fairdao.extensions.shared
         {
 
             this.Loaded = false;
-            return httpClient.With(this.ThrowException).SubmitResult<string>(url, data, httpMethod).ContinueWith(r =>
+            return httpClient.SubmitResult<string>(url, data, httpMethod).ContinueWith(r =>
             {
                 this.Loaded = true;
                 if (r.Exception?.InnerException == null)

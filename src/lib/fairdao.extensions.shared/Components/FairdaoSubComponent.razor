@@ -36,6 +36,8 @@
     public string ParentId { get; set; }
 
     [Parameter]
+    public VCommpent ParentCommpent { get; set; }
+    [Parameter]
     public IDictionary<string, object>? Parameters { get; set; }
 
     /// <summary>
@@ -48,7 +50,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Commpents = await sysHelper.GetSubCommpents(ParentId, ComType);
+        if (ParentCommpent == null)
+        {
+            Commpents = await sysHelper.GetSubCommpents(ParentId, ComType);
+        }
+        else
+        {
+            Commpents = await sysHelper.GetSubCommpents(ParentCommpent, ComType) ;
+        }
         base.OnInitializedAsync();
     }
 

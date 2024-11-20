@@ -16,7 +16,6 @@ namespace fairdao.extensions.shared
 
         private fairdao.extensions.shared.SysHelper helper;
 
-        EventHandler<Exception> ExceptionHander;
 
         /// <summary>
         /// 结果处理
@@ -25,7 +24,7 @@ namespace fairdao.extensions.shared
 
         public APIHttpClient(shared.SysHelper helper) :base()
         {
-            this.Timeout = TimeSpan.FromSeconds(8);
+            this.Timeout = TimeSpan.FromSeconds(60);
             this.helper = helper;
             if (!string.IsNullOrEmpty(helper.ApiUrl))
             {
@@ -34,12 +33,6 @@ namespace fairdao.extensions.shared
 
         }
 
-
-        public IAPIHttpClient With(EventHandler<Exception> e)
-        {
-            this.ExceptionHander = e;
-            return this;
-        }
 
 
 
@@ -178,7 +171,6 @@ namespace fairdao.extensions.shared
                         else e= new Exception($"数据获取失败{url}");
                     }
                     e = e ?? new Exception("调用失败");
-                    this.ExceptionHander?.Invoke(o, e);
                     throw e;
                 }
                 else
@@ -256,7 +248,6 @@ namespace fairdao.extensions.shared
             catch (Exception e)
             {
                 Console.WriteLine("url:{0},ex:{1}", url, e);
-                ExceptionHander?.Invoke(url, e);
                 throw e;
 
             }
