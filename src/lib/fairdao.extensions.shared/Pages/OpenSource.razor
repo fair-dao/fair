@@ -4,12 +4,10 @@
         @Localer["开源组件"]
     </TitlePanel>
     <ContentPanel>
-        <FluentStack Style="padding:1rem 0">
-            <FluentIcon Value="@(new Icons.Regular.Size20.Info())" Color="Color.Info" />
+
+        <FluentMessageBar Title="提示">
             @Localer["以下是系统中用到的开源组件列表"]
-     
-        </FluentStack>
-      
+        </FluentMessageBar>
         <FluentAccordion>
             <FluentAccordionItem>
                 <HeadingTemplate>
@@ -18,7 +16,7 @@
                 <ChildContent>
                     fair dao framework
                     <div>
-                        <a href="https://github.com/fair-dao/">开源地址</a>
+                        <a href="https://github.com/fair-dao/" target="_blank">开源地址</a>
                     </div>
                 </ChildContent>
             </FluentAccordionItem>
@@ -30,8 +28,8 @@
                 <ChildContent>
                     Microsoft Fluent UI Blazor components library. For use with ASP.NET Core Blazor applications
                     <div>
-                        <a href="https://github.com/microsoft/fluentui-blazor">开源地址</a>
-                        <a href="https://www.fluentui-blazor.net/">演示地址</a>
+                        <a href="https://github.com/microsoft/fluentui-blazor" target="_blank">开源地址</a>
+                        <a href="https://www.fluentui-blazor.net/" target="_blank">演示地址</a>
                     </div>
                 </ChildContent>
             </FluentAccordionItem>

@@ -44,8 +44,9 @@ namespace fairdao.extensions.shared.services
             //将翻译结果保存
             try
             {
+
                     Console.WriteLine($"翻译：{lang},{code},{word}");
-                    await httpClient.PostJson<Result>($"{sysHelper.ApiUrl}Tool/WriteTrans?lang={lang}&code={code}&word={word}&reWrite={rewrite}&lib={lib}", null);
+                    await httpClient.SubmitResult<string>($"{sysHelper.ApiUrl}Tool/WriteTrans", $"lang={lang}&code={code}&word={word}&reWrite={rewrite}&lib={lib}");
                
 
             }
@@ -62,7 +63,7 @@ namespace fairdao.extensions.shared.services
             try
             {
      
-                    await httpClient.PostJson<Result>($"{sysHelper.ApiUrl}Tool/DelCode?code={code}&lib={lib}&lang={lang}", null);
+                    await httpClient.SubmitResult<string>($"{sysHelper.ApiUrl}Tool/DelCode", $"code={code}&lib={lib}&lang={lang}");
             }
             catch (Exception e)
             {
@@ -77,8 +78,8 @@ namespace fairdao.extensions.shared.services
         public async Task<LocalLang> GetAllLocalWords(string lib,string lang)
         {
        
-                var result = await httpClient.PostJson<Result<LocalLang>>($"{sysHelper.ApiUrl}Tool/GetAllLocalWords/{lib}/{lang}", null);
-                return result.data;
+                var result = await httpClient.SubmitResult<LocalLang>($"{sysHelper.ApiUrl}Tool/GetAllLocalWords/{lib}/{lang}");
+                return result;
            
         }
     }

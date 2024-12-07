@@ -23,6 +23,8 @@ public partial class SiteSettings
     [Inject]
     public required GlobalState GlobalState { get; set; }
 
+
+
     public DesignThemeModes Mode { get; set; }
 
     public OfficeColor? OfficeColor { get; set; }
@@ -40,8 +42,24 @@ public partial class SiteSettings
             return Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i);
         }
     }
-    protected override void OnAfterRender(bool firstRender)
+
+
+    public string GetModeName(DesignThemeModes mode)
     {
+        switch (mode)
+        {
+            case DesignThemeModes.System:
+                return "ÏµÍ³";
+            case DesignThemeModes.Dark:
+                return "°µºÚ";
+
+            case DesignThemeModes.Light:
+            default:
+                return "°×Ìì";
+        }
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {     
         if (firstRender)
         {
             Direction = GlobalState.Dir;

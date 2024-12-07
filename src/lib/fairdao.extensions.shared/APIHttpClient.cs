@@ -20,7 +20,7 @@ namespace fairdao.extensions.shared
         /// <summary>
         /// 结果处理
         /// </summary>
-        EventHandler<Result> ResultHander;
+       public EventHandler<Result>? ResultHander { get; set; }
 
         public APIHttpClient(shared.SysHelper helper) :base()
         {
@@ -46,68 +46,7 @@ namespace fairdao.extensions.shared
         }
 
 
-        ///// <summary>
-        ///// 调用API方法
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="url"></param>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public async Task<Result> PostResult(string url, string data = "")
-        //{
-        //    var content = new StringContent(data);
-        //    content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
-        //    return await PostResult(url, content);
-
-
-        //}
-
-
-
-        ///// <summary>
-        ///// 调用API方法
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="url"></param>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public async Task<Result> PostResult(string url, HttpContent content)
-        //{
-        //    return await this.Submit<fairdao.extensions.shared.Result>(url, content, HttpMethod.Post);
-
-        //}
-
-
-
-        ///// <summary>
-        ///// 调用API方法
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="url"></param>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public Task<T> PostResult<T>(string url, string data = "")
-        //{
-
-        //    var content = new StringContent(data);
-        //    content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
-        //    return SubmitResult<T>(url, content, HttpMethod.Post);
-
-        //}
-
-
-        ///// <summary>
-        ///// 调用API方法
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="url"></param>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public async Task<T> PostResult<T>(string url, HttpContent content)
-        //{
-        //    return await SubmitResult<T>(url, content, HttpMethod.Post);
-        //}
-
+  
 
         public Task<string> GetString(string url)
         {
@@ -126,65 +65,6 @@ namespace fairdao.extensions.shared
             return this;
         }
 
-        /// <summary>
-        /// 提交并返回数据
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <param name="content"></param>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        public Task<T> SendResult<T>(string url, HttpContent content = null, HttpMethod? method = null)
-        {
-            return this.ToSend<Result<T>>(url, content, method).ContinueWith<T>(r =>
-            {
-                Exception e = null;
-                Result<T> o = null;
-
-                if (r.Exception == null)
-                {
-
-                  
-                    o = r.Result;
-                    if (o != null)
-                    {
-
-                        ResultHander?.Invoke(o, o);
-                        if (o.state == Result.STATE_OK)
-                        {
-                            return o.data;
-                        }
-
-
-                        if (o.state == "notlogin") //未登录
-                        {
-                            e = new fairdao.extensions.shared.exs.NoLoginException(o.msg);
-                        }
-                        else if (o.state == Result.STATE_ERR_NOPOWER) //无权访问
-                        {
-                            e = new fairdao.extensions.shared.exs.NoPowerException(o.msg);
-                        }
-                        else if (!string.IsNullOrEmpty(o.msg))
-                        {
-                            e = new Exception(o.msg);
-                        }
-                        else e= new Exception($"数据获取失败{url}");
-                    }
-                    e = e ?? new Exception("调用失败");
-                    throw e;
-                }
-                else
-                {
-                    throw r.Exception;
-                }
-
-            
-
-
-
-
-            });
-        }
 
         /// <summary>
         /// 提交表单 
@@ -227,8 +107,7 @@ namespace fairdao.extensions.shared
                 HttpResponseMessage r = await this.SendAsync(httpRequestMessage);
                 string back = await r.Content.ReadAsStringAsync();
                 if (r.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    Console.WriteLine($"{url}\r\nbackdata:   {back}");
+                {                  
                     T o = System.Text.Json.JsonSerializer.Deserialize<T>(back, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null });
                     return o;
                 }

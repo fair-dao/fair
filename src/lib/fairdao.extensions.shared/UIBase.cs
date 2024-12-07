@@ -61,7 +61,7 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public string GetLinkUrl(VCommpent commpent)
         {
-            if (commpent.ComType== ComponentType.ThirdLink)
+            if (commpent.ComType== ComponentType.ThirdLink || commpent.ComType==ComponentType.IconMode )
             {
                 return commpent.Link;
             }

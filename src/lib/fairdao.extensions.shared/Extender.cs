@@ -19,7 +19,7 @@ namespace fairdao.extensions.shared
     public class Extender : fairdao.extensions.shared.MainServiceExtender
     {
 
-        public Extender() : this("FAIR DAO","CopyRight By FAIR DAO", "v1.0")
+        public Extender() : this("FAIR DAO", "CopyRight By FAIR DAO", "v1.0")
         {
 
 
@@ -34,10 +34,11 @@ namespace fairdao.extensions.shared
         /// <param name="commpents"></param>
         public Extender(string logo, string copyRight, string version, params VCommpent[] commpents)
         {
-            if (logo.StartsWith("<") || logo.IndexOf(".")<0 )
+            if (logo.StartsWith("<") || logo.IndexOf(".") < 0)
             {
                 Logo = logo;
-            }else
+            }
+            else
             {
                 Logo = $"<img src=\"{logo}\" />";
             }
@@ -95,7 +96,7 @@ namespace fairdao.extensions.shared
                                 Text = "软件信息",
                                 SortId = 150,
                                 ComType = ComponentType.IconMode,
-                                Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
+                                Link = "/fairdao/softInfo"
                             }
                         }
                     },
@@ -125,7 +126,7 @@ namespace fairdao.extensions.shared
                     {
                         Id = "syssetup",
                         Parent = VCommpent.Sidebar,
-                        Icon = new Icons.Regular.Size20.Settings(),
+                        Icon = new Icons.Regular.Size20.AppsSettings(),
                         Text = "系统设置",
                         SortId = Int32.MaxValue-1,
                         ComType = ComponentType.DropdownMode,
@@ -136,7 +137,7 @@ namespace fairdao.extensions.shared
                                 Icon =  new Icons.Regular.Size20.AppsSettings(),
                                 Text = "外观设置",
                                 SortId = 1,
-                                ComType = ComponentType.IconMode,
+                                ComType = ComponentType.CommpentMode,
                                 Link = "fairdao.extensions.shared.Pages.SiteSettings,fairdao.extensions.shared"
 
                             }
@@ -154,20 +155,28 @@ namespace fairdao.extensions.shared
                         {
                             new VCommpent
                             {
-                                Icon =  new Icons.Regular.Size20.Info(),
+                                Icon =  new Icons.Regular.Size20.PlugConnected(),
                                 Text = "插件列表",
                                 SortId = 150,
-                                ComType = ComponentType.IconMode,
+                                ComType = ComponentType.CommpentMode,
                                 Link = "fairdao.extensions.shared.Pages.SoftInfo,fairdao.extensions.shared"
 
                             },
                             new VCommpent
                             {
-                                Icon =  new Icons.Regular.Size20.Info(),
+                                Icon =  new Icons.Filled.Size24.Component2DoubleTapSwipeDown(),
                                 Text = "开源组件",
                                 SortId = 1150,
-                                ComType = ComponentType.IconMode,
+                                ComType = ComponentType.CommpentMode,
                                 Link = "fairdao.extensions.shared.Pages.OpenSource"
+                            },new VCommpent
+                            {
+                                Icon =  new Icons.Regular.Size20.Icons(),
+                                Text = "系统图标",
+                                SortId = 1150,
+                                ComType = ComponentType.IconMode,
+                                Link = " /fairdao/Icons"
+
                             }
                         }
                     },

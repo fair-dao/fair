@@ -182,106 +182,6 @@ namespace fairdao.extensions.shared
 
         }
 
-        public static Task<Result> SubmitResult(this IAPIHttpClient c, string url, string data = null, HttpMethod method = null)
-        {
-            data = data ?? string.Empty;
-            StringContent content = new StringContent(data);
-            return Submit<Result>(c, url, content, method);
-        }
-
-
-
-
-        /// <summary>
-        /// 提交表单 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="c"></param>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="format">数据格式(form,json等)</param>
-        /// <returns></returns>
-        private static Task<T> Submit<T>(this IAPIHttpClient c, string url, HttpContent? content, HttpMethod method)
-        {
-            content = content ?? new StringContent(String.Empty);
-
-
-            return c.ToSend<T>(url, content, method);
-        }
-
-
-
-
-        /// <summary>
-        /// 提交表单 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="c"></param>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static Task<T> PostForm<T>(this IAPIHttpClient c, string url, string data)
-        {
-            data = data ?? "";
-            var content = new StringContent(data);
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
-            return c.ToSend<T>(url, content, HttpMethod.Post);
-        }
-
-
-        /// <summary>
-        /// 提交表单 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="c"></param>
-        /// <param name="url"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public static Task<T> PostForm<T>(this IAPIHttpClient c, string url, HttpContent content)
-        {
-            return c.ToSend<T>(url, content, HttpMethod.Post);
-        }
-
-        /// <summary>
-        /// 提交json
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="c"></param>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-
-        public static Task<T> PostJson<T>(this IAPIHttpClient c, string url, object data)
-        {
-            StringContent content = null;
-            if (data != null)
-            {
-                var str = System.Text.Json.JsonSerializer.Serialize(data);
-                content = new StringContent(str);
-                content.Headers.ContentType = MediaTypeHeaderValue.Parse(MediaTypeNames.Application.Json);
-            }
-            return c.ToSend<T>(url, content);
-
-        }
-
-
-
-
-        #region  PostResult相关方法
-
-        /// <summary>
-        /// 调用API方法
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <param name="data">可为字符串(form方式提交),HttpContent(不指定提交方式）,其它对象(Json方式提交)</param>
-        /// <returns></returns>
-        public static Task<T> PostResult<T>(this IAPIHttpClient c, string url, object data = null)
-        {
-            return SubmitResult<T>(c,url, data,HttpMethod.Post);
-           
-        }
-
 
 
 
@@ -292,13 +192,13 @@ namespace fairdao.extensions.shared
         /// <typeparam name="T"></typeparam>
         /// <param name="c"></param>
         /// <param name="url"></param>
-        /// <param name="data">字符串以form方式提交，其它对象以json方式提交</param>
+        /// <param name="data">可以为字符串，HttContnent或object对象</param>
         /// <param name="method"></param>
         /// <param name="dataType"></param>
         /// <returns></returns>
 
 
-        public static Task<T> SubmitResult<T>(this IAPIHttpClient c, string url, object data, HttpMethod? method = null)
+        public static Task<T> SubmitResult<T>(this IAPIHttpClient c, string url, object? data=null, HttpMethod? method = null)
         {
             data = data ?? string.Empty;
             HttpContent content;
@@ -324,8 +224,62 @@ namespace fairdao.extensions.shared
         }
 
 
-        #endregion
+    
 
+
+        /// <summary>
+        /// 提交并返回数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="content"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        private static Task<T> SendResult<T>(this IAPIHttpClient c, string url, HttpContent content = null, HttpMethod? method = null)
+        {
+          
+
+            return c.ToSend<Result<T>>(url, content, method).ContinueWith<T>(r =>
+            {
+                Exception e = null;
+                Result<T> o = null;
+
+                if (r.Exception == null)
+                {
+                    o = r.Result;
+                    if (o != null)
+                    {
+
+                        c.ResultHander?.Invoke(o, o);
+                        if (o.state == Result.STATE_OK)
+                        {
+                            return o.data;
+                        }
+
+
+                        if (o.state == "notlogin") //未登录
+                        {
+                            e = new fairdao.extensions.shared.exs.NoLoginException(o.msg);
+                        }
+                        else if (o.state == Result.STATE_ERR_NOPOWER) //无权访问
+                        {
+                            e = new fairdao.extensions.shared.exs.NoPowerException(o.msg);
+                        }
+                        else if (!string.IsNullOrEmpty(o.msg))
+                        {
+                            e = new Exception(o.msg);
+                        }
+                        else e = new Exception($"数据获取失败{url}");
+                    }
+                    e = e ?? new Exception("调用失败");
+                    throw e;
+                }
+                else
+                {
+                    throw r.Exception;
+                }
+            });
+        }
 
 
 

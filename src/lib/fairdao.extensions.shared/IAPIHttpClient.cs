@@ -13,8 +13,13 @@ namespace fairdao.extensions.shared
     public interface IAPIHttpClient
     {
         Task<T> ToSend<T>(string url, HttpContent content = null, HttpMethod method = null);
-        Task<T> SendResult<T>(string url, HttpContent content = null, HttpMethod? method = null);
-      //  IAPIHttpClient FlushToken();
+
+        /// <summary>
+        /// 结果处理
+        /// </summary>
+        EventHandler<Result>? ResultHander { get; set; }
+
+        //  IAPIHttpClient FlushToken();
         Task<string> GetString(string url);
 
         /// <summary>

@@ -1,0 +1,123 @@
+﻿@page "/fairdao/Icons"
+@inherits Page
+<FairdaoPage ContentPadding>
+    <TitlePanel>
+        系统图标列表
+    </TitlePanel>
+    <ContentPanel>
+        <FluentSelect TOption="String" @bind-Value=Style Label="样式">
+            <FluentOption Value="All" Selected="true">All</FluentOption>
+            <FluentOption Value="Regular">粗图标</FluentOption>
+            <FluentOption Value="Light">细图标</FluentOption>
+            <FluentOption Value="Color">彩色图标</FluentOption>
+            <FluentOption Value="Filled">填充图标</FluentOption>
+        </FluentSelect>
+        <FluentSelect TOption="String" @bind-Value=Size Label="大小">
+            <FluentOption Value="All" Selected="true">All</FluentOption>
+            <FluentOption Value="Size16">Size10</FluentOption>
+            <FluentOption Value="Size16">Size12</FluentOption>
+            <FluentOption Value="Size16">Size16</FluentOption>
+            <FluentOption Value="Size20">Size20</FluentOption>
+            <FluentOption Value="Size24">Size24</FluentOption>
+            <FluentOption Value="Size24">Size28</FluentOption>
+            <FluentOption Value="Size32">Size32</FluentOption>
+            <FluentOption Value="Size32">Size48</FluentOption>
+        </FluentSelect>
+        <FluentSearch Placeholder="关键字" ValueChanged="Search"></FluentSearch>
+        @if (!Loading)
+        {
+            <FluentGrid Spacing="3" Class="fair-desk" AdaptiveRendering="true">
+                @if (SelectedIcons?.Count > 0)
+                {
+                    foreach (IconInfo icon in SelectedIcons)
+                    {
+                        <FluentGridItem xs="4" sm="3" lg="2">
+                            <FairdaoShortcut Icon="@(GetIcon(icon))" Text="@($"Icons.{icon.Variant}.{icon.Size}.{icon.Name}")" />
+                        </FluentGridItem>
+                    }
+                }
+                else
+                {
+                    <FairdaoPageMessage RecordNotFound></FairdaoPageMessage>
+                }
+            </FluentGrid>
+        }
+        else
+        {
+            <FluentProgressRing></FluentProgressRing>
+        }
+        <FluentPaginator State="@pagination" CurrentPageIndexChanged="PageChanged" />
+    </ContentPanel>
+</FairdaoPage>
+
+@code {
+
+
+    void PageChanged(Int32 page)
+    {
+        SelectedIcons = FilterIcons.Skip(pagination.CurrentPageIndex * pagination.ItemsPerPage).Take(pagination.ItemsPerPage).ToList();
+        Loading = false;
+        this.StateHasChanged();
+    }
+
+
+    public static SortedDictionary<string, CustomIcon> DictIcons = new SortedDictionary<string, CustomIcon>();
+
+
+    public CustomIcon GetIcon(IconInfo icon)
+    {
+        string key = $"Icons.{icon.Variant}.{icon.Size}.{icon.Name}";
+        if (DictIcons.TryGetValue(key, out CustomIcon icon1))
+        {
+            return icon1;
+        }
+        var ico=Icons.GetInstance(icon);
+        DictIcons.Add(key, ico);
+        return ico;
+    }
+
+    PaginationState pagination = new PaginationState { ItemsPerPage = 50 };
+    List<IconInfo> FilterIcons;
+    List<IconInfo> SelectedIcons { get; set; }
+    string Size { get; set; } = "All";
+
+    string Style { get; set; } = "All";
+    bool Loading = false;
+    public static List<IconInfo> AllIcons;
+
+    Task Search(string? key)
+    {
+        Loading = true;
+        this.StateHasChanged();
+        Task.Run(async () =>
+        {
+
+            if (AllIcons == null)
+            {
+                AllIcons = Icons.GetAllIcons().ToList();
+            }
+
+            if (AllIcons != null)
+            {
+                var filterIcon = AllIcons.Where(a => true);
+                if (string.IsNullOrEmpty(Style) || Style != "All") filterIcon = filterIcon.Where(m => m.Variant.ToString() == Style);
+                if (string.IsNullOrEmpty(Size) || Size != "All") filterIcon = filterIcon.Where(m => m.Size.ToString() == Size);
+                if (!string.IsNullOrEmpty(key)) filterIcon = filterIcon.Where(m => m.Name.IndexOf(key, StringComparison.OrdinalIgnoreCase) > -1);
+                FilterIcons = filterIcon.ToList();
+            }
+            else
+            {
+                FilterIcons = new List<IconInfo>();
+            }
+            await this.pagination.SetTotalItemCountAsync(FilterIcons.Count);
+            PageChanged(0);
+         
+
+        });
+
+        return Task.CompletedTask;
+    }
+
+
+
+}
