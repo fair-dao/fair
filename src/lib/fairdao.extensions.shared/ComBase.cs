@@ -98,9 +98,11 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public async Task WraperFromResult<T>(string url, object? data=null, HttpMethod? httpMethod= null,Action<T> okAction = null,string token=null)
         {
-            this.Loaded = false;
+  
             try
             {
+                this.Loaded = false;
+                this.StateHasChanged();
                 if (!string.IsNullOrEmpty(token))
                 {
                     httpClient.WithBearer(token);
@@ -108,10 +110,12 @@ namespace fairdao.extensions.shared
                 
                 await httpClient.SubmitResult<T>(url, data, httpMethod).ContinueWith(preTask =>
                     {
-                        this.Loaded = true;
+                        
                         if (preTask.Exception?.InnerException == null)
                         {
                             if (okAction != null) okAction(preTask.Result);
+                            this.Loaded = true;
+                            this.StateHasChanged();
                         }
                         else throw preTask.Exception?.InnerException;
                     });
