@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35417.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.portal.h5", "fairdao.portal.h5\fairdao.portal.h5.csproj", "{AB998F55-1A62-48B1-BC8B-D01E078BF201}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.portal.app", "fairdao.portal.app\fairdao.portal.app.csproj", "{64EE4658-5BC2-4305-BBC8-5270623B242D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairdao.extensions.shared", "..\lib\fairdao.extensions.shared\fairdao.extensions.shared.csproj", "{9019F635-2C96-4055-8F0E-D276332CFF29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB998F55-1A62-48B1-BC8B-D01E078BF201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB998F55-1A62-48B1-BC8B-D01E078BF201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB998F55-1A62-48B1-BC8B-D01E078BF201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB998F55-1A62-48B1-BC8B-D01E078BF201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64EE4658-5BC2-4305-BBC8-5270623B242D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9019F635-2C96-4055-8F0E-D276332CFF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9019F635-2C96-4055-8F0E-D276332CFF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9019F635-2C96-4055-8F0E-D276332CFF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9019F635-2C96-4055-8F0E-D276332CFF29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
