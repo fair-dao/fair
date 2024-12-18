@@ -17,7 +17,7 @@ namespace fairdao.extensions.shared
         protected NavigationManager NavManager { get; set; }
 
         [Inject]
-        protected fairdao.extensions.shared.localization.GensysLocaler Localer { get; set; }
+        protected fairdao.extensions.shared.localization.FairdaoLocaler Localer { get; set; }
 
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
@@ -61,8 +61,10 @@ namespace fairdao.extensions.shared
         /// <returns></returns>
         public string GetLinkUrl(VCommpent commpent)
         {
-            if (commpent.ComType== ComponentType.ThirdLink || commpent.ComType==ComponentType.IconMode )
+            if (commpent.ComType == ComponentType.DropdownMode) return "#";
+            if (commpent.ComType== ComponentType.ThirdLink || commpent.ComType==ComponentType.IconMode)
             {
+                if (string.IsNullOrEmpty(commpent.Link)) return "#";
                 return commpent.Link;
             }
             else

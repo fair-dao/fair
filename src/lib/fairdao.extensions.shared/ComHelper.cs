@@ -291,7 +291,7 @@ namespace fairdao.extensions.shared
         public static string GetUserFace(string face)
         {
 
-            if (string.IsNullOrEmpty(face)) face = "/gensys/images/noface.png";
+            if (string.IsNullOrEmpty(face)) face = "/fairdao/images/noface.png";
             return face;
 
         }

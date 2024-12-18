@@ -155,7 +155,7 @@ namespace fairdao.extensions.shared
         {
             get
             {
-                return "gensys";
+                return "fairdao";
             }
         }
 
@@ -384,7 +384,7 @@ namespace fairdao.extensions.shared
 
             try
             {
-                return await jSRuntime.InvokeAsync<bool>("gensys.env.RunInBackground");
+                return await jSRuntime.InvokeAsync<bool>("fairdao.env.RunInBackground");
             }
             catch (Exception ex)
             {
@@ -489,8 +489,16 @@ namespace fairdao.extensions.shared
         public async Task<Culture> GetCurLang()
         {
             string lang = await GetCulture();
-            var culture = LocalData.Cultures.FirstOrDefault(m => m.Name == lang);
-            if (culture == null) culture = new Culture() { DispName="中文", Name="zh", EnglishName="Chinese" };
+            Culture culture = null;
+            try
+            {
+                culture = LocalData?.Cultures?.FirstOrDefault(m => m.Name == lang);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            if (culture == null) culture = new Culture() { DispName = "中文", Name = "zh", EnglishName = "Chinese" };
             return culture;
         }
 
@@ -655,7 +663,7 @@ namespace fairdao.extensions.shared
 
         }
 
-        public async Task ChangeLang(fairdao.extensions.shared.services.TransService trans, GensysLocaler localer, string lang, bool must = false)
+        public async Task ChangeLang(fairdao.extensions.shared.services.TransService trans, FairdaoLocaler localer, string lang, bool must = false)
         {
             string oldLang = await GetCulture();
             if (oldLang != lang || must)
@@ -730,7 +738,7 @@ namespace fairdao.extensions.shared
                                     tools.Add(com);
                                 }
                             }
-                            ProcessCommpent(coms,com);
+                            ProcessCommpent(coms, com);
                         }
                     }
 
@@ -873,7 +881,7 @@ namespace fairdao.extensions.shared
 
 
             await helper.InitCulture();
-            var localer = provider.GetService<GensysLocaler>();
+            var localer = provider.GetService<FairdaoLocaler>();
             localer.CurLang = await helper.GetCurLang();
             /*将翻译库加载到翻译器里*/
             localer.Langs = new SortedList<string, LangInfo>();

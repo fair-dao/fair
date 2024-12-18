@@ -141,7 +141,7 @@ namespace fairdao.portal
                         //        using (HttpClient httpClient = new HttpClient())
                         //        {
                         //            httpClient.BaseAddress = new Uri(apiAddress);
-                        //            var result = await httpClient.PostForm<Result<UserInfo>>(Path.Combine(apiAddress, "gensys_user/BindDevice"), $"userId={userId}&tokenId={tokenId}&dev={DeviceInfo}&pushToken={devToken}");
+                        //            var result = await httpClient.PostForm<Result<UserInfo>>(Path.Combine(apiAddress, "fairdao_user/BindDevice"), $"userId={userId}&tokenId={tokenId}&dev={DeviceInfo}&pushToken={devToken}");
 
                         //            if (result.state == "ok")
                         //            {

@@ -1,7 +1,7 @@
 ﻿@implements IDisposable
 @inject IDialogService DialogService
 @inject IMessageService MessageService
-@inject fairdao.extensions.shared.localization.GensysLocaler Localer
+@inject fairdao.extensions.shared.localization.FairdaoLocaler Localer
 
     @if (MessageService.Count(Consts.MESSAGES_NOTIFICATION_CENTER) > 0)
     {

@@ -9,10 +9,10 @@ namespace fairdao.portal.h5
     /// </summary>
     public class LocaldbStore : fairdao.extensions.shared.IDataStore
     {
-        public gensysDatabase Database;
+        public FairdaoDatabase Database;
 
 
-        public LocaldbStore(gensysDatabase database)
+        public LocaldbStore(FairdaoDatabase database)
         {
             this.Database= database;
         }

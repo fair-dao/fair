@@ -100,6 +100,18 @@ namespace fairdao.extensions.shared
                             }
                         }
                     },
+                         new VCommpent
+                    {
+                        Id = "eco",
+                        Parent = VCommpent.Page,
+                        Icon = new Icons.Regular.Size20.AccessibilityMore(),
+                        SelectedIcon=new Icons.Filled.Size20.AccessibilityMore(),
+                        Text = "生态",
+                        SortId = 21111,
+                        ComType = ComponentType.CommpentMode,
+                        Link = "fairdao.extensions.shared.Pages.Eco,fairdao.extensions.shared"
+
+                    },
                     new VCommpent
                     {
                         Id = "find",

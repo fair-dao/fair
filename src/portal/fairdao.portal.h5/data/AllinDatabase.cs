@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace fairdao.extensions.shared.data
 {
-    public class gensysDatabase : IDBDatabase
+    public class FairdaoDatabase : IDBDatabase
     {
 
         public ConfigStore ConfigStore { get; }
 
        
 
-        public gensysDatabase(IJSRuntime jsRuntime) : base(jsRuntime)
+        public FairdaoDatabase(IJSRuntime jsRuntime) : base(jsRuntime)
         {
-            Name = "gensys";
+            Name = "fairdao";
             Version = 1;
             ConfigStore = new ConfigStore(this);
 

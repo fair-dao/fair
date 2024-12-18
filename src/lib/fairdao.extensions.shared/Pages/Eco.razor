@@ -1,0 +1,56 @@
+﻿@page "/fairdao/eco"
+@inherits Page
+<FairdaoPage>
+    <TitlePanel>
+     @Localer["生态"]
+    </TitlePanel>
+
+    <ContentPanel>
+        @if (MoreTabs != null)
+        {
+            if (MoreTabs.Count == 0)
+            {
+                <FairdaoPageMessage RecordNotFound />
+            }
+            else
+            {
+
+                <FluentGrid Spacing="3" Class="fair-desk" AdaptiveRendering="true">
+
+                    @foreach (var topMenu in MoreTabs)
+                    {
+
+                        <FluentGridItem xs="4">
+
+
+                            @if (topMenu.ComType == ComponentType.CommpentMode) //自定义组件
+                            {
+                                <FairdaoShortcut Icon="@topMenu.Icon" Text="@topMenu.Text" Link="@($"/fairdao/load/{topMenu.Link}")" />
+                            }
+                            else
+                            {
+                                <FairdaoShortcut Icon="@topMenu.Icon" Text="@Localer[topMenu.Text]" Link="@topMenu.Link" />
+                            }
+                        </FluentGridItem>
+
+                    }
+                </FluentGrid>
+
+            }
+        }
+    </ContentPanel>
+</FairdaoPage>
+
+
+@code {
+
+    public List<fairdao.extensions.shared.entity.VCommpent> MoreTabs = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        MoreTabs = sysHelper.ClientConfig.MTabs.Skip(5).Take(1000).ToList();
+
+    }
+
+
+}

@@ -17,7 +17,7 @@ namespace fairdao.extensions.shared.localization
     /// <summary>
     /// 本地化
     /// </summary>
-    public class GensysLocaler
+    public class FairdaoLocaler
     {     
          
         private IStringLocalizer localizer;
@@ -46,7 +46,7 @@ namespace fairdao.extensions.shared.localization
         private INewWordRecorder recorder;
 
         //private IStringLocalizer defaultLocaler;
-        public GensysLocaler(IStringLocalizer<GensysLocaler> stringLocalizer,INewWordRecorder recorder)
+        public FairdaoLocaler(IStringLocalizer<FairdaoLocaler> stringLocalizer,INewWordRecorder recorder)
         {
           
             localizer = stringLocalizer;

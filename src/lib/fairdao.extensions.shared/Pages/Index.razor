@@ -5,8 +5,42 @@
 @using System.Text
 
 @inherits Page
+<style>
+	.fluent-appbar.smallicons {
+	--appbar-item-size: 128;
+	//58
+	}
 
-<FairdaoComTabs>
+	.fluent-appbar {
+		justify-content: space-evenly !important;
+	}
+</style>
+
+<div class="fairdao-comtab">
+	@if (CurTab != null)
+	{
+		<DynamicComponent Type="@Type.GetType(CurTab.Link)"></DynamicComponent>
+	}
+</div>
+<FluentStack>
+	<div style="background-color: var(--neutral-layer-3); overflow: auto; resize:horizontal;width: 100%;">
+		<FluentAppBar Orientation="Orientation.Horizontal" Style="@(" background-color: var(--neutral-layer-2);")">
+			@if (MTabs != null)
+			{
+				foreach (var topMenu in MTabs)
+				{
+					<FluentAppBarItem IconRest="@topMenu.Icon"
+					IconActive="@topMenu.SelectedIcon"
+					Tooltip="@Localer[topMenu.Text]"
+					Href="@($"#{topMenu.Text}")"
+									  Text="@Localer[topMenu.Text]" Count="@topMenu.Hots" Class="fairdao-comtabItem"
+					OnClick="a=>TabChanged(topMenu)" />			
+				}
+			}
+		</FluentAppBar>
+	</div>
+</FluentStack>
+@* <FairdaoComTabs>
     @if (MTabs != null)
     {
         foreach (var topMenu in MTabs)
@@ -52,7 +86,7 @@
 
 </FairdaoComTabs>
 
-
+ *@
 
 <FluentToastProvider />
 <FluentDialogProvider />
@@ -65,215 +99,217 @@
 
 
 @code {
-    [Inject]
-    IServiceProvider provider { get; set; }
-    [Inject]
-    IAccountService AccountService { get; set; }
+	[Inject]
+	IServiceProvider provider { get; set; }
+	[Inject]
+	IAccountService AccountService { get; set; }
 
-    public List<fairdao.extensions.shared.entity.VCommpent> MTabs = null;
+	public List<fairdao.extensions.shared.entity.VCommpent> MTabs = null;
 
-    public static DateTime? RunedTime;
+	fairdao.extensions.shared.entity.VCommpent CurTab;
 
-    public bool ShowPage { get; set; } = false;
+	public static DateTime? RunedTime;
 
-
-    /// <summary>
-    /// 是否已登录
-    /// </summary>
-    bool Logined { get; set; } = true;
-
-
-    public int ChatHots { get; set; } = 0;
-
-    /// <summary>
-    /// 当前Tab标题
-    /// </summary>
-    public string CurTabName { get; set; }
+	public bool ShowPage { get; set; } = false;
 
 
 
-    public bool NetConnected { get; set; } = true;
+	void TabChanged(fairdao.extensions.shared.entity.VCommpent tab)
+	{
+		CurTab = tab;
+	}
+
+	/// <summary>
+	/// 是否已登录
+	/// </summary>
+	bool Logined { get; set; } = true;
+
+
+	public bool NetConnected { get; set; } = true;
 
 
 
-    [Inject]
-    fairdao.extensions.shared.services.TransService Trans { get; set; }
+	[Inject]
+	fairdao.extensions.shared.services.TransService Trans { get; set; }
 
 
-    /// <summary>
-    /// 触发用户登录成功事件
-    /// </summary>
-    /// <returns></returns>
-    void Logon_Hander(object userData)
-    {
-        //设置登录
+	/// <summary>
+	/// 触发用户登录成功事件
+	/// </summary>
+	/// <returns></returns>
+	void Logon_Hander(object userData)
+	{
+		//设置登录
 
 
-        PageLoad().ContinueWith(r =>
-        {
-            Logined = true;
-            this.InvokeAsync(() => StateHasChanged());
+		PageLoad().ContinueWith(r =>
+		{
+			Logined = true;
+			this.InvokeAsync(() => StateHasChanged());
 
-        });
+		});
 
-        //        navManager.NavigateTo("/reload");
-
-
-
-
-    }
+		//        navManager.NavigateTo("/reload");
 
 
 
-    bool showLoadTime = false;
 
-    BlockchainAccount curAccount;
-    protected override async Task OnInitializedAsync()
-    {
-        Console.WriteLine("index page init...");
-        curAccount = await AccountService.GetAccountAsync();
-        if (curAccount?.Account == null) //需要一个钱包用户才能访问首页
-        {
-            if (AccountService.LoginRequired)
-            {
-                Nav(AccountService.LoginUrl);
-                return;
-            }
-        }
-        base.OnInitializedAsync();
-        PageLoad();
+	}
 
 
 
-    }
+	bool showLoadTime = false;
+
+	BlockchainAccount curAccount;
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine("index page init...");
+		curAccount = await AccountService.GetAccountAsync();
+		if (curAccount?.Account == null) //需要一个钱包用户才能访问首页
+		{
+			if (AccountService.LoginRequired)
+			{
+				Nav(AccountService.LoginUrl);
+				return;
+			}
+		}
+		base.OnInitializedAsync();
+		PageLoad();
 
 
-    /// <summary>
-    /// 显示加载用时
-    /// </summary>
-    /// <returns></returns>
-    async Task ToShowLoadTime()
-    {
-        Console.WriteLine("首页加载");
 
-        if (RunedTime == null)
-        {
-
-            showLoadTime = true;
-            RunedTime = DateTime.Now;
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(4000);
-                showLoadTime = false;
-                this.InvokeAsync(() => { StateHasChanged(); });
-            });
-        }
-    }
-
-    async Task PageLoad()
-    {
-
-        try
-        {
-            string url = navManager.Uri.ToString();
-            //是否是api页面调用
-            string token = sysHelper.GetQuery(url, "token");
-            Console.WriteLine($"{DateTime.Now} query token:{token}");
-            string jmpUrl = "";
-            bool forceLoad = false;
-
-            string lang = sysHelper.GetQuery(url, "lang"); //语言
-            if (!string.IsNullOrWhiteSpace(lang))
-            {
-                int index = lang.IndexOf("-");
-                if (index > 0)
-                {
-                    lang = lang.Substring(0, index);
-                }
-                string curLang = await sysHelper.GetCulture();
-                if (lang != curLang)
-                {
-                    await sysHelper.SetCulture(lang);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(jmpUrl))
-            {
-                navManager.NavigateTo(jmpUrl, forceLoad);
-
-            }
-            else
-            {
+	}
 
 
-                ShowHomePage();
-            }
+	/// <summary>
+	/// 显示加载用时
+	/// </summary>
+	/// <returns></returns>
+	async Task ToShowLoadTime()
+	{
+		Console.WriteLine("首页加载");
+
+		if (RunedTime == null)
+		{
+
+			showLoadTime = true;
+			RunedTime = DateTime.Now;
+
+			Task.Run(async () =>
+			{
+				await Task.Delay(4000);
+				showLoadTime = false;
+				this.InvokeAsync(() => { StateHasChanged(); });
+			});
+		}
+	}
+
+	async Task PageLoad()
+	{
+
+		try
+		{
+			string url = navManager.Uri.ToString();
+			//是否是api页面调用
+			string token = sysHelper.GetQuery(url, "token");
+			Console.WriteLine($"{DateTime.Now} query token:{token}");
+			string jmpUrl = "";
+			bool forceLoad = false;
+
+			string lang = sysHelper.GetQuery(url, "lang"); //语言
+			if (!string.IsNullOrWhiteSpace(lang))
+			{
+				int index = lang.IndexOf("-");
+				if (index > 0)
+				{
+					lang = lang.Substring(0, index);
+				}
+				string curLang = await sysHelper.GetCulture();
+				if (lang != curLang)
+				{
+					await sysHelper.SetCulture(lang);
+				}
+			}
+
+			if (!string.IsNullOrEmpty(jmpUrl))
+			{
+				navManager.NavigateTo(jmpUrl, forceLoad);
+
+			}
+			else
+			{
 
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("index初始化出错:{0}", ex);
-        }
-    }
-
-    Task ShowHomePage()
-    {
-        string url = navManager.Uri.ToString();
-        int index = url.IndexOf("#");
-
-        if (index > 0)
-        {
-            CurTabName = Uri.UnescapeDataString(url.Substring(index + 1));
-        }
-
-        Console.WriteLine("my started");
-
-        ShowMenu();
-        return Task.CompletedTask;
-    }
-
-    void ShowMenu()
-    {
+				ShowHomePage();
+			}
 
 
-        //最多显示5个Tab项，其它纳入Found 页
-        if (sysHelper.ClientConfig?.MTabs != null)
-        {
-            MTabs = sysHelper.ClientConfig.MTabs.Take(5).ToList();
-
-            if (string.IsNullOrWhiteSpace(CurTabName) && MTabs.Count > 0) //设置手机端当前页
-            {
-                // string defaultId = gensys.shared.entity.SysMenuIds.CHAT;
-                // if (sysHelper.IsSiteAdmin())
-                // {
-                string defaultId = SysMenuIds.HOME;
-
-                //     }
-                var defaultMenu = MTabs.FirstOrDefault(m => m.Id == defaultId);
-                if (defaultMenu != null) CurTabName = Localer[defaultMenu.Text];
-                else CurTabName = Localer[MTabs[0].Text];
-            }
-        }
-
-        ShowPage = true;
-    }
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine("index初始化出错:{0}", ex);
+		}
+	}
 
 
-    async Task GetLangInfo()
-    {
 
-        string lang = await sysHelper.GetCulture();
-        sysHelper.LocalData = await Trans.GetAllLocalWords(sysHelper.LangLibName, lang);
-        sysHelper.SaveLocalData();
-    }
+	Task ShowHomePage()
+	{
+		string url = navManager.Uri.ToString();
+		int index = url.IndexOf("#");
+		string tabName = "";
+		if (index > 0)
+		{
+			tabName = Uri.UnescapeDataString(url.Substring(index + 1));
+		}
 
-    protected override ValueTask DisposeAsync(bool disposing)
-    {
+		Console.WriteLine("my started");
 
-        return base.DisposeAsync(disposing);
-    }
+		ShowMenu(tabName);
+		return Task.CompletedTask;
+	}
+
+	void ShowMenu(string tabName)
+	{
+
+
+		//最多显示5个Tab项，其它纳入Found 页
+		if (sysHelper.ClientConfig?.MTabs != null)
+		{
+			MTabs = sysHelper.ClientConfig.MTabs.Take(5).ToList();
+
+			if (string.IsNullOrWhiteSpace(tabName) && MTabs.Count > 0) //设置手机端当前页
+			{
+				// string defaultId = fairdao.shared.entity.SysMenuIds.CHAT;
+				// if (sysHelper.IsSiteAdmin())
+				// {
+				string defaultId = SysMenuIds.HOME;
+
+				//     }
+				var defaultMenu = MTabs.FirstOrDefault(m => m.Id == defaultId);
+				if (defaultMenu != null) tabName = Localer[defaultMenu.Text];
+				else tabName = Localer[MTabs[0].Text];
+			}
+			CurTab = MTabs.FirstOrDefault(m => m.Text == tabName);
+		}
+
+		ShowPage = true;
+	}
+
+
+	async Task GetLangInfo()
+	{
+
+		string lang = await sysHelper.GetCulture();
+		sysHelper.LocalData = await Trans.GetAllLocalWords(sysHelper.LangLibName, lang);
+		sysHelper.SaveLocalData();
+	}
+
+	protected override ValueTask DisposeAsync(bool disposing)
+	{
+
+		return base.DisposeAsync(disposing);
+	}
 
 
 

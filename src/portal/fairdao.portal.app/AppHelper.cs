@@ -105,7 +105,7 @@ namespace fairdao.portal.shared
 
 
 
-        public override string AppName => "gensys";
+        public override string AppName => "fairdao";
 
 
         public override async Task Init()

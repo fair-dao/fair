@@ -36,6 +36,9 @@
 	  <Content Update="Components\NotificationCenterPanel.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
+	  <Content Update="Pages\Eco.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>

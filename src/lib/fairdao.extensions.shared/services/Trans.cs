@@ -36,7 +36,7 @@ namespace fairdao.extensions.shared.services
         /// <param name="desLang">目标语言(如:en-US)</param>
         /// <param name="word">原短语(如:文件)</param>
         /// <param name="desWord">翻译结果(如:File)</param>
-        /// <param name="lib">库(如:gensysclient)</param>
+        /// <param name="lib">库(如:fairdaoclient)</param>
         /// <param name="rewrite">是否覆盖</param>
         /// <returns></returns>
         public async Task  AddTrans(string lang,string code,string word,string lib,bool rewrite=false)

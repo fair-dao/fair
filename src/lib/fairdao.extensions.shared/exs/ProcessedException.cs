@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace fairdao.extensions.shared.exs
 {
     /// <summary>
-    /// 已处理的异常，gensys异常基类,所有处理的异常必须由此类继承
+    /// 已处理的异常，fairdao异常基类,所有处理的异常必须由此类继承
     /// </summary>
     public class ProcessedException : System.Exception
     {

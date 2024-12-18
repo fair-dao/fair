@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.RootComponents.Add<fairdao.extensions.shared.Routes>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
             SysHelper.AppStartTime = DateTime.Now;
-            builder.Services.AddSingleton<gensysDatabase>();
+            builder.Services.AddSingleton<FairdaoDatabase>();
             builder.Services.AddSingleton<IDataStore, LocaldbStore>();
             builder.Services.AddSingleton<Env>();
             builder.Services.AddSingleton<SysHelper, H5Helper>();

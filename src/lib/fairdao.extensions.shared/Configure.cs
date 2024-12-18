@@ -138,7 +138,7 @@ namespace fairdao.extensions.shared
                 #region 本地化
                 services.AddLocalization(o => o.ResourcesPath = "resources");
                 services.AddSingleton<INewWordRecorder, NewWordRecorder>();
-                services.AddSingleton<fairdao.extensions.shared.localization.GensysLocaler>();
+                services.AddSingleton<fairdao.extensions.shared.localization.FairdaoLocaler>();
             }
             catch (Exception ex)
             {
