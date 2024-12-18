@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace fairdao.maui.demo
+namespace fairdao.portal
 {
     [Application]
     public class MainApplication : MauiApplication

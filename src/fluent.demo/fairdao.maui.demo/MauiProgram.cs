@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace fairdao.maui.demo
+namespace fairdao.portal
 {
     public static class MauiProgram
     {

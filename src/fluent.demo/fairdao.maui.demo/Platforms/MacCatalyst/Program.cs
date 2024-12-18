@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace fairdao.maui.demo
+namespace fairdao.portal
 {
     public class Program
     {

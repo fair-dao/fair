@@ -1,4 +1,4 @@
-﻿namespace fairdao.maui.demo
+﻿namespace fairdao.portal
 {
     public partial class MainPage : ContentPage
     {

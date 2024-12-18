@@ -5,13 +5,11 @@ VisualStudioVersion = 17.12.35417.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.h5.demo", "fairdao.h5.demo\fairdao.h5.demo.csproj", "{AB998F55-1A62-48B1-BC8B-D01E078BF201}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.maui.demo", "fairdao.maui.demo\fairdao.maui.demo.csproj", "{64EE4658-5BC2-4305-BBC8-5270623B242D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.portal.app", "fairdao.maui.demo\fairdao.portal.app.csproj", "{64EE4658-5BC2-4305-BBC8-5270623B242D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.h5.shared", "..\lib\fairdao.h5.shared\fairdao.h5.shared.csproj", "{ACC8394D-6EAB-421A-B61D-8EAEE97CB72A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairdao.extensions.appCenter", "..\..\..\..\..\freecoder\fairproxy\fairdao.extensions.appCenter\fairdao.extensions.appCenter.csproj", "{CC55AB5B-2E99-4823-94B2-5E1383E71EDE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairdao.maui.shared", "..\lib\fairdao.maui.shared\fairdao.maui.shared.csproj", "{E94E1817-B864-4363-A382-E4032336ACC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairdao.extensions.shared", "..\lib\fairdao.extensions.shared\fairdao.extensions.shared.csproj", "{9019F635-2C96-4055-8F0E-D276332CFF29}"
 EndProject
@@ -39,10 +37,6 @@ Global
 		{CC55AB5B-2E99-4823-94B2-5E1383E71EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC55AB5B-2E99-4823-94B2-5E1383E71EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC55AB5B-2E99-4823-94B2-5E1383E71EDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E94E1817-B864-4363-A382-E4032336ACC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E94E1817-B864-4363-A382-E4032336ACC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E94E1817-B864-4363-A382-E4032336ACC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E94E1817-B864-4363-A382-E4032336ACC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9019F635-2C96-4055-8F0E-D276332CFF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9019F635-2C96-4055-8F0E-D276332CFF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9019F635-2C96-4055-8F0E-D276332CFF29}.Release|Any CPU.ActiveCfg = Release|Any CPU

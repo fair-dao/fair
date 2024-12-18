@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="fairdao.maui.demo.WinUI.App"
+    x:Class="fairdao.portal.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:fairdao.maui.demo.WinUI">
+    xmlns:local="using:fairdao.portal.WinUI">
 
 </maui:MauiWinUIApplication>

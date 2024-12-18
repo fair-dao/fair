@@ -8,6 +8,10 @@ using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 using Microsoft.Maui.Platform;
+using fairdao.maui;
+using Microsoft.FluentUI.AspNetCore.Components;
+
+
 
 #if ANDROID
 using AndroidX.Activity;
@@ -56,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.AddSingleton<Env>(Env);
             builder.Services.AddSingleton<SysHelper, AppHelper>();
-
+            builder.Services.AddFluentUIComponents();
             Configure.ConfigureServices(builder.Services,extenders);
 
             Console.WriteLine($"数据服务、配置环境、辅助服务已注入，开始初始化各服务...({SysHelper.RunedSpanTime}毫秒)");
@@ -77,9 +81,9 @@ namespace Microsoft.Extensions.DependencyInjection
 #if ANDROID
 
                 var a = e.WebView.Context.GetActivity();
-                if (a is MainActivity)
+                if (a is FairdaoMainActivity)
                 {
-                    MainActivity mainActivity = (MainActivity)a;
+                    FairdaoMainActivity mainActivity = (FairdaoMainActivity)a;
                     mainActivity.SetWebView(e.WebView);
                 }
                 //if (e.WebView.Context?.GetActivty() is not ComponentActivity activity)

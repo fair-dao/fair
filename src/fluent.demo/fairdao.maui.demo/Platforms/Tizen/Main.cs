@@ -2,7 +2,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using System;
 
-namespace fairdao.maui.demo
+namespace fairdao.portal
 {
     internal class Program : MauiApplication
     {

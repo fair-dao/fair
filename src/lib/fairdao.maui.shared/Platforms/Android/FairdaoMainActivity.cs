@@ -19,9 +19,9 @@ using AndroidOS = Android.OS;
 using Android.Content.Res;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 
-namespace fairdao.maui.shared
+namespace fairdao.maui
 {
-   public class MainActivity : MauiAppCompatActivity, IDownloadListener
+   public class FairdaoMainActivity : MauiAppCompatActivity, IDownloadListener
     {
         public IValueCallback mUploadMessage;
         private const string TAG = "MainActivity";
@@ -174,7 +174,7 @@ namespace fairdao.maui.shared
 
         FileChooserWebChromeClient curChooserWebChromeClient;
 
-        public MainActivity() : base()
+        public FairdaoMainActivity() : base()
         {
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss:fff")} 对象初始化...");
 
@@ -408,11 +408,11 @@ namespace fairdao.maui.shared
 
     partial class FileChooserWebChromeClient : WebChromeClient
     {
-        MainActivity mainActivity;
+        FairdaoMainActivity mainActivity;
         Action<IValueCallback, Java.Lang.String, Java.Lang.String> callback;
 
 
-        public FileChooserWebChromeClient(Action<IValueCallback, Java.Lang.String, Java.Lang.String> callback, MainActivity mainActivity)
+        public FileChooserWebChromeClient(Action<IValueCallback, Java.Lang.String, Java.Lang.String> callback, FairdaoMainActivity mainActivity)
         {
             this.callback = callback;
             this.mainActivity = mainActivity;

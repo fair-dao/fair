@@ -489,7 +489,9 @@ namespace fairdao.extensions.shared
         public async Task<Culture> GetCurLang()
         {
             string lang = await GetCulture();
-            return LocalData.Cultures.FirstOrDefault(m => m.Name == lang);
+            var culture = LocalData.Cultures.FirstOrDefault(m => m.Name == lang);
+            if (culture == null) culture = new Culture() { DispName="中文", Name="zh", EnglishName="Chinese" };
+            return culture;
         }
 
 

@@ -97,11 +97,11 @@ namespace fairdao.extensions.shared
         /// </summary>  
         /// <param name="data">需要加密字符串</param>  
         /// <returns>返回40位大写字符串</returns>  
-        public static string SHA1(string data)
+        public static string SHA1Encrypt(string data)
         {
             try
             {
-                SHA1 sha1 = new SHA1CryptoServiceProvider();
+                SHA1 sha1 = SHA1.Create();
                 byte[] bytes_in = Encoding.UTF8.GetBytes(data);
                 byte[] bytes_out = sha1.ComputeHash(bytes_in);
                 sha1.Dispose();
@@ -114,32 +114,6 @@ namespace fairdao.extensions.shared
                 throw new Exception("SHA1加密出错：" + ex.Message);
             }
         }
-
-        public static string GetMD5(string txt)
-        {
-            try
-            {
-                MD5 md5 = MD5.Create();
-                byte[] bytValue, bytHash;
-                bytValue = System.Text.Encoding.UTF8.GetBytes(txt);
-                bytHash = md5.ComputeHash(bytValue);
-                md5.Clear();
-                string sTemp = "";
-                for (int i = 0; i < bytHash.Length; i++)
-                {
-                    sTemp += bytHash[i].ToString("X").PadLeft(2, '0');
-                }
-                txt = sTemp.ToLower();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return txt;
-        }
-
-
 
 
 

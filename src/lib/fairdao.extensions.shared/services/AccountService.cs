@@ -70,7 +70,7 @@ namespace fairdao.extensions.shared.services
                 {
                     accounts = new List<KeyValuePair<string, string>>();
                 }
-                acc = Encrypt.SHA1(acc);
+                acc = Encrypt.SHA1Encrypt(acc);
                 acc = acc.Substring(5, 6);
                 KeyValuePair<string, string>? a = accounts.FirstOrDefault(m => m.Key == acc);
                 if (a!=null)

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace fairdao.maui.demo
+namespace fairdao.portal
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -2,10 +2,11 @@
 using Android.Content.PM;
 using Android.OS;
 
-namespace fairdao.maui.demo
+
+namespace fairdao.portal
 {
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-    public class MainActivity : fairdao.maui.MainActivity
+    public class MainActivity : fairdao.portal.FairdaoMainActivity
     {
     }
 }
