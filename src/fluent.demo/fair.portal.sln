@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35417.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.h5.demo", "fairdao.h5.demo\fairdao.h5.demo.csproj", "{AB998F55-1A62-48B1-BC8B-D01E078BF201}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.portal.app", "fairdao.maui.demo\fairdao.portal.app.csproj", "{64EE4658-5BC2-4305-BBC8-5270623B242D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.portal.app", "fairdao.portal.app\fairdao.portal.app.csproj", "{64EE4658-5BC2-4305-BBC8-5270623B242D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.h5.shared", "..\lib\fairdao.h5.shared\fairdao.h5.shared.csproj", "{ACC8394D-6EAB-421A-B61D-8EAEE97CB72A}"
 EndProject
