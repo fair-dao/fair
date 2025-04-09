@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35417.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.extensions.shared", "fairdao.extensions.shared\fairdao.extensions.shared.csproj", "{8AE805E6-1472-4AEC-8B29-DFDEF7DC4DCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairdao.h5.shared", "fairdao.h5.shared\fairdao.h5.shared.csproj", "{9D233905-14E7-4541-AE35-AAC3DF32A39B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{8AE805E6-1472-4AEC-8B29-DFDEF7DC4DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AE805E6-1472-4AEC-8B29-DFDEF7DC4DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AE805E6-1472-4AEC-8B29-DFDEF7DC4DCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D233905-14E7-4541-AE35-AAC3DF32A39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D233905-14E7-4541-AE35-AAC3DF32A39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D233905-14E7-4541-AE35-AAC3DF32A39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D233905-14E7-4541-AE35-AAC3DF32A39B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
