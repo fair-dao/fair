@@ -37,7 +37,7 @@
     }
 
     private RenderFragment NotificationIcon() =>
-        @<FluentIcon Value="@(new Icons.Regular.Size20.Alert())" Color="Color.Fill" Title="@Localer["通知中心"]" @onclick="OpenNotificationCenterAsync" />;
+        @<FluentIcon Value="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Alert())" Color="Color.Fill" Title="@Localer["通知中心"]" @onclick="OpenNotificationCenterAsync" />;
 
     private async Task OpenNotificationCenterAsync()
     {

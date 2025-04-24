@@ -71,7 +71,7 @@
         {
             return icon1;
         }
-        var ico=Icons.GetInstance(icon);
+        var ico=Microsoft.FluentUI.AspNetCore.Components.IconsExtensions.GetInstance(icon);
         DictIcons.Add(key, ico);
         return ico;
     }
@@ -94,7 +94,7 @@
 
             if (AllIcons == null)
             {
-                AllIcons = Icons.GetAllIcons().ToList();
+                AllIcons = Microsoft.FluentUI.AspNetCore.Components.IconsExtensions.GetAllIcons().ToList();
             }
 
             if (AllIcons != null)
