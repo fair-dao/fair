@@ -244,9 +244,11 @@ namespace fairdao.extensions.shared
 
         public async Task<T> GetCache<T>(string cacheId)
         {
-            var data = await dataStore.GetConfig<IndexedConfigData<T>>(cacheId);
-            if (data == null) { return default(T); }
-            return data.Entity ?? default(T);
+           
+                var data = await dataStore.GetConfig<IndexedConfigData<T>>(cacheId);
+                if (data == null) { return default(T); }
+                return data.Entity ?? default(T);
+       
         }
 
 
