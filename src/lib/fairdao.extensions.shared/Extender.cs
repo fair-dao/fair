@@ -3,13 +3,14 @@ using fairdao.extensions.shared.entity;
 using fairdao.extensions.shared.services;
 using fairdao.ui;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.FluentUI.AspNetCore.Components.Icons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons;
 
 namespace fairdao.extensions.shared
 {
@@ -82,8 +83,8 @@ namespace fairdao.extensions.shared
                     {
                         Id = "home",
                         Parent = VCommpent.Page,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Home(),
-                            SelectedIcon=new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.Home(),
+                        Icon =  new Icons.Regular.Size20.Home(),
+                            SelectedIcon=new Icons.Filled.Size20.Home(),
                         Text = "访达",
                         SortId = -1,
                         ComType = ComponentType.CommpentMode,
@@ -92,7 +93,7 @@ namespace fairdao.extensions.shared
                         {
                             new VCommpent
                             {
-                                Icon =  new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Info(),
+                                Icon =  new Icons.Regular.Size20.Info(),
                                 Text = "软件信息",
                                 SortId = 150,
                                 ComType = ComponentType.IconMode,
@@ -104,8 +105,8 @@ namespace fairdao.extensions.shared
                     {
                         Id = "eco",
                         Parent = VCommpent.Page,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.AccessibilityMore(),
-                        SelectedIcon=new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.AccessibilityMore(),
+                        Icon = new Icons.Regular.Size20.AccessibilityMore(),
+                        SelectedIcon=new Icons.Filled.Size20.AccessibilityMore(),
                         Text = "生态",
                         SortId = 21111,
                         ComType = ComponentType.CommpentMode,
@@ -116,8 +117,8 @@ namespace fairdao.extensions.shared
                     {
                         Id = "find",
                         Parent = VCommpent.Page,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.AppsAddIn(),
-                        SelectedIcon=new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.AppsAddIn(),
+                        Icon = new Icons.Regular.Size20.AppsAddIn(),
+                        SelectedIcon=new Icons.Filled.Size20.AppsAddIn(),
                         Text = "探索",
                         SortId = 21111,
                         ComType = ComponentType.CommpentMode,
@@ -129,7 +130,7 @@ namespace fairdao.extensions.shared
                     {
                         Id = "appcenter",
                         Parent = VCommpent.Sidebar,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.AppsList(),
+                        Icon = new Icons.Regular.Size20.AppsList(),
                         Text = "应用中心",
                         SortId = 10000,
                         ComType = ComponentType.DropdownMode
@@ -138,7 +139,7 @@ namespace fairdao.extensions.shared
                     {
                         Id = "syssetup",
                         Parent = VCommpent.Sidebar,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.AppsSettings(),
+                        Icon = new Icons.Regular.Size20.AppsSettings(),
                         Text = "系统设置",
                         SortId = Int32.MaxValue-1,
                         ComType = ComponentType.DropdownMode,
@@ -146,7 +147,7 @@ namespace fairdao.extensions.shared
                         {
                             new VCommpent
                             {
-                                Icon =  new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.AppsSettings(),
+                                Icon =  new Icons.Regular.Size20.AppsSettings(),
                                 Text = "外观设置",
                                 SortId = 1,
                                 ComType = ComponentType.CommpentMode,
@@ -159,7 +160,7 @@ namespace fairdao.extensions.shared
                     {
                         Id = "sysinfo",
                         Parent = VCommpent.Sidebar,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.InfoShield(),
+                        Icon = new Icons.Regular.Size20.InfoShield(),
                         Text = "关于软件",
                         SortId = Int32.MaxValue,
                         ComType = ComponentType.DropdownMode,
@@ -167,7 +168,7 @@ namespace fairdao.extensions.shared
                         {
                             new VCommpent
                             {
-                                Icon =  new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.PlugConnected(),
+                                Icon =  new Icons.Regular.Size20.PlugConnected(),
                                 Text = "插件列表",
                                 SortId = 150,
                                 ComType = ComponentType.CommpentMode,
@@ -176,14 +177,14 @@ namespace fairdao.extensions.shared
                             },
                             new VCommpent
                             {
-                                Icon =  new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size24.Component2DoubleTapSwipeDown(),
+                                Icon =  new Icons.Filled.Size24.Component2DoubleTapSwipeDown(),
                                 Text = "开源组件",
                                 SortId = 1150,
                                 ComType = ComponentType.CommpentMode,
                                 Link = "fairdao.extensions.shared.Pages.OpenSource"
                             },new VCommpent
                             {
-                                Icon =  new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Icons(),
+                                Icon =  new Icons.Regular.Size20.Icons(),
                                 Text = "系统图标",
                                 SortId = 1150,
                                 ComType = ComponentType.IconMode,
@@ -196,7 +197,7 @@ namespace fairdao.extensions.shared
                     {
                         Id="search",
                         Parent=VCommpent.Tool,
-                        Icon = new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Search(),
+                        Icon = new Icons.Regular.Size20.Search(),
                         Text = "查找",
                         SortId = 100,
                         ComType = ComponentType.CommpentMode,
